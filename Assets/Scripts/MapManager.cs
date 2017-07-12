@@ -28,6 +28,7 @@ public class MapManager : MonoBehaviour {
     public GameObject goalPoint;
     public GameObject[] startingPoint;
     public GameObject[] tiles;
+    public bool interruzioneSpawn = true;
 
     private List<Vector3> gridPositions = new List<Vector3>();
     private float tileSize;
@@ -174,26 +175,32 @@ public class MapManager : MonoBehaviour {
         }
 
         tilesArray = ReshuffleArray(tilesArray);
+        int[] noBottom = { 2, 3, 5, 8 };
+        int[] noRight = { 1, 3, 4, 7 };
+        int[] noTop = { 0, 1, 5, 6 };
+        int[] noLeft = { 0, 2, 4, 9 };
 
         for (int i = 0; i < columns; i++)
         {
             for (int j = 0; j < rows; j++)
             {
                 GameObject toInstantiate;
+                int randomTmp = Random.Range(0, 4);
+                
 
                 if (i == 0 && j == 0)
                 {
                     toInstantiate = startingPoint[2];
                 }
-                else if (i == columns-1 && j == 0)
+                else if (i == columns - 1 && j == 0)
                 {
                     toInstantiate = startingPoint[3];
                 }
-                else if (i == 0 && j == rows-1)
+                else if (i == 0 && j == rows - 1)
                 {
                     toInstantiate = startingPoint[0];
                 }
-                else if (i == columns-1 && j == rows-1)
+                else if (i == columns - 1 && j == rows - 1)
                 {
                     toInstantiate = startingPoint[1];
                 }
@@ -201,28 +208,70 @@ public class MapManager : MonoBehaviour {
                 {
                     toInstantiate = goalPoint;
                 }
+                else if (i == 1 && j == 0) //aggiunta Fabio P
+                {
+                    toInstantiate = tiles[noLeft[randomTmp]];
+                }
+
+                else if (i == 0 && j == 1)
+                {
+                    toInstantiate = tiles[noBottom[randomTmp]];
+                }
+
+                else if (i == columns-2 && j == 0)
+                {
+                    toInstantiate = tiles[noRight[randomTmp]];
+                }
+
+                else if (i == columns-1 && j == 1)
+                {
+                    toInstantiate = tiles[noBottom[randomTmp]];
+                }
+
+                else if (i == 0 && j == rows-2)
+                {
+                    toInstantiate = tiles[noTop[randomTmp]];
+                }
+
+                else if (i == 1 && j == rows-1)
+                {
+                    toInstantiate = tiles[noLeft[randomTmp]];
+                }
+
+                else if (i == columns-2 && j == rows-1)
+                {
+                    toInstantiate = tiles[noRight[randomTmp]];
+                }
+
+                else if (i == columns-1 && j == rows-2)
+                {
+                    toInstantiate = tiles[noTop[randomTmp]]; //fine aggiunta
+                }
+
                 else
                 {
                     //toInstantiate = tiles[Random.Range(0, tiles.Length)];
-                    toInstantiate = tiles[tilesArray[i* rows + j]];
+                    toInstantiate = tiles[tilesArray[i * rows + j]];
                 }
+                
 
                 GameObject instance = (GameObject)Instantiate(toInstantiate, new Vector3(i, j, 0f) * tileSize, Quaternion.identity);
-                instance.transform.SetParent(this.transform);
+                instance.transform.SetParent(this.transform); 
             }
         }
     }
 
-    // Use this for initialization
-    void Start () {
-
+    
+    void Start ()
+    {
         tileSize = 5f;     
         MapSetup();
         transform.position += new Vector3(-(columns-1) * tileSize / 2.0f, -(rows-1) * tileSize / 2.0f, 0f);
     }
 	
-	// Update is called once per frame
-	void Update () {
+	
+	void Update ()
+    {
 		
 	}
 }
