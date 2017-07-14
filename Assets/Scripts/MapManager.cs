@@ -33,6 +33,11 @@ public class MapManager : MonoBehaviour {
     private List<Vector3> gridPositions = new List<Vector3>();
     private float tileSize;
 
+    enum tileTypes // B - bottom, R - right, T - top, L - left, V - vertical, H - horizontal
+    {
+        Curve_BR, Curve_LB, Curve_RT, Curve_TL, Straigh_V, Straight_H, T_B, T_L, T_T, T_R, Cross
+    };
+
     int[] nbrOfTiles;
     int[] noBottom = { 2, 3, 5, 8 };
     int[] noRight = { 1, 3, 4, 7 };
@@ -96,7 +101,7 @@ public class MapManager : MonoBehaviour {
 
     }
 
-    void IstantiateTile(GameObject tile, Vector3 coordinates, bool isAlternative = false)
+    void InstantiateTile(GameObject tile, Vector3 coordinates, bool isAlternative = false)
     {
         GameObject instance = Instantiate(tile, coordinates, Quaternion.identity);
         instance.transform.SetParent(this.transform);
@@ -135,7 +140,7 @@ public class MapManager : MonoBehaviour {
                     bool isInRange = checkTileRange(myTile);
                     if (isInRange)
                     {
-                        IstantiateTile(tiles[myTile], new Vector3(0, 1, 0f) * tileSize);
+                        InstantiateTile(tiles[myTile], new Vector3(0, 1, 0f) * tileSize);
                         break;
                     }
 
@@ -147,7 +152,7 @@ public class MapManager : MonoBehaviour {
                     bool isInRange = checkTileRange(myTile);
                     if (isInRange)
                     {
-                        IstantiateTile(tiles[myTile], new Vector3(1, 0, 0f) * tileSize);
+                        InstantiateTile(tiles[myTile], new Vector3(1, 0, 0f) * tileSize);
                         break;                     
                     }
 
@@ -165,7 +170,7 @@ public class MapManager : MonoBehaviour {
                     bool isInRange = checkTileRange(myTile);
                     if (isInRange)
                     {
-                        IstantiateTile(tiles[myTile], new Vector3(columns - 1, 1, 0f) * tileSize);
+                        InstantiateTile(tiles[myTile], new Vector3(columns - 1, 1, 0f) * tileSize);
                         break;
                     }
 
@@ -177,7 +182,7 @@ public class MapManager : MonoBehaviour {
                     bool isInRange = checkTileRange(myTile);
                     if (isInRange)
                     {
-                        IstantiateTile(tiles[myTile], new Vector3(columns - 2, 0, 0f) * tileSize);
+                        InstantiateTile(tiles[myTile], new Vector3(columns - 2, 0, 0f) * tileSize);
                         break;
                     }
 
@@ -194,7 +199,7 @@ public class MapManager : MonoBehaviour {
                     bool isInRange = checkTileRange(myTile);
                     if (isInRange)
                     {
-                        IstantiateTile(tiles[myTile], new Vector3(1, rows - 1, 0f) * tileSize);
+                        InstantiateTile(tiles[myTile], new Vector3(1, rows - 1, 0f) * tileSize);
                         break;
                     }
 
@@ -206,7 +211,7 @@ public class MapManager : MonoBehaviour {
                     bool isInRange = checkTileRange(myTile);
                     if (isInRange)
                     {
-                        IstantiateTile(tiles[myTile], new Vector3(0, rows - 2, 0f) * tileSize);
+                        InstantiateTile(tiles[myTile], new Vector3(0, rows - 2, 0f) * tileSize);
                         break;
                     }
 
@@ -224,7 +229,7 @@ public class MapManager : MonoBehaviour {
                     bool isInRange = checkTileRange(myTile);
                     if (isInRange)
                     {
-                        IstantiateTile(tiles[myTile], new Vector3(columns - 2, rows - 1, 0f) * tileSize);
+                        InstantiateTile(tiles[myTile], new Vector3(columns - 2, rows - 1, 0f) * tileSize);
                         break;
                     }
 
@@ -236,7 +241,7 @@ public class MapManager : MonoBehaviour {
                     bool isInRange = checkTileRange(myTile);
                     if (isInRange)
                     {
-                        IstantiateTile(tiles[myTile], new Vector3(columns - 1, rows - 2, 0f) * tileSize);
+                        InstantiateTile(tiles[myTile], new Vector3(columns - 1, rows - 2, 0f) * tileSize);
                         break;
                     }
 
@@ -260,39 +265,39 @@ public class MapManager : MonoBehaviour {
                 myCoordinate = new Coordinate(i, j);
                 if (myCoordinate.isEqual(centralX - 1, centralY - 1))
                 {
-                    IstantiateTile(tiles[2], new Vector3(i, j, 0f) * tileSize, true);
+                    InstantiateTile(tiles[2], new Vector3(i, j, 0f) * tileSize, true);
                 }
                 else if (myCoordinate.isEqual(centralX - 1, centralY))
                 {
-                    IstantiateTile(tiles[9], new Vector3(i, j, 0f) * tileSize, true);
+                    InstantiateTile(tiles[9], new Vector3(i, j, 0f) * tileSize, true);
                 }
                 else if (myCoordinate.isEqual(centralX - 1, centralY+1))
                 {
-                    IstantiateTile(tiles[0], new Vector3(i, j, 0f) * tileSize, true);
+                    InstantiateTile(tiles[0], new Vector3(i, j, 0f) * tileSize, true);
                 }
                 else if (myCoordinate.isEqual(centralX, centralY - 1))
                 {
-                    IstantiateTile(tiles[8], new Vector3(i, j, 0f) * tileSize, true);
+                    InstantiateTile(tiles[8], new Vector3(i, j, 0f) * tileSize, true);
                 }
                 else if (myCoordinate.isEqual(centralX, centralY))
                 {
-                    IstantiateTile(goalPoint, new Vector3(i, j, 0f) * tileSize);
+                    InstantiateTile(goalPoint, new Vector3(i, j, 0f) * tileSize);
                 }
                 else if (myCoordinate.isEqual(centralX, centralY+1))
                 {
-                    IstantiateTile(tiles[6], new Vector3(i, j, 0f) * tileSize, true);
+                    InstantiateTile(tiles[6], new Vector3(i, j, 0f) * tileSize, true);
                 }
                 else if (myCoordinate.isEqual(centralX+1, centralY - 1))
                 {
-                    IstantiateTile(tiles[3], new Vector3(i, j, 0f) * tileSize, true);
+                    InstantiateTile(tiles[3], new Vector3(i, j, 0f) * tileSize, true);
                 }
                 else if (myCoordinate.isEqual(centralX + 1, centralY))
                 {
-                    IstantiateTile(tiles[7], new Vector3(i, j, 0f) * tileSize, true);
+                    InstantiateTile(tiles[7], new Vector3(i, j, 0f) * tileSize, true);
                 }
                 else if (myCoordinate.isEqual(centralX + 1, centralY+1))
                 {
-                    IstantiateTile(tiles[1], new Vector3(i, j, 0f) * tileSize, true);
+                    InstantiateTile(tiles[1], new Vector3(i, j, 0f) * tileSize, true);
                 }
             }
         }    
@@ -465,7 +470,7 @@ public class MapManager : MonoBehaviour {
                 if (!isSpecial)
                 {
                     toInstantiate = tiles[tilesArray[tmpIdx]];
-                    IstantiateTile(toInstantiate, new Vector3(i, j, 0f) * tileSize, false);
+                    InstantiateTile(toInstantiate, new Vector3(i, j, 0f) * tileSize, false);
                     tmpIdx++;
                 }
                 
