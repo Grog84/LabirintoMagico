@@ -11,6 +11,7 @@ public class Tile : MonoBehaviour {
     public Coordinate myCoord;
 
     public bool canBeMoved = true;
+    public bool[] possibleConnections, effectiveConnections;
 
     private BoxCollider2D myCollider;
 
@@ -59,6 +60,7 @@ public class Tile : MonoBehaviour {
                 break;
             case (int)tileTypes.Curve_BR_alt:
                 myTexture = (Texture2D)Resources.Load("TileProva/curva_alt");
+                // TODO modificare type per diventare come quello non speciale
                 break;
             case (int)tileTypes.Curve_LB_alt:
                 myTexture = (Texture2D)Resources.Load("TileProva/curva2_alt");
@@ -91,6 +93,20 @@ public class Tile : MonoBehaviour {
         mySprite = Sprite.Create(myTexture, new Rect(0, 0, myTexture.width, myTexture.height), new Vector2(0.5f, 0.5f));
         myRenderer.sprite = mySprite;
         myCollider.size = new Vector2(myTexture.width, myTexture.height);
+    }
+
+    public void setPossibleConnections()
+    {
+        // uses the id to generate the connection map
+    }
+
+    public void checkConnections(Tile other)
+    {
+        // check the connection with another tile to update effectiveConnections
+        // modifica anche la effective map dell'altro
+        // se gia vero interrompe
+
+        // se ther è null vuol dire che becca il vuoto
     }
 
     // Use this for initialization

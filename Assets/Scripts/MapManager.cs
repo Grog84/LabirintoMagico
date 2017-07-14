@@ -21,16 +21,18 @@ public class MapManager : MonoBehaviour {
 
     public int columns = 0;
     public int rows = 0;
+    public float tileSize = 5f;
     public Count curvesCount = new Count(4, 8);
     public Count straightCount = new Count(4, 8);
     public Count tCount = new Count(4, 8);
     public Count crossCount = new Count(4, 8);
-    public GameObject tile;
+    public GameObject tile, player;
 
     public bool detachSpawnPoints = true, detachCentralTile = true;
 
     private List<Vector3> gridPositions = new List<Vector3>();
-    private float tileSize;
+    private Vector3 finalShift;
+    private GameObject[,] myMap;
 
     enum tileTypes // B - bottom, R - right, T - top, L - left, V - vertical, H - horizontal
     {
@@ -108,8 +110,38 @@ public class MapManager : MonoBehaviour {
 
         Tile myTileComponent = tileInstance.GetComponent<Tile>();
         myTileComponent.setSprite(tileType);
+        // TODO modificare type per diventare come quello non speciale
         myTileComponent.canBeMoved = canBeMoved;
         myTileComponent.myCoord = coordinate;
+
+        myMap[coordinate.getX(), coordinate.getY()] = tileInstance;
+
+    }
+
+    void InstantiatePlayer(int playerNbr)
+    {
+        GameObject playerInstance;
+
+        if (playerNbr == 1)
+        {
+            playerInstance = Instantiate(player, new Vector3(0f, rows-1, -1f) * tileSize + finalShift, Quaternion.identity);
+        }
+        else if (playerNbr == 2)
+        {
+            playerInstance = Instantiate(player, new Vector3(columns-1, rows-1, -1f) * tileSize + finalShift, Quaternion.identity);
+        }
+        else if (playerNbr == 3)
+        {
+            playerInstance = Instantiate(player, new Vector3(0f, 0f, -1f) * tileSize + finalShift, Quaternion.identity);
+        }
+        else
+        {
+            playerInstance = Instantiate(player, new Vector3(columns-1, 0f, -1f) * tileSize + finalShift, Quaternion.identity);
+        }
+
+        var myPlayer = playerInstance.GetComponent<Player>();
+        myPlayer.playerNbr = playerNbr;
+        myPlayer.setPlayerSprite();
 
     }
 
@@ -335,10 +367,18 @@ public class MapManager : MonoBehaviour {
         }
     }
 
-    void MapSetup()
+
+    void updateTilesConnection()
+    {
+        // cicla su tutte le tile di myMap e chiama il metodo checkConnections() dandogli in pasto le tile adiacenti
+    }
+
+
+    public void MapSetup()
     {
         int finalTilesNbr = columns * rows, randomTilesNbr = finalTilesNbr - 21, generatedTilesNbr = 0;
         int[] tilesArray;
+        finalShift = new Vector3(-(columns - 1) * tileSize / 2.0f, -(rows - 1) * tileSize / 2.0f, 0f);
 
         nbrOfTiles = GenerateInitialTiles();
 
@@ -470,14 +510,23 @@ public class MapManager : MonoBehaviour {
                 
             }
         }
+
+        CreatePlayers();
+        transform.position = finalShift;
+
     }
 
-    
-    void Start ()
+    public void CreatePlayers()
     {
-        tileSize = 5f;     
-        MapSetup();
-        transform.position += new Vector3(-(columns-1) * tileSize / 2.0f, -(rows-1) * tileSize / 2.0f, 0f);
+        for (int i = 1; i < 5; i++)
+        {
+            InstantiatePlayer(i);
+        }
+    }
+    
+    void Awake ()
+    {
+        myMap = new GameObject[columns, rows];
     }
 	
 	
@@ -490,12 +539,23 @@ public class MapManager : MonoBehaviour {
 public class Coordinate
 {
     int x, y;
+
     float tileSize = 5f;
 
     public Coordinate(int x, int y)
     {
         this.x = x;
         this.y = y;
+    }
+
+    public int getX()
+    {
+        return x;
+    }
+
+    public int getY()
+    {
+        return y;
     }
 
     public bool isEqual(int x, int y)
