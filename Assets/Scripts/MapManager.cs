@@ -25,9 +25,8 @@ public class MapManager : MonoBehaviour {
     public Count straightCount = new Count(4, 8);
     public Count tCount = new Count(4, 8);
     public Count crossCount = new Count(4, 8);
-    public GameObject goalPoint;
-    public GameObject[] startingPoint;
-    public GameObject[] tiles;
+    public GameObject tile;
+
     public bool detachSpawnPoints = true, detachCentralTile = true;
 
     private List<Vector3> gridPositions = new List<Vector3>();
@@ -35,7 +34,8 @@ public class MapManager : MonoBehaviour {
 
     enum tileTypes // B - bottom, R - right, T - top, L - left, V - vertical, H - horizontal
     {
-        Curve_BR, Curve_LB, Curve_RT, Curve_TL, Straigh_V, Straight_H, T_B, T_L, T_T, T_R, Cross
+        Curve_BR, Curve_LB, Curve_RT, Curve_TL, Straight_V, Straight_H, T_B, T_L, T_T, T_R, Cross,
+        Curve_BR_alt, Curve_LB_alt, Curve_RT_alt, Curve_TL_alt, T_B_alt, T_L_alt, T_T_alt, T_R_alt, Goal
     };
 
     int[] nbrOfTiles;
@@ -101,46 +101,41 @@ public class MapManager : MonoBehaviour {
 
     }
 
-    void InstantiateTile(GameObject tile, Vector3 coordinates, bool isAlternative = false)
+    void InstantiateTile(int tileType, Coordinate coordinate, bool canBeMoved = true)
     {
-        GameObject instance = Instantiate(tile, coordinates, Quaternion.identity);
-        instance.transform.SetParent(this.transform);
-        if (isAlternative)
-        {
-            SpriteRenderer myRenderer = instance.GetComponent<SpriteRenderer>();
-            Texture2D myTexture = (Texture2D)Resources.Load("TileProva/" + myRenderer.sprite.name + "_alt");
-            Sprite mySprite = Sprite.Create(myTexture, new Rect(0, 0, myTexture.width, myTexture.height), new Vector2(0.5f, 0.5f));
-            myRenderer.sprite = mySprite;
-        }
+        GameObject tileInstance = Instantiate(tile, coordinate.getVect3(), Quaternion.identity);
+        tileInstance.transform.SetParent(transform);
+
+        Tile myTileComponent = tileInstance.GetComponent<Tile>();
+        myTileComponent.setSprite(tileType);
+        myTileComponent.canBeMoved = canBeMoved;
+        myTileComponent.myCoord = coordinate;
 
     }
 
     void GenerateSpawningAreas()
     {
-        var toInstantiate = new GameObject[4];
-        toInstantiate[0] = startingPoint[2];  // bot-left
-        toInstantiate[1] = startingPoint[3];  // bot-right
-        toInstantiate[2] = startingPoint[0];  // top-left
-        toInstantiate[3] = startingPoint[1];  // top-right
+        var toInstantiate = new int[4];
+        toInstantiate[0] = (int)tileTypes.Curve_RT;  // bot-left
+        toInstantiate[1] = (int)tileTypes.Curve_TL;  // bot-right
+        toInstantiate[2] = (int)tileTypes.Curve_BR;  // top-left
+        toInstantiate[3] = (int)tileTypes.Curve_LB;  // top-right
 
         int myTile;
-
-        GameObject instance;
 
         for (int i = 0; i < toInstantiate.Length; i++)
         {
             if (i == 0)
             {
-                instance = Instantiate(toInstantiate[i], new Vector3(0, 0, 0f) * tileSize, Quaternion.identity);
-                instance.transform.SetParent(this.transform);
-
+                InstantiateTile(toInstantiate[i], new Coordinate(0, 0), false);
+                
                 while (true)
                 {
                     myTile = noBottom[Random.Range(0, 4)];
                     bool isInRange = checkTileRange(myTile);
                     if (isInRange)
                     {
-                        InstantiateTile(tiles[myTile], new Vector3(0, 1, 0f) * tileSize);
+                        InstantiateTile(myTile, new Coordinate(0, 1));
                         break;
                     }
 
@@ -152,7 +147,7 @@ public class MapManager : MonoBehaviour {
                     bool isInRange = checkTileRange(myTile);
                     if (isInRange)
                     {
-                        InstantiateTile(tiles[myTile], new Vector3(1, 0, 0f) * tileSize);
+                        InstantiateTile(myTile, new Coordinate(1, 0));
                         break;                     
                     }
 
@@ -161,8 +156,7 @@ public class MapManager : MonoBehaviour {
             }
             else if (i == 1)
             {
-                instance = Instantiate(toInstantiate[i], new Vector3(columns - 1, 0, 0f) * tileSize, Quaternion.identity);
-                instance.transform.SetParent(this.transform);
+                InstantiateTile(toInstantiate[i], new Coordinate(columns - 1, 0), false);
 
                 while (true)
                 {
@@ -170,7 +164,7 @@ public class MapManager : MonoBehaviour {
                     bool isInRange = checkTileRange(myTile);
                     if (isInRange)
                     {
-                        InstantiateTile(tiles[myTile], new Vector3(columns - 1, 1, 0f) * tileSize);
+                        InstantiateTile(myTile, new Coordinate(columns - 1, 1));
                         break;
                     }
 
@@ -182,7 +176,7 @@ public class MapManager : MonoBehaviour {
                     bool isInRange = checkTileRange(myTile);
                     if (isInRange)
                     {
-                        InstantiateTile(tiles[myTile], new Vector3(columns - 2, 0, 0f) * tileSize);
+                        InstantiateTile(myTile, new Coordinate(columns - 2, 0));
                         break;
                     }
 
@@ -190,8 +184,7 @@ public class MapManager : MonoBehaviour {
             }
             else if (i == 2)
             {
-                instance = Instantiate(toInstantiate[i], new Vector3(0, rows - 1, 0f) * tileSize, Quaternion.identity);
-                instance.transform.SetParent(this.transform);
+                InstantiateTile(toInstantiate[i], new Coordinate(0, rows - 1), false);
 
                 while (true)
                 {
@@ -199,7 +192,7 @@ public class MapManager : MonoBehaviour {
                     bool isInRange = checkTileRange(myTile);
                     if (isInRange)
                     {
-                        InstantiateTile(tiles[myTile], new Vector3(1, rows - 1, 0f) * tileSize);
+                        InstantiateTile(myTile, new Coordinate(1, rows - 1));
                         break;
                     }
 
@@ -211,7 +204,7 @@ public class MapManager : MonoBehaviour {
                     bool isInRange = checkTileRange(myTile);
                     if (isInRange)
                     {
-                        InstantiateTile(tiles[myTile], new Vector3(0, rows - 2, 0f) * tileSize);
+                        InstantiateTile(myTile, new Coordinate(0, rows - 2));
                         break;
                     }
 
@@ -220,8 +213,7 @@ public class MapManager : MonoBehaviour {
             }
             else
             {
-                instance = Instantiate(toInstantiate[i], new Vector3(columns - 1, rows - 1, 0f) * tileSize, Quaternion.identity);
-                instance.transform.SetParent(this.transform);
+                InstantiateTile(toInstantiate[i], new Coordinate(columns - 1, rows - 1), false);
 
                 while (true)
                 {
@@ -229,7 +221,7 @@ public class MapManager : MonoBehaviour {
                     bool isInRange = checkTileRange(myTile);
                     if (isInRange)
                     {
-                        InstantiateTile(tiles[myTile], new Vector3(columns - 2, rows - 1, 0f) * tileSize);
+                        InstantiateTile(myTile, new Coordinate(columns - 2, rows - 1));
                         break;
                     }
 
@@ -241,7 +233,7 @@ public class MapManager : MonoBehaviour {
                     bool isInRange = checkTileRange(myTile);
                     if (isInRange)
                     {
-                        InstantiateTile(tiles[myTile], new Vector3(columns - 1, rows - 2, 0f) * tileSize);
+                        InstantiateTile(myTile, new Coordinate(columns - 1, rows - 2));
                         break;
                     }
 
@@ -257,7 +249,6 @@ public class MapManager : MonoBehaviour {
         int centralX = columns / 2, centralY = rows / 2;
         Coordinate myCoordinate;
 
-        int idx = 0;
         for (int i = centralX - 1; i < centralX +2; i++)
         {
             for (int j = centralY - 1; j < centralY + 2; j++)
@@ -265,39 +256,39 @@ public class MapManager : MonoBehaviour {
                 myCoordinate = new Coordinate(i, j);
                 if (myCoordinate.isEqual(centralX - 1, centralY - 1))
                 {
-                    InstantiateTile(tiles[2], new Vector3(i, j, 0f) * tileSize, true);
+                    InstantiateTile((int)tileTypes.Curve_RT_alt, myCoordinate, true);
                 }
                 else if (myCoordinate.isEqual(centralX - 1, centralY))
                 {
-                    InstantiateTile(tiles[9], new Vector3(i, j, 0f) * tileSize, true);
+                    InstantiateTile((int)tileTypes.T_R_alt, myCoordinate, true);
                 }
                 else if (myCoordinate.isEqual(centralX - 1, centralY+1))
                 {
-                    InstantiateTile(tiles[0], new Vector3(i, j, 0f) * tileSize, true);
+                    InstantiateTile((int)tileTypes.Curve_BR_alt, myCoordinate, true);
                 }
                 else if (myCoordinate.isEqual(centralX, centralY - 1))
                 {
-                    InstantiateTile(tiles[8], new Vector3(i, j, 0f) * tileSize, true);
+                    InstantiateTile((int)tileTypes.T_T_alt, myCoordinate, true);
                 }
                 else if (myCoordinate.isEqual(centralX, centralY))
                 {
-                    InstantiateTile(goalPoint, new Vector3(i, j, 0f) * tileSize);
+                    InstantiateTile((int)tileTypes.Goal, myCoordinate, false);
                 }
                 else if (myCoordinate.isEqual(centralX, centralY+1))
                 {
-                    InstantiateTile(tiles[6], new Vector3(i, j, 0f) * tileSize, true);
+                    InstantiateTile((int)tileTypes.T_B_alt, myCoordinate, true);   
                 }
                 else if (myCoordinate.isEqual(centralX+1, centralY - 1))
                 {
-                    InstantiateTile(tiles[3], new Vector3(i, j, 0f) * tileSize, true);
+                    InstantiateTile((int)tileTypes.Curve_TL_alt, myCoordinate, true);
                 }
                 else if (myCoordinate.isEqual(centralX + 1, centralY))
                 {
-                    InstantiateTile(tiles[7], new Vector3(i, j, 0f) * tileSize, true);
+                    InstantiateTile((int)tileTypes.T_L_alt, myCoordinate, true);
                 }
                 else if (myCoordinate.isEqual(centralX + 1, centralY+1))
                 {
-                    InstantiateTile(tiles[1], new Vector3(i, j, 0f) * tileSize, true);
+                    InstantiateTile((int)tileTypes.Curve_LB_alt, myCoordinate, true);
                 }
             }
         }    
@@ -419,6 +410,7 @@ public class MapManager : MonoBehaviour {
 
         int tmp = 0, tmpIdx = 0;
 
+        // Creates the tiles inside the array containing them all by index
         tilesArray = new int[randomTilesNbr];
         for (int i = 0; i < nbrOfTiles.Length; i++)
         {
@@ -444,7 +436,10 @@ public class MapManager : MonoBehaviour {
         // Places the tiles
         tmpIdx = 0;
 
+        // Generates the 4 corners of the map
         GenerateSpawningAreas();
+
+        // Generates the central area
         GenerateCentralArea();
 
         for (int i = 0; i < columns; i++)
@@ -469,8 +464,7 @@ public class MapManager : MonoBehaviour {
 
                 if (!isSpecial)
                 {
-                    toInstantiate = tiles[tilesArray[tmpIdx]];
-                    InstantiateTile(toInstantiate, new Vector3(i, j, 0f) * tileSize, false);
+                    InstantiateTile(tilesArray[tmpIdx], new Coordinate(i, j));
                     tmpIdx++;
                 }
                 
@@ -496,6 +490,8 @@ public class MapManager : MonoBehaviour {
 public class Coordinate
 {
     int x, y;
+    float tileSize = 5f;
+
     public Coordinate(int x, int y)
     {
         this.x = x;
@@ -512,5 +508,10 @@ public class Coordinate
         {
             return false;
         }
+    }
+
+    public Vector3 getVect3()
+    {
+        return new Vector3((float)x, (float)y, 0f) * tileSize;
     }
 }
