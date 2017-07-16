@@ -32,7 +32,7 @@ public class MapManager : MonoBehaviour {
 
     private List<Vector3> gridPositions = new List<Vector3>();
     private Vector3 finalShift;
-    private GameObject[,] myMap;
+    public GameObject[,] myMap;
 
     enum tileTypes // B - bottom, R - right, T - top, L - left, V - vertical, H - horizontal
     {
@@ -113,7 +113,8 @@ public class MapManager : MonoBehaviour {
         // TODO modificare type per diventare come quello non speciale
         myTileComponent.canBeMoved = canBeMoved;
         myTileComponent.myCoord = coordinate;
-
+        myTileComponent.setPossibleConnections(tileType);
+        
         myMap[coordinate.getX(), coordinate.getY()] = tileInstance;
 
     }
@@ -124,25 +125,29 @@ public class MapManager : MonoBehaviour {
 
         if (playerNbr == 1)
         {
-            playerInstance = Instantiate(player, new Vector3(0f, rows-1, -1f) * tileSize + finalShift, Quaternion.identity);
+            playerInstance = Instantiate(player, new Vector3(2f, rows-1, -1f) * tileSize + finalShift, Quaternion.identity);
+            playerInstance.GetComponent<Player>().coordinate = new Coordinate (2, rows - 1);
         }
         else if (playerNbr == 2)
         {
             playerInstance = Instantiate(player, new Vector3(columns-1, rows-1, -1f) * tileSize + finalShift, Quaternion.identity);
+            playerInstance.GetComponent<Player>().coordinate = new Coordinate(columns - 1, rows - 1);
         }
         else if (playerNbr == 3)
         {
             playerInstance = Instantiate(player, new Vector3(0f, 0f, -1f) * tileSize + finalShift, Quaternion.identity);
+            playerInstance.GetComponent<Player>().coordinate = new Coordinate(0, 0);
         }
         else
         {
             playerInstance = Instantiate(player, new Vector3(columns-1, 0f, -1f) * tileSize + finalShift, Quaternion.identity);
+            playerInstance.GetComponent<Player>().coordinate = new Coordinate(columns - 1, 0);
         }
 
         var myPlayer = playerInstance.GetComponent<Player>();
         myPlayer.playerNbr = playerNbr;
         myPlayer.setPlayerSprite();
-
+                
     }
 
     void GenerateSpawningAreas()
@@ -370,9 +375,36 @@ public class MapManager : MonoBehaviour {
 
     void updateTilesConnection()
     {
-        // cicla su tutte le tile di myMap e chiama il metodo checkConnections() dandogli in pasto le tile adiacenti
-    }
+        Debug.Log("passa");
+        for (int i = 0; i < columns; i++)
+        {
+            for (int j = 0; j < rows; j++)
+            {
+                Tile questa = myMap[i, j].GetComponent<Tile>();
 
+                if (i - 1 > 0)
+                {
+                    questa.checkConnections(myMap[i - 1, j].GetComponent<Tile>(), 3);
+                }
+                
+                if (j - 1 > 0)
+                {
+                questa.checkConnections(myMap[i, j - 1].GetComponent<Tile>(), 2);
+                }
+                
+                if (j + 1 < rows)
+                {
+                    questa.checkConnections(myMap[i, j + 1].GetComponent<Tile>(), 0);
+                }
+                
+                if (i + 1 < columns)
+                {
+                questa.checkConnections(myMap[i + 1, j].GetComponent<Tile>(), 1);
+                }
+                
+            }
+        }
+    }
 
     public void MapSetup()
     {
@@ -512,7 +544,10 @@ public class MapManager : MonoBehaviour {
         }
 
         CreatePlayers();
+        //updateTilesConnection();
         transform.position = finalShift;
+
+        updateTilesConnection();
 
     }
 
@@ -532,8 +567,8 @@ public class MapManager : MonoBehaviour {
 	
 	void Update ()
     {
-		
-	}
+        
+    }
 }
 
 public class Coordinate
@@ -556,6 +591,12 @@ public class Coordinate
     public int getY()
     {
         return y;
+    }
+
+    public void setCoordinate (int x, int y)
+    {
+        this.x = x;
+        this.y = y;
     }
 
     public bool isEqual(int x, int y)

@@ -60,7 +60,6 @@ public class Tile : MonoBehaviour {
                 break;
             case (int)tileTypes.Curve_BR_alt:
                 myTexture = (Texture2D)Resources.Load("TileProva/curva_alt");
-                // TODO modificare type per diventare come quello non speciale
                 break;
             case (int)tileTypes.Curve_LB_alt:
                 myTexture = (Texture2D)Resources.Load("TileProva/curva2_alt");
@@ -95,27 +94,142 @@ public class Tile : MonoBehaviour {
         myCollider.size = new Vector2(myTexture.width, myTexture.height);
     }
 
-    public void setPossibleConnections()
+    public void setPossibleConnections(int type)
     {
-        // uses the id to generate the connection map
+        switch (type)
+        {
+            case (int)tileTypes.Curve_BR:
+            case (int)tileTypes.Curve_BR_alt:
+                possibleConnections[0] = false;
+                possibleConnections[1] = true;
+                possibleConnections[2] = true;
+                possibleConnections[3] = false;
+                break;
+            case (int)tileTypes.Curve_LB:
+            case (int)tileTypes.Curve_LB_alt:
+                possibleConnections[0] = false;
+                possibleConnections[1] = false;
+                possibleConnections[2] = true;
+                possibleConnections[3] = true;
+                break;
+            case (int)tileTypes.Curve_RT:
+            case (int)tileTypes.Curve_RT_alt:
+                possibleConnections[0] = true;
+                possibleConnections[1] = true;
+                possibleConnections[2] = false;
+                possibleConnections[3] = false;
+                break;
+            case (int)tileTypes.Curve_TL:
+            case (int)tileTypes.Curve_TL_alt:
+                possibleConnections[0] = true;
+                possibleConnections[1] = false;
+                possibleConnections[2] = false;
+                possibleConnections[3] = true;
+                break;
+            case (int)tileTypes.Straight_V:
+                possibleConnections[0] = true;
+                possibleConnections[1] = false;
+                possibleConnections[2] = true;
+                possibleConnections[3] = false;
+                break;
+            case (int)tileTypes.Straight_H:
+                possibleConnections[0] = false;
+                possibleConnections[1] = true;
+                possibleConnections[2] = false;
+                possibleConnections[3] = true;
+                break;
+            case (int)tileTypes.T_B:
+            case (int)tileTypes.T_B_alt:
+                possibleConnections[0] = false;
+                possibleConnections[1] = true;
+                possibleConnections[2] = true;
+                possibleConnections[3] = true;
+                break;
+            case (int)tileTypes.T_L:
+            case (int)tileTypes.T_L_alt:
+                possibleConnections[0] = true;
+                possibleConnections[1] = false;
+                possibleConnections[2] = true;
+                possibleConnections[3] = true;
+                break;
+            case (int)tileTypes.T_T:
+            case (int)tileTypes.T_T_alt:
+                possibleConnections[0] = true;
+                possibleConnections[1] = true;
+                possibleConnections[2] = false;
+                possibleConnections[3] = true;
+                break;
+            case (int)tileTypes.T_R:
+            case (int)tileTypes.T_R_alt:
+                possibleConnections[0] = true;
+                possibleConnections[1] = true;
+                possibleConnections[2] = true;
+                possibleConnections[3] = false;
+                break;
+            case (int)tileTypes.Cross:
+            case (int)tileTypes.Goal:
+                possibleConnections[0] = true;
+                possibleConnections[1] = true;
+                possibleConnections[2] = true;
+                possibleConnections[3] = true;
+                break;
+                       
+            default:
+                break;
+        }
     }
 
-    public void checkConnections(Tile other)
+    public void checkConnections(Tile other, int lato)
     {
-        // check the connection with another tile to update effectiveConnections
-        // modifica anche la effective map dell'altro
-        // se gia vero interrompe
+        if (other != null)
+        {
+                switch (lato)
+                {
+                    case 0:
+                        if (possibleConnections[lato] && other.possibleConnections[2])
+                        {
+                            effectiveConnections[lato] = true;
+                            other.effectiveConnections[2] = true;
+                        }
+                        break;
+                    case 1:
+                        if (possibleConnections[lato] && other.possibleConnections[3])
+                        {
+                            effectiveConnections[lato] = true;
+                            other.effectiveConnections[3] = true;
+                        }
+                        break;
+                    case 2:
+                        if (possibleConnections[lato] && other.possibleConnections[0])
+                        {
+                            effectiveConnections[lato] = true;
+                            other.effectiveConnections[0] = true;
+                        }
+                        break;
+                    case 3:
+                        if (possibleConnections[lato] && other.possibleConnections[1])
+                        {
+                            effectiveConnections[lato] = true;
+                            other.effectiveConnections[1] = true;
+                        }
+                        break;
+                    default:
+                        break;
 
-        // se ther è null vuol dire che becca il vuoto
+                }
+            
+        }
     }
 
-    // Use this for initialization
+
     void Awake () {
         myRenderer = GetComponent<SpriteRenderer>();
         myCollider = GetComponent<BoxCollider2D>();
+        possibleConnections = new bool[4];
+        effectiveConnections = new bool[4];
+        //Debug.Log(possibleConnections.Length);
     }
 	
-	// Update is called once per frame
 	void Update () {
 		
 	}
