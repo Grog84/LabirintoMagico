@@ -6,6 +6,7 @@ public class Player : MonoBehaviour
 {
 
     public int playerNbr;
+    public int isPlayerTurn; // number corresponding to the player playing
 
     SpriteRenderer myRenderer;
     Texture2D myTexture;
@@ -53,7 +54,7 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!moving && playerNbr == 1)
+        if (!moving && playerNbr == isPlayerTurn)
         {
             if (Input.GetKeyDown(KeyCode.D))
             {

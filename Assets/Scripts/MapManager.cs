@@ -147,7 +147,7 @@ public class MapManager : MonoBehaviour {
             playerInstance.GetComponent<Player>().coordinate = new Coordinate(columns - 1, 0);
         }
 
-        allPlayers[playerNbr] = playerInstance;
+        allPlayers[playerNbr-1] = playerInstance;
         var myPlayer = playerInstance.GetComponent<Player>();
         myPlayer.playerNbr = playerNbr;
         myPlayer.setPlayerSprite();
@@ -379,7 +379,7 @@ public class MapManager : MonoBehaviour {
 
     void updateTilesConnection()
     {
-        Debug.Log("passa");
+
         for (int i = 0; i < columns; i++)
         {
             for (int j = 0; j < rows; j++)
