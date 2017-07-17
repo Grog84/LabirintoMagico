@@ -28,6 +28,9 @@ public class MapManager : MonoBehaviour {
     public Count crossCount = new Count(4, 8);
     public GameObject tile, player;
 
+    // pubic to make it accessible from the turnmanager
+    public GameObject[] allPlayers;
+
     public bool detachSpawnPoints = true, detachCentralTile = true;
 
     private List<Vector3> gridPositions = new List<Vector3>();
@@ -144,6 +147,7 @@ public class MapManager : MonoBehaviour {
             playerInstance.GetComponent<Player>().coordinate = new Coordinate(columns - 1, 0);
         }
 
+        allPlayers[playerNbr] = playerInstance;
         var myPlayer = playerInstance.GetComponent<Player>();
         myPlayer.playerNbr = playerNbr;
         myPlayer.setPlayerSprite();
@@ -562,6 +566,7 @@ public class MapManager : MonoBehaviour {
     void Awake ()
     {
         myMap = new GameObject[columns, rows];
+        allPlayers = new GameObject[4];
     }
 	
 	
