@@ -10,6 +10,7 @@ public class TurnManager : MonoBehaviour
         rotateTileButton, slideTilesButton, terraformBackButton, card1Button, card2Button, cardsBackButton;
     public GameObject[] portraits;
     public GameObject[] panels;
+    public GameObject arrows; // one is children of the other, thst's why there is no need for an array
     public Camera camera;
 
     private int playerPlaying, playerPlayingIdx, turnNbr, selectedButton, selectionDepth;
@@ -17,17 +18,24 @@ public class TurnManager : MonoBehaviour
     private Vector3[] buttonsPosition;
     private bool canMove, canTerraform, canUseCrystal, cursorIsActive;
     private GameObject[] players, tmpPlayers;
+    private Card[] activeCards;
+    private CardButton[] cardsButtonComponent;
     private Player[] playerComponent;
     private RectTransform[] buttonsTransform, panelsTransform;
-    private RectTransform[][] cardsTransform;
     private RectTransform cursorTransform;
     private Animator[] buttonsAnimator;
-    private Vector2 panelParkingPosition, panelActivePosition;
+    private Vector2 panelParkingPosition, panelActivePosition, arrowsRelativePosition;
 
     enum myButtons
     {
         Walk, Terraform, Crystal, Pass
     };
+
+    public void AssignCardButtonComponent()
+    {
+        cardsButtonComponent[0] = card1Button.GetComponent<CardButton>();
+        cardsButtonComponent[1] = card2Button.GetComponent<CardButton>();
+    }
 
     public void AssignPanelsPosition()
     {
@@ -159,6 +167,65 @@ public class TurnManager : MonoBehaviour
         panelsTransform[2].anchoredPosition = panelActivePosition;
     }
 
+    IEnumerator ScrollTileSelection()
+    {
+        yield return null;
+    }
+
+    IEnumerator ActivateCardRotation(int cardNbr)
+    {
+        selectionDepth = 3;
+        CardButton activatedCard = null;
+
+        // set the arrows in position
+        if (cardNbr == 1)
+        {
+            arrows.GetComponent<RectTransform>().anchoredPosition = card1Button.GetComponent<RectTransform>().anchoredPosition + arrowsRelativePosition;
+            activatedCard = cardsButtonComponent[0];
+        }
+        else if (cardNbr == 2)
+        {
+            arrows.GetComponent<RectTransform>().anchoredPosition = card2Button.GetComponent<RectTransform>().anchoredPosition + arrowsRelativePosition;
+            activatedCard = cardsButtonComponent[1];
+        }
+
+        yield return null;
+
+        while (!Input.GetKeyDown(KeyCode.B) && !Input.GetKeyDown(KeyCode.Space))
+        {
+            if (Input.GetKeyDown(KeyCode.D))
+                activatedCard.RotateTile(-1);
+            else if (Input.GetKeyDown(KeyCode.A))
+                activatedCard.RotateTile(1);
+
+            yield return null;
+        }
+
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            arrows.GetComponent<RectTransform>().anchoredPosition += panelParkingPosition;
+            ActivateCardSelection();
+        }
+        else
+        {
+            StartCoroutine(ScrollTileSelection());
+        }
+
+        yield return null;
+    }
+
+    void AssignCardsToButtons()
+    {
+        GameObject activePortrait = portraits[playerPlayingIdx];
+        activeCards = activePortrait.GetComponentsInChildren<Card>();
+
+        int card1_type = activeCards[0].getTileType();
+        int card2_type = activeCards[1].getTileType();
+
+        cardsButtonComponent[0].setTileType(card1_type);
+        cardsButtonComponent[1].setTileType(card2_type);
+    }
+
     void MoveCursor()
     {
         if (selectionDepth == 0)
@@ -209,6 +276,7 @@ public class TurnManager : MonoBehaviour
         playerPlaying = playerOrder[playerPlayingIdx];
 
         portraitSelection.transform.position = portraits[playerPlaying - 1].transform.position;
+        AssignCardsToButtons();
 
         StartCoroutine(MoveCamera(players[playerPlayingIdx]));  
 
@@ -242,21 +310,25 @@ public class TurnManager : MonoBehaviour
         int numberOfButtons = 10, nbrOfPanels = 3;
         playerPlayingIdx = -1;
         selectedButton = 0;
+        int nbrOfCards = 2;
         playerOrder = new int[4] { 1, 2, 3, 4 };
         buttonsPosition = new Vector3[numberOfButtons];
         buttonsTransform = new RectTransform[numberOfButtons];
         buttonsAnimator = new Animator[numberOfButtons];
         panelsTransform = new RectTransform[nbrOfPanels];
+        cardsButtonComponent = new CardButton[nbrOfCards];
         cursorTransform = cursor.GetComponent<RectTransform>();
         cursorIsActive = true;
 
         panelParkingPosition = new Vector2(0, -100);
         panelActivePosition = new Vector2(0, 50);
+        arrowsRelativePosition = new Vector2(25, 0);
 
         // Assigns the position of ll the ui elements o the corresponding arrays
         AssignButtonsAnimators();
         AssignButtonsPosition();
         AssignPanelsPosition();
+        AssignCardButtonComponent();
 
     }
 
@@ -269,7 +341,7 @@ public class TurnManager : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.A))
                 MoveCursor();
 
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (selectionDepth<=2 && Input.GetKeyDown(KeyCode.Space))
             {
                 if (canMove && cursorTransform.position == buttonsTransform[0].position) // Walk
                 {
@@ -298,15 +370,15 @@ public class TurnManager : MonoBehaviour
                 {
                     ActivateBasePanel();
                 }
-                else if (cursorTransform.position == buttonsTransform[7].position) 
+                else if (cursorTransform.position == buttonsTransform[7].position) // Card1
                 {
-                    
+                    StartCoroutine(ActivateCardRotation(1));
                 }
-                else if (cursorTransform.position == buttonsTransform[8].position) 
+                else if (cursorTransform.position == buttonsTransform[8].position) // Card2
                 {
-                    
+                    StartCoroutine(ActivateCardRotation(2));
                 }
-                else if (cursorTransform.position == buttonsTransform[9].position) // Back to starting Panel
+                else if (cursorTransform.position == buttonsTransform[9].position) // Back to Terraform Panel
                 {
                     ActivateTerraformPanel();
                 }

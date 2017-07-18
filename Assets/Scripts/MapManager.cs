@@ -26,16 +26,18 @@ public class MapManager : MonoBehaviour {
     public Count straightCount = new Count(4, 8);
     public Count tCount = new Count(4, 8);
     public Count crossCount = new Count(4, 8);
-    public GameObject tile, player;
+    public GameObject tile, player, insertArrow;
 
     // pubic to make it accessible from the turnmanager
     public GameObject[] allPlayers;
+    public GameObject[,] myMap;
 
     public bool detachSpawnPoints = true, detachCentralTile = true;
 
     private List<Vector3> gridPositions = new List<Vector3>();
     private Vector3 finalShift;
-    public GameObject[,] myMap;
+    private GameObject[] allInsertArrows; 
+
 
     enum tileTypes // B - bottom, R - right, T - top, L - left, V - vertical, H - horizontal
     {
@@ -549,6 +551,8 @@ public class MapManager : MonoBehaviour {
 
         CreatePlayers();
         //updateTilesConnection();
+        CreateInsertArrows();
+
         transform.position = finalShift;
 
         updateTilesConnection();
@@ -561,6 +565,46 @@ public class MapManager : MonoBehaviour {
         {
             InstantiatePlayer(i);
         }
+    }
+
+    public void CreateInsertArrows()
+    {
+        allInsertArrows = new GameObject[2*columns + 2*rows];
+        int indx = 0;
+        GameObject arrowInstance;
+
+        for (int i = 0; i < columns; i++) // top arrows
+        {
+            arrowInstance = Instantiate(insertArrow, new Vector3((i * tileSize), -tileSize, 0f), Quaternion.identity);
+            arrowInstance.transform.Rotate(Vector3.forward * 90);
+            arrowInstance.transform.SetParent(transform);
+            allInsertArrows[i] = arrowInstance;
+            indx++;
+        }
+        for (int i = 0; i < rows; i++) // right arrows
+        {
+            arrowInstance = Instantiate(insertArrow, new Vector3(columns * tileSize, (i * tileSize), 0f), Quaternion.identity);
+            arrowInstance.transform.SetParent(transform);
+            arrowInstance.transform.Rotate(Vector3.forward * 180);
+            allInsertArrows[i] = arrowInstance;
+            indx++;
+        }
+        for (int i = 0; i < columns; i++) // bot arrows
+        {
+            arrowInstance = Instantiate(insertArrow, new Vector3((columns-1) * tileSize - ((i * tileSize)), rows * tileSize , 0f), Quaternion.identity);
+            arrowInstance.transform.SetParent(transform);
+            arrowInstance.transform.Rotate(Vector3.forward * -90);
+            allInsertArrows[i] = arrowInstance;
+            indx++;
+        }
+        for (int i = 0; i < rows; i++) // left arrows
+        {
+            arrowInstance = Instantiate(insertArrow, new Vector3(-tileSize, (rows-1) * tileSize - ((i * tileSize) ), 0f), Quaternion.identity);
+            arrowInstance.transform.SetParent(transform);
+            allInsertArrows[i] = arrowInstance;
+            indx++;
+        }
+
     }
     
     void Awake ()
