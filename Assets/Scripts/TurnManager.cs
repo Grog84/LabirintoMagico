@@ -216,6 +216,8 @@ public class TurnManager : MonoBehaviour
 
     IEnumerator ActivateMovementPhase()
     {
+        Player p = playerComponent[playerPlayingIdx];
+        p.BrightPossibleTiles();
         ActivatePlayer(playerComponent[playerPlayingIdx].playerNbr);
         buttonsAnimator[0].SetBool("isActive", false);
 
@@ -226,6 +228,7 @@ public class TurnManager : MonoBehaviour
             yield return null;
         }
 
+        p.SwitchOffTiles();
         cursorIsActive = true;
         ActivatePlayer(0);
 

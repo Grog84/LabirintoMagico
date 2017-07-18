@@ -14,7 +14,10 @@ public class Player : MonoBehaviour
     BoxCollider2D myCollider;
     private bool moving = false;
     public Coordinate coordinate;
-    public GameObject MapManager;
+    public GameObject mapManager;
+    public MapManager mapManagerComponent;
+    private List<Tile> toBright;
+
 
     public void setPlayerSprite()
     {
@@ -42,13 +45,77 @@ public class Player : MonoBehaviour
 
     }
 
+    public void BrightPossibleTiles()
+    {
+        //Debug.Log("passaaa");
+        Tile nextToAdd;
+        Tile actualPosition = mapManagerComponent.myMap[coordinate.getX(), coordinate.getY()].GetComponent<Tile>();
+        Debug.Log("passa");
+        toBright.Add(actualPosition);
+        for (int i = 0; i < toBright.Count; i++)
+        {
+            if (toBright[i].effectiveConnections[0])
+            {
+                nextToAdd = mapManagerComponent.myMap[toBright[i].myCoord.getX(), toBright[i].myCoord.getY() + 1].GetComponent<Tile>();
+                if (!toBright.Contains(nextToAdd))
+                {
+                    toBright.Add(nextToAdd);
+                }
+            }
+
+            if (toBright[i].effectiveConnections[1])
+            {
+                nextToAdd = mapManagerComponent.myMap[toBright[i].myCoord.getX() + 1, toBright[i].myCoord.getY()].GetComponent<Tile>();
+                if (!toBright.Contains(nextToAdd))
+                {
+                    toBright.Add(nextToAdd);
+                }
+            }
+
+            if (toBright[i].effectiveConnections[2])
+            {
+                nextToAdd = mapManagerComponent.myMap[toBright[i].myCoord.getX(), toBright[i].myCoord.getY() - 1].GetComponent<Tile>();
+                if (!toBright.Contains(nextToAdd))
+                {
+                    toBright.Add(nextToAdd);
+                }
+            }
+
+            if (toBright[i].effectiveConnections[3])
+            {
+                nextToAdd = mapManagerComponent.myMap[toBright[i].myCoord.getX() - 1, toBright[i].myCoord.getY()].GetComponent<Tile>();
+                if (!toBright.Contains(nextToAdd))
+                {
+                    toBright.Add(nextToAdd);
+                }
+            }
+        }
+
+        for (int i = 0; i < toBright.Count; i++)
+        {
+            toBright[i].GetComponent<SpriteRenderer>().color = Color.green;
+            //Debug.Log("passaaa");
+        }
+    }
+
+    public void SwitchOffTiles()
+    {
+        for (int i = 0; i < toBright.Count; i++)
+        {
+            toBright[i].GetComponent<SpriteRenderer>().color = Color.white;
+        }
+        toBright.Clear();
+    }
+
     // Use this for initialization
     void Awake()
     {
 
         myRenderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
         myCollider = GetComponent<BoxCollider2D>();
-        MapManager = GameObject.FindGameObjectWithTag("MapManager");
+        mapManager = GameObject.FindGameObjectWithTag("MapManager");
+        toBright = new List<Tile>();
+        mapManagerComponent = mapManager.GetComponent<MapManager>();
     }
 
     // Update is called once per frame
@@ -81,14 +148,14 @@ public class Player : MonoBehaviour
         //Debug.Log("effective: " + MapManager.GetComponent<MapManager>().myMap[coordinate.getX(), coordinate.getY()].GetComponent<Tile>().effectiveConnections[1]);
         moving = true;
 
-        if (MapManager.GetComponent<MapManager>().myMap[coordinate.getX(), coordinate.getY()].GetComponent<Tile>().effectiveConnections[1] == true)
+        if (mapManagerComponent.myMap[coordinate.getX(), coordinate.getY()].GetComponent<Tile>().effectiveConnections[1] == true)
         {
             float elapsedTime = 0;
             float animTime = 0.2f;
 
             while (elapsedTime < animTime)
             {
-                GameObject destinationTile = MapManager.GetComponent<MapManager>().myMap[coordinate.getX() + 1, coordinate.getY()];
+                GameObject destinationTile = mapManagerComponent.myMap[coordinate.getX() + 1, coordinate.getY()];
                 Vector3 destination = destinationTile.GetComponent<Transform>().position;
                 destination.z--;
                 transform.position = Vector3.Lerp(transform.position, destination, elapsedTime / animTime);
@@ -112,14 +179,14 @@ public class Player : MonoBehaviour
         //Debug.Log("possible: " + MapManager.GetComponent<MapManager>().myMap[coordinate.getX(), coordinate.getY()].GetComponent<Tile>().possibleConnections[0]);
         moving = true;
 
-        if (MapManager.GetComponent<MapManager>().myMap[coordinate.getX(), coordinate.getY()].GetComponent<Tile>().effectiveConnections[0] == true)
+        if (mapManagerComponent.myMap[coordinate.getX(), coordinate.getY()].GetComponent<Tile>().effectiveConnections[0] == true)
         {
         float elapsedTime = 0;
         float animTime = 0.2f;
 
         while (elapsedTime < animTime)
         {
-                GameObject destinationTile = MapManager.GetComponent<MapManager>().myMap[coordinate.getX(), coordinate.getY() + 1];
+                GameObject destinationTile = mapManagerComponent.myMap[coordinate.getX(), coordinate.getY() + 1];
                 Vector3 destination = destinationTile.GetComponent<Transform>().position;
                 destination.z--;
                 transform.position = Vector3.Lerp(transform.position, destination, elapsedTime / animTime);
@@ -144,14 +211,14 @@ public class Player : MonoBehaviour
         //Debug.Log("possible: " + MapManager.GetComponent<MapManager>().myMap[coordinate.getX(), coordinate.getY()].GetComponent<Tile>().possibleConnections[2]);
         moving = true;
 
-        if (MapManager.GetComponent<MapManager>().myMap[coordinate.getX(), coordinate.getY()].GetComponent<Tile>().effectiveConnections[2] == true)
+        if (mapManagerComponent.myMap[coordinate.getX(), coordinate.getY()].GetComponent<Tile>().effectiveConnections[2] == true)
         {
             float elapsedTime = 0;
             float animTime = 0.2f;
 
             while (elapsedTime < animTime)
             {
-                GameObject destinationTile = MapManager.GetComponent<MapManager>().myMap[coordinate.getX(), coordinate.getY() - 1];
+                GameObject destinationTile = mapManagerComponent.myMap[coordinate.getX(), coordinate.getY() - 1];
                 Vector3 destination = destinationTile.GetComponent<Transform>().position;
                 destination.z--;
                 transform.position = Vector3.Lerp(transform.position, destination, elapsedTime / animTime);
@@ -175,14 +242,14 @@ public class Player : MonoBehaviour
         //Debug.Log("possible: " + MapManager.GetComponent<MapManager>().myMap[coordinate.getX(), coordinate.getY()].GetComponent<Tile>().possibleConnections[3]);
         moving = true;
 
-        if (MapManager.GetComponent<MapManager>().myMap[coordinate.getX(), coordinate.getY()].GetComponent<Tile>().effectiveConnections[3] == true)
+        if (mapManagerComponent.myMap[coordinate.getX(), coordinate.getY()].GetComponent<Tile>().effectiveConnections[3] == true)
         {
             float elapsedTime = 0;
             float animTime = 0.2f;
 
             while (elapsedTime < animTime)
             {
-                GameObject destinationTile = MapManager.GetComponent<MapManager>().myMap[coordinate.getX() - 1, coordinate.getY()];
+                GameObject destinationTile = mapManagerComponent.myMap[coordinate.getX() - 1, coordinate.getY()];
                 Vector3 destination = destinationTile.GetComponent<Transform>().position;
                 destination.z--;
                 transform.position = Vector3.Lerp(transform.position, destination, elapsedTime / animTime);
