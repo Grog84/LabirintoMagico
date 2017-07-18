@@ -14,6 +14,8 @@ public class Card : MonoBehaviour {
     private Image myImage;
     private Sprite mySprite;
 
+
+
     void AssignRandomType()
     {
         int tileType = Random.Range(0, 11);
