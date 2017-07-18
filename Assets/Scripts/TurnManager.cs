@@ -6,17 +6,20 @@ using UnityEngine.UI;
 public class TurnManager : MonoBehaviour
 {
 
-    public GameObject walkButton, terraformingButton, crystalButton, passButton, cursor, portraitSelection;
+    public GameObject walkButton, terraformingButton, crystalButton, passButton, cursor, portraitSelection,
+        rotateTileButton, slideTilesButton, terraformBackButton, cardsCursor;
     public GameObject[] portraits;
+    public GameObject[] panels;
     public Camera camera;
 
-    private int playerPlaying, playerPlayingIdx, turnNbr, selectedButton;
+    private int playerPlaying, playerPlayingIdx, turnNbr, selectedButton, selectionDepth;
     private int[] playerOrder;
     private Vector3[] buttonsPosition;
     private bool canMove, canTerraform, canUseCrystal, cursorIsActive;
     private GameObject[] players, tmpPlayers;
     private Player[] playerComponent;
-    private RectTransform[] buttonsTransform;
+    private RectTransform[] buttonsTransform, panelsTransform;
+    private RectTransform[][] cardsTransform;
     private RectTransform cursorTransform;
     private Animator[] buttonsAnimator;
 
@@ -25,8 +28,15 @@ public class TurnManager : MonoBehaviour
         Walk, Terraform, Crystal, Pass
     };
 
+    public void AssignPanelsPosition()
+    {
+        panelsTransform[0] = panels[0].GetComponent<RectTransform>();
+        panelsTransform[1] = panels[1].GetComponent<RectTransform>();
+    }
+
     public void AssignButtonsPosition()
     {
+        // First Panel Buttons
         buttonsTransform[0] = walkButton.GetComponent<RectTransform>();
         buttonsPosition[0] = buttonsTransform[0].position;
         buttonsTransform[1] = terraformingButton.GetComponent<RectTransform>();
@@ -35,6 +45,22 @@ public class TurnManager : MonoBehaviour
         buttonsPosition[2] = buttonsTransform[2].position;
         buttonsTransform[3] = passButton.GetComponent<RectTransform>();
         buttonsPosition[3] = buttonsTransform[3].position;
+
+        // Terraform Panel Buttons
+        buttonsTransform[4] = rotateTileButton.GetComponent<RectTransform>();
+        buttonsPosition[4] = buttonsTransform[4].position;
+        buttonsTransform[5] = slideTilesButton.GetComponent<RectTransform>();
+        buttonsPosition[5] = buttonsTransform[5].position;
+        buttonsTransform[6] = terraformBackButton.GetComponent<RectTransform>();
+        buttonsPosition[6] = buttonsTransform[6].position;
+    }
+
+    public void AssignCardsPosition()
+    { 
+        for (int i = 0; i < portraits.Length; i++)
+        {
+            cardsTransform[i] = portraits[i].GetComponentsInChildren<RectTransform>();
+        }
     }
 
     public void AssignButtonsAnimators()
@@ -101,17 +127,67 @@ public class TurnManager : MonoBehaviour
 
     }
 
+    void ActivateTerraformPanel()
+    {
+        selectionDepth = 1;
+        selectedButton = 4;
+        panelsTransform[0].anchoredPosition = new Vector2(0, -50);
+        panelsTransform[1].anchoredPosition = new Vector2(0, 25);
+        cursorTransform.position = buttonsTransform[4].position;
+    }
+
+    void ActivateBasePanel()
+    {
+        selectionDepth = 0;
+        selectedButton = 0;
+        cursorTransform.position = buttonsTransform[0].position;
+        panelsTransform[0].anchoredPosition = new Vector2(0, 25);
+        panelsTransform[1].anchoredPosition = new Vector2(0, -50);
+    }
+
+    void ActivateCardSelection()
+    {
+        selectionDepth = 2;
+
+    }
+
     void MoveCursor()
     {
-        if (Input.GetKeyDown(KeyCode.D))
+        if (selectionDepth == 0)
         {
-            selectedButton = Mathf.Clamp(selectedButton + 1, 0, 3);
+            if (Input.GetKeyDown(KeyCode.D))
+            {
+                selectedButton = Mathf.Clamp(selectedButton + 1, 0, 3);
+            }
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                selectedButton = Mathf.Clamp(selectedButton - 1, 0, 3);
+            }
         }
-        if (Input.GetKeyDown(KeyCode.A))
+        else if (selectionDepth == 1)
         {
-            selectedButton = Mathf.Clamp(selectedButton - 1, 0, 3);
-        }
+            if(Input.GetKeyDown(KeyCode.D))
+            {
+                selectedButton = Mathf.Clamp(selectedButton + 1, 4, 6);
+            }
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                selectedButton = Mathf.Clamp(selectedButton - 1, 4, 6);
+            }
 
+        }
+        else if (selectionDepth == 2)
+        {
+            if (Input.GetKeyDown(KeyCode.D))
+            {
+                selectedButton = Mathf.Clamp(selectedButton + 1, 4, 6);
+            }
+            if (Input.GetKeyDown(KeyCode.A))
+            {
+                selectedButton = Mathf.Clamp(selectedButton - 1, 4, 6);
+            }
+
+        }
         cursorTransform.position = buttonsTransform[selectedButton].position;
     }
 
@@ -151,19 +227,23 @@ public class TurnManager : MonoBehaviour
     // Use this for initialization
     void Awake()
     {
-
-        int numberOfButtons = 4;
+        selectionDepth = 0; // corresponds to the first panel. 1 is the terraform panel. 2 is the card selection
+        int numberOfButtons = 7, nbrOfPanels = 2;
         playerPlayingIdx = -1;
         selectedButton = 0;
         playerOrder = new int[4] { 1, 2, 3, 4 };
         buttonsPosition = new Vector3[numberOfButtons];
         buttonsTransform = new RectTransform[numberOfButtons];
         buttonsAnimator = new Animator[numberOfButtons];
+        panelsTransform = new RectTransform[nbrOfPanels];
         cursorTransform = cursor.GetComponent<RectTransform>();
         cursorIsActive = true;
 
+        // Assigns the position of ll the ui elements o the corresponding arrays
         AssignButtonsAnimators();
         AssignButtonsPosition();
+        AssignPanelsPosition();
+        AssignCardsPosition();
 
     }
 
@@ -185,13 +265,25 @@ public class TurnManager : MonoBehaviour
                     StartCoroutine(ActivateMovementPhase());
 
                 }
-                else if (canTerraform && cursorTransform.position == buttonsTransform[1].position) // Terrafor
+                else if (canTerraform && cursorTransform.position == buttonsTransform[1].position) // Terraform
                 {
-
+                    ActivateTerraformPanel();
                 }
                 else if (cursorTransform.position == buttonsTransform[3].position) // Pass
                 {
                     PassTurn();
+                }
+                else if (cursorTransform.position == buttonsTransform[4].position) // Rotate
+                {
+                    
+                }
+                else if (cursorTransform.position == buttonsTransform[5].position) // Slide
+                {
+
+                }
+                else if (cursorTransform.position == buttonsTransform[6].position) // Back to starting Panel
+                {
+                    ActivateBasePanel();
                 }
             }
         }
