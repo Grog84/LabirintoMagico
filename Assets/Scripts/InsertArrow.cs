@@ -5,7 +5,7 @@ using System.Linq;
 
 public class InsertArrow : MonoBehaviour {
 
-    Coordinate[] pointedTilesCoord;
+    public Coordinate[] pointedTilesCoord;
 
     int[] getRange(int a, int b) // includes b
     {
@@ -41,10 +41,10 @@ public class InsertArrow : MonoBehaviour {
         return rangeArray;
     }
 
-    void setPointedCoords(int xInit, int xFinal, int yInit, int yFinal)
+    public void setPointedCoords(int xInit, int xFinal, int yInit, int yFinal)
     {
         int[] xComponents, yComponents;
-        int coordArrayLength = Mathf.Max(Mathf.Abs(xFinal - xInit), Mathf.Abs(yFinal - yInit));
+        int coordArrayLength = Mathf.Max(Mathf.Abs(xFinal - xInit), Mathf.Abs(yFinal - yInit)) + 1;
         pointedTilesCoord = new Coordinate[coordArrayLength];
 
         if (xInit != xFinal) // horizontal arrow

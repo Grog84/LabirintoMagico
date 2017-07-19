@@ -17,7 +17,7 @@ public class TurnManager : MonoBehaviour
     private int[] playerOrder;
     private Vector3[] buttonsPosition;
     private bool canMove, canTerraform, canUseCrystal, cursorIsActive;
-    private GameObject[] players, tmpPlayers;
+    private GameObject[] players, tmpPlayers, allInsertArrows;
     private Card[] activeCards;
     private CardButton[] cardsButtonComponent;
     private Player[] playerComponent;
@@ -30,6 +30,11 @@ public class TurnManager : MonoBehaviour
     {
         Walk, Terraform, Crystal, Pass
     };
+
+    public void setInsertArrows(GameObject[] inputArrows)
+    {
+        allInsertArrows = inputArrows;
+    }
 
     public void AssignCardButtonComponent()
     {
@@ -104,7 +109,7 @@ public class TurnManager : MonoBehaviour
         }
     }
 
-    public IEnumerator MoveCamera(GameObject player)
+    public IEnumerator MoveCamera(GameObject player) // Temporarly deactivated untill the camera position is properly fixed
     {
         float elapsedTime = 0;
         float animTime = 1f;
@@ -167,8 +172,116 @@ public class TurnManager : MonoBehaviour
         panelsTransform[2].anchoredPosition = panelActivePosition;
     }
 
-    IEnumerator ScrollTileSelection()
+    IEnumerator ScrollTileInsertionSelection(int cardNbr)
     {
+        int currentSelection = 39; // Starts in the Top Left Side
+        allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", true);
+
+        yield return null;
+
+        while (!Input.GetKeyDown(KeyCode.B) && !Input.GetKeyDown(KeyCode.Space))
+        {
+            if (Input.GetKeyDown(KeyCode.D))
+            {
+                if (currentSelection >= 26 && currentSelection <= 39)
+                {
+                    allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", false);
+                    currentSelection--;
+                    allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", true);
+                }
+                else if (currentSelection >= 0 && currentSelection <= 12)
+                {
+                    allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", false);
+                    currentSelection++;
+                    allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", true);
+                }
+                else if (currentSelection == 51)
+                {
+                    allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", false);
+                    currentSelection = 0;
+                    allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", true);
+                }
+            }
+
+            else if (Input.GetKeyDown(KeyCode.A))
+            {
+                if (currentSelection >= 1 && currentSelection <= 13)
+                {
+                    allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", false);
+                    currentSelection--;
+                    allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", true);
+                }
+                else if (currentSelection >= 25 && currentSelection <= 38)
+                {
+                    allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", false);
+                    currentSelection++;
+                    allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", true);
+                }
+                else if (currentSelection == 0)
+                {
+                    allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", false);
+                    currentSelection = 51;
+                    allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", true);
+                }
+            }
+
+            else if (Input.GetKeyDown(KeyCode.W))
+            {
+                if (currentSelection >= 12 && currentSelection <= 25)
+                {
+                    allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", false);
+                    currentSelection++;
+                    allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", true);
+                }
+                else if (currentSelection >= 39 && currentSelection <= 51)
+                {
+                    allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", false);
+                    currentSelection--;
+                    allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", true);
+                }
+                else if (currentSelection == 0)
+                {
+                    allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", false);
+                    currentSelection = 51;
+                    allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", true);
+                }
+            }
+
+            else if (Input.GetKeyDown(KeyCode.S))
+            {
+                if (currentSelection >= 13 && currentSelection <= 26)
+                {
+                    allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", false);
+                    currentSelection--;
+                    allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", true);
+                }
+                else if (currentSelection >= 38 && currentSelection <= 51)
+                {
+                    allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", false);
+                    currentSelection++;
+                    allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", true);
+                }
+                else if (currentSelection == 51)
+                {
+                    allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", false);
+                    currentSelection = 0;
+                    allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", true);
+                }
+            }
+
+
+            yield return null;
+        }
+
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            StartCoroutine(ActivateCardRotation(cardNbr)); 
+        }
+        else
+        { 
+            // Tile Positioning
+        }
+
         yield return null;
     }
 
@@ -208,7 +321,7 @@ public class TurnManager : MonoBehaviour
         }
         else
         {
-            StartCoroutine(ScrollTileSelection());
+            StartCoroutine(ScrollTileInsertionSelection(cardNbr));
         }
 
         yield return null;
@@ -278,7 +391,7 @@ public class TurnManager : MonoBehaviour
         portraitSelection.transform.position = portraits[playerPlaying - 1].transform.position;
         AssignCardsToButtons();
 
-        StartCoroutine(MoveCamera(players[playerPlayingIdx]));  
+        // StartCoroutine(MoveCamera(players[playerPlayingIdx]));  
 
     }
 

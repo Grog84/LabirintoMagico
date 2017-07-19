@@ -577,6 +577,7 @@ public class MapManager : MonoBehaviour {
         {
             arrowInstance = Instantiate(insertArrow, new Vector3((i * tileSize), -tileSize, 0f), Quaternion.identity);
             arrowInstance.transform.Rotate(Vector3.forward * 90);
+            arrowInstance.GetComponent<InsertArrow>().setPointedCoords(i, i, 0, rows-1);
             arrowInstance.transform.SetParent(transform);
             allInsertArrows[i] = arrowInstance;
             indx++;
@@ -584,29 +585,37 @@ public class MapManager : MonoBehaviour {
         for (int i = 0; i < rows; i++) // right arrows
         {
             arrowInstance = Instantiate(insertArrow, new Vector3(columns * tileSize, (i * tileSize), 0f), Quaternion.identity);
-            arrowInstance.transform.SetParent(transform);
             arrowInstance.transform.Rotate(Vector3.forward * 180);
-            allInsertArrows[i] = arrowInstance;
+            arrowInstance.GetComponent<InsertArrow>().setPointedCoords(columns-1, 0, i, i);
+            arrowInstance.transform.SetParent(transform);
+            allInsertArrows[i+13] = arrowInstance;
             indx++;
         }
         for (int i = 0; i < columns; i++) // bot arrows
         {
             arrowInstance = Instantiate(insertArrow, new Vector3((columns-1) * tileSize - ((i * tileSize)), rows * tileSize , 0f), Quaternion.identity);
-            arrowInstance.transform.SetParent(transform);
             arrowInstance.transform.Rotate(Vector3.forward * -90);
-            allInsertArrows[i] = arrowInstance;
+            arrowInstance.GetComponent<InsertArrow>().setPointedCoords(i, i, rows-1, 0);
+            arrowInstance.transform.SetParent(transform);
+            allInsertArrows[i+26] = arrowInstance;
             indx++;
         }
         for (int i = 0; i < rows; i++) // left arrows
         {
             arrowInstance = Instantiate(insertArrow, new Vector3(-tileSize, (rows-1) * tileSize - ((i * tileSize) ), 0f), Quaternion.identity);
+            arrowInstance.GetComponent<InsertArrow>().setPointedCoords(0, columns-1, i, i);
             arrowInstance.transform.SetParent(transform);
-            allInsertArrows[i] = arrowInstance;
+            allInsertArrows[i+39] = arrowInstance;
             indx++;
         }
 
     }
-    
+
+    public GameObject[] getAllInstancedArrows()
+    {
+        return allInsertArrows;
+    }
+
     void Awake ()
     {
         myMap = new GameObject[columns, rows];
@@ -620,6 +629,7 @@ public class MapManager : MonoBehaviour {
     }
 }
 
+[Serializable]
 public class Coordinate
 {
     int x, y;
