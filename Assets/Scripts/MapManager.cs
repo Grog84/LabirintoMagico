@@ -27,16 +27,18 @@ public class MapManager : MonoBehaviour {
     public Count tCount = new Count(4, 8);
     public Count crossCount = new Count(4, 8);
     public GameObject tile, player, insertArrow;
+    public TurnManager turnManager;
 
     // pubic to make it accessible from the turnmanager
     public GameObject[] allPlayers;
     public GameObject[,] myMap;
+    public Tile[,] myMapTiles;
 
     public bool detachSpawnPoints = true, detachCentralTile = true;
 
     private List<Vector3> gridPositions = new List<Vector3>();
     private Vector3 finalShift;
-    private GameObject[] allInsertArrows; 
+    private GameObject[] allInsertArrows;
 
 
     enum tileTypes // B - bottom, R - right, T - top, L - left, V - vertical, H - horizontal
@@ -45,11 +47,100 @@ public class MapManager : MonoBehaviour {
         Curve_BR_alt, Curve_LB_alt, Curve_RT_alt, Curve_TL_alt, T_B_alt, T_L_alt, T_T_alt, T_R_alt, Goal
     };
 
+    enum slideDirection
+    {
+        leftToRight, botToTop, rightToLeft, topToBot
+    };
+
     int[] nbrOfTiles;
     int[] noBottom = { 2, 3, 5, 8 };
     int[] noRight = { 1, 3, 4, 7 };
     int[] noTop = { 0, 1, 5, 6 };
     int[] noLeft = { 0, 2, 4, 9 };
+
+    public Coordinate[] KeepMovableTiles(Coordinate[] myCoords)
+    {
+        List<Coordinate> movableCoordsList = new List<Coordinate>();
+        for (int i = 0; i < myCoords.Length; i++)
+        {
+            if (PickTileComponent(myCoords[i]).canBeMoved)
+                movableCoordsList.Add(myCoords[i]);
+        }
+
+        return movableCoordsList.ToArray();
+    }
+
+    Tile PickTileComponent(Coordinate myCoord)
+    {
+        return myMapTiles[myCoord.getX(), myCoord.getY()];
+    }
+
+    GameObject PickTileObject(Coordinate myCoord)
+    {
+        return myMap[myCoord.getX(), myCoord.getY()];
+    }
+
+    Coordinate slideCoordinate(Coordinate myCoord, int slideDir)
+    {
+        var newCoord = new Coordinate(myCoord.getX(), myCoord.getY());
+
+        switch (slideDir)
+        {
+            case (int)slideDirection.leftToRight:
+                newCoord.setCoordinate(newCoord.getX() + 1, newCoord.getY());
+                break;
+            case (int)slideDirection.botToTop:
+                newCoord.setCoordinate(newCoord.getX(), newCoord.getY() + 1);
+                break;
+            case (int)slideDirection.rightToLeft:
+                newCoord.setCoordinate(newCoord.getX() - 1, newCoord.getY());
+                break;
+            case (int)slideDirection.topToBot:
+                newCoord.setCoordinate(newCoord.getX(), newCoord.getY() - 1);
+                break;
+            default:
+                break;
+        }
+
+        return newCoord;
+    }
+
+    public IEnumerator SlideLine(Coordinate[] myCoords, int mySlideDirection)
+    {
+        Tile tmpTile;
+        GameObject tmpTileObj;
+
+        float animationTime = 3f;
+        Destroy(PickTileObject(myCoords[myCoords.Length - 1])); // destroys the last movable tile
+
+        var myMovement = new Vector2(0, 0);
+
+        for (int i = myCoords.Length - 2; i >= 0; i--)
+        {
+            tmpTile = PickTileComponent(myCoords[i]);
+            tmpTileObj = PickTileObject(myCoords[i]);
+            myMovement[0] = PickTileObject(myCoords[i+1]).transform.position.x - tmpTileObj.transform.position.x;
+            myMovement[1] = PickTileObject(myCoords[i + 1]).transform.position.y - tmpTileObj.transform.position.y;
+            StartCoroutine(tmpTile.MoveToPosition(myMovement, animationTime));
+
+            myMap[myCoords[i + 1].getX(), myCoords[i + 1].getY()] = tmpTileObj;
+            myMapTiles[myCoords[i + 1].getX(), myCoords[i + 1].getY()] = tmpTile;
+
+        }
+
+        float waitingTime = 0;
+
+        while (waitingTime < animationTime + 0.5f)
+        {
+            waitingTime += Time.deltaTime;
+            if (waitingTime > animationTime)
+                turnManager.isSliding = false;
+            yield return null;
+        }
+
+        yield return null;
+
+    }
 
     int[] GenerateInitialTiles()
     {
@@ -121,6 +212,24 @@ public class MapManager : MonoBehaviour {
         myTileComponent.setPossibleConnections(tileType);
         
         myMap[coordinate.getX(), coordinate.getY()] = tileInstance;
+        myMapTiles[coordinate.getX(), coordinate.getY()] = tileInstance.GetComponent<Tile>();
+
+    }
+
+    public void InstantiateTileLive(int tileType, Coordinate coordinate, bool canBeMoved = true)
+    {
+        GameObject tileInstance = Instantiate(tile, coordinate.getVect3() + transform.position, Quaternion.identity);
+        tileInstance.transform.SetParent(transform);
+
+        Tile myTileComponent = tileInstance.GetComponent<Tile>();
+        myTileComponent.setSprite(tileType);
+        // TODO modificare type per diventare come quello non speciale
+        myTileComponent.canBeMoved = canBeMoved;
+        myTileComponent.myCoord = coordinate;
+        myTileComponent.setPossibleConnections(tileType);
+
+        myMap[coordinate.getX(), coordinate.getY()] = tileInstance;
+        myMapTiles[coordinate.getX(), coordinate.getY()] = tileInstance.GetComponent<Tile>();
 
     }
 
@@ -378,7 +487,6 @@ public class MapManager : MonoBehaviour {
         }
     }
 
-
     void updateTilesConnection()
     {
 
@@ -573,11 +681,11 @@ public class MapManager : MonoBehaviour {
         int indx = 0;
         GameObject arrowInstance;
 
-        for (int i = 0; i < columns; i++) // top arrows
+        for (int i = 0; i < columns; i++) // bot arrows
         {
             arrowInstance = Instantiate(insertArrow, new Vector3((i * tileSize), -tileSize, 0f), Quaternion.identity);
             arrowInstance.transform.Rotate(Vector3.forward * 90);
-            arrowInstance.GetComponent<InsertArrow>().setPointedCoords(i, i, 0, rows-1);
+            arrowInstance.GetComponent<InsertArrow>().setPointedCoords(i, i, 0, columns-1);
             arrowInstance.transform.SetParent(transform);
             allInsertArrows[i] = arrowInstance;
             indx++;
@@ -588,24 +696,24 @@ public class MapManager : MonoBehaviour {
             arrowInstance.transform.Rotate(Vector3.forward * 180);
             arrowInstance.GetComponent<InsertArrow>().setPointedCoords(columns-1, 0, i, i);
             arrowInstance.transform.SetParent(transform);
-            allInsertArrows[i+13] = arrowInstance;
+            allInsertArrows[i+columns] = arrowInstance;
             indx++;
         }
-        for (int i = 0; i < columns; i++) // bot arrows
+        for (int i = 0; i < columns; i++) // top arrows
         {
             arrowInstance = Instantiate(insertArrow, new Vector3((columns-1) * tileSize - ((i * tileSize)), rows * tileSize , 0f), Quaternion.identity);
             arrowInstance.transform.Rotate(Vector3.forward * -90);
-            arrowInstance.GetComponent<InsertArrow>().setPointedCoords(i, i, rows-1, 0);
+            arrowInstance.GetComponent<InsertArrow>().setPointedCoords(columns - 1 - i, columns - 1 - i, rows-1, 0);
             arrowInstance.transform.SetParent(transform);
-            allInsertArrows[i+26] = arrowInstance;
+            allInsertArrows[i+(columns + rows)] = arrowInstance;
             indx++;
         }
         for (int i = 0; i < rows; i++) // left arrows
         {
             arrowInstance = Instantiate(insertArrow, new Vector3(-tileSize, (rows-1) * tileSize - ((i * tileSize) ), 0f), Quaternion.identity);
-            arrowInstance.GetComponent<InsertArrow>().setPointedCoords(0, columns-1, i, i);
+            arrowInstance.GetComponent<InsertArrow>().setPointedCoords(0, columns-1,rows-1- i, rows-1-i);
             arrowInstance.transform.SetParent(transform);
-            allInsertArrows[i+39] = arrowInstance;
+            allInsertArrows[i+ (2*columns + rows)] = arrowInstance;
             indx++;
         }
 
@@ -619,6 +727,7 @@ public class MapManager : MonoBehaviour {
     void Awake ()
     {
         myMap = new GameObject[columns, rows];
+        myMapTiles = new Tile[columns, rows];
         allPlayers = new GameObject[4];
     }
 	
@@ -632,7 +741,7 @@ public class MapManager : MonoBehaviour {
 [Serializable]
 public class Coordinate
 {
-    int x, y;
+    public int x, y;
 
     float tileSize = 5f;
 

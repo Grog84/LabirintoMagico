@@ -221,6 +221,23 @@ public class Tile : MonoBehaviour {
         }
     }
 
+    public IEnumerator MoveToPosition(Vector2 movement, float animTime)
+    {
+        // Might there be a child unchild issue?
+
+        float elapsedTime = 0;
+
+        Vector3 destination = new Vector3(transform.position.x + movement[0], transform.position.y + movement[1]);
+
+        while (elapsedTime < animTime)
+        {
+            this.transform.position = Vector3.Lerp(transform.position, destination, elapsedTime / animTime);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        yield return null;
+    }
 
     void Awake () {
         myRenderer = GetComponent<SpriteRenderer>();

@@ -12,6 +12,8 @@ public class TurnManager : MonoBehaviour
     public GameObject[] panels;
     public GameObject arrows; // one is children of the other, thst's why there is no need for an array
     public Camera camera;
+    public MapManager mapManager;
+    public bool isSliding = false;
 
     private int playerPlaying, playerPlayingIdx, turnNbr, selectedButton, selectionDepth;
     private int[] playerOrder;
@@ -29,6 +31,11 @@ public class TurnManager : MonoBehaviour
     enum myButtons
     {
         Walk, Terraform, Crystal, Pass
+    };
+
+    enum slideDirection
+    {
+        leftToRight, botToTop, rightToLeft, topToBot
     };
 
     public void setInsertArrows(GameObject[] inputArrows)
@@ -172,6 +179,50 @@ public class TurnManager : MonoBehaviour
         panelsTransform[2].anchoredPosition = panelActivePosition;
     }
 
+    void EndTerraform()
+    {
+        // TODO Update Connectivity Map
+        canTerraform = false;
+        terraformingButton.GetComponent<Animator>().SetBool("isActive", false);
+    }
+
+    IEnumerator InsertTile(int cardNbr, GameObject arrow, int slideDirection)
+    {
+        isSliding = true;
+        Coordinate[] lineCoordinates = arrow.GetComponent<InsertArrow>().getPointedCoords();
+        lineCoordinates = mapManager.KeepMovableTiles(lineCoordinates);
+        StartCoroutine(mapManager.SlideLine(lineCoordinates, slideDirection));
+
+        int tileType = 0;
+
+        while (!isSliding)
+        {
+            yield return null;
+        }
+
+        yield return new WaitForSeconds(1);
+
+        CardButton activatedCard = null;
+        if (cardNbr == 1)
+        {
+            activatedCard = cardsButtonComponent[0];
+        }
+        else if (cardNbr == 2)
+        {
+            activatedCard = cardsButtonComponent[1];
+        }
+
+        tileType = activatedCard.GetTileType();
+
+        mapManager.InstantiateTileLive(tileType, lineCoordinates[0]);
+
+        arrow.GetComponent<Animator>().SetBool("isActive", false);
+        EndTerraform();
+        ActivateBasePanel();
+
+        yield return null;
+    }
+
     IEnumerator ScrollTileInsertionSelection(int cardNbr)
     {
         int currentSelection = 39; // Starts in the Top Left Side
@@ -186,18 +237,21 @@ public class TurnManager : MonoBehaviour
                 if (currentSelection >= 26 && currentSelection <= 39)
                 {
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", false);
+                    yield return null;
                     currentSelection--;
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", true);
                 }
                 else if (currentSelection >= 0 && currentSelection <= 12)
                 {
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", false);
+                    yield return null;
                     currentSelection++;
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", true);
                 }
                 else if (currentSelection == 51)
                 {
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", false);
+                    yield return null;
                     currentSelection = 0;
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", true);
                 }
@@ -208,18 +262,21 @@ public class TurnManager : MonoBehaviour
                 if (currentSelection >= 1 && currentSelection <= 13)
                 {
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", false);
+                    yield return null;
                     currentSelection--;
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", true);
                 }
                 else if (currentSelection >= 25 && currentSelection <= 38)
                 {
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", false);
+                    yield return null;
                     currentSelection++;
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", true);
                 }
                 else if (currentSelection == 0)
                 {
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", false);
+                    yield return null;
                     currentSelection = 51;
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", true);
                 }
@@ -230,18 +287,21 @@ public class TurnManager : MonoBehaviour
                 if (currentSelection >= 12 && currentSelection <= 25)
                 {
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", false);
+                    yield return null;
                     currentSelection++;
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", true);
                 }
                 else if (currentSelection >= 39 && currentSelection <= 51)
                 {
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", false);
+                    yield return null;
                     currentSelection--;
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", true);
                 }
                 else if (currentSelection == 0)
                 {
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", false);
+                    yield return null;
                     currentSelection = 51;
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", true);
                 }
@@ -252,18 +312,21 @@ public class TurnManager : MonoBehaviour
                 if (currentSelection >= 13 && currentSelection <= 26)
                 {
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", false);
+                    yield return null;
                     currentSelection--;
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", true);
                 }
-                else if (currentSelection >= 38 && currentSelection <= 51)
+                else if (currentSelection >= 38 && currentSelection <= 50)
                 {
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", false);
+                    yield return null;
                     currentSelection++;
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", true);
                 }
                 else if (currentSelection == 51)
                 {
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", false);
+                    yield return null;
                     currentSelection = 0;
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", true);
                 }
@@ -275,11 +338,22 @@ public class TurnManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.B))
         {
+            allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", false);
             StartCoroutine(ActivateCardRotation(cardNbr)); 
         }
         else
-        { 
-            // Tile Positioning
+        {
+            int mySlideDirection = 0;
+            if (currentSelection >= 0 && currentSelection <= 12)
+                mySlideDirection = (int)slideDirection.botToTop;
+            else if(currentSelection >= 13 && currentSelection <= 25)
+                mySlideDirection = (int)slideDirection.rightToLeft;
+            else if (currentSelection >= 26 && currentSelection <= 38)
+                mySlideDirection = (int)slideDirection.topToBot;
+            else if (currentSelection >= 39 && currentSelection <= 51)
+                mySlideDirection = (int)slideDirection.leftToRight;
+
+            StartCoroutine(InsertTile(cardNbr, allInsertArrows[currentSelection], mySlideDirection));
         }
 
         yield return null;

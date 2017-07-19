@@ -7,6 +7,11 @@ public class InsertArrow : MonoBehaviour {
 
     public Coordinate[] pointedTilesCoord;
 
+    public Coordinate[] getPointedCoords()
+    {
+        return pointedTilesCoord;
+    }
+
     int[] getRange(int a, int b) // includes b
     {
         int[] rangeArray;
@@ -43,26 +48,20 @@ public class InsertArrow : MonoBehaviour {
 
     public void setPointedCoords(int xInit, int xFinal, int yInit, int yFinal)
     {
-        int[] xComponents, yComponents;
+        int[] xComponents = new int[0], yComponents=new int[0];
         int coordArrayLength = Mathf.Max(Mathf.Abs(xFinal - xInit), Mathf.Abs(yFinal - yInit)) + 1;
         pointedTilesCoord = new Coordinate[coordArrayLength];
 
         if (xInit != xFinal) // horizontal arrow
         {
             xComponents = getRange(xInit, xFinal);
-        }
-        else // vertical arrow
-        {
-            xComponents = Enumerable.Repeat(xInit, coordArrayLength).ToArray();
+            yComponents = Enumerable.Repeat(yInit, coordArrayLength).ToArray();    
         }
 
         if (yInit != yFinal) // vertical arrow
         {
             yComponents = getRange(yInit, yFinal);
-        }
-        else // horizontal arrow
-        {
-            yComponents = Enumerable.Repeat(yInit, coordArrayLength).ToArray();
+            xComponents = Enumerable.Repeat(xInit, coordArrayLength).ToArray();
         }
 
         for (int i = 0; i < coordArrayLength; i++)

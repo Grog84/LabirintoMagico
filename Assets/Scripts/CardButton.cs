@@ -13,6 +13,7 @@ public class CardButton : MonoBehaviour
     private Image myImage;
     private int tileType, rotation;
     private Sprite mySprite;
+    private int[] tileTypesInClockwiseRotation = new int[4] { 0 , 1, 3, 2 };
 
     public void setTileType(int type)
     {
@@ -65,6 +66,29 @@ public class CardButton : MonoBehaviour
     {
         myImage.transform.Rotate(Vector3.forward * rotation * 90);
         this.rotation += rotation;
+    }
+
+    public int GetTileType()
+    {
+        int myRotationValue = rotation % 4;
+        int myType;
+
+        if (myRotationValue == 0)
+        {
+            myType = tileType;
+        }
+        else if (myRotationValue > 0)
+        {
+            myType = tileType + myRotationValue;
+        }
+        else
+        {
+            myType = tileType + (4 + myRotationValue);
+        }
+
+        tileType = myType;
+        rotation = 0;
+        return myType;
     }
 
     // Use this for initialization
