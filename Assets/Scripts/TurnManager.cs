@@ -7,7 +7,7 @@ public class TurnManager : MonoBehaviour
 {
 
     public GameObject walkButton, terraformingButton, crystalButton, passButton, cursor, portraitSelection,
-        rotateTileButton, slideTilesButton, terraformBackButton, card1Button, card2Button, cardsBackButton;
+        rotateTileButton, slideTilesButton, terraformBackButton, card1Button, card2Button, cardsBackButton, rotationCursor;
     public GameObject[] portraits;
     public GameObject[] panels;
     public GameObject arrows; // one is children of the other, thst's why there is no need for an array
@@ -489,7 +489,37 @@ public class TurnManager : MonoBehaviour
 
         yield return null;
     }
-    
+
+    IEnumerator ActivateRotationCursor()
+    {
+        rotationCursor.GetComponent<CursorMoving>().CursorActivate(playerComponent[playerPlayingIdx].coordinate);
+        buttonsAnimator[1].SetBool("isActive", false);
+        canTerraform = false;
+
+        yield return null;
+
+        while (!Input.GetKeyDown(KeyCode.Space))
+        {
+            yield return null;
+        }
+
+        rotationCursor.GetComponent<CursorMoving>().CursorDeactivate();
+        cursorIsActive = true;
+        ActivatePlayer(0);
+        ActivateBasePanel();
+
+        yield return null;
+    }
+
+    public void makePlayersChild()
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            playerComponent[i].gameObject.transform.SetParent(mapManager.PickTileObject(playerComponent[i].coordinate).transform);
+            //playerComponent[i].gameObject.transform.localPosition = new Vector3 (0, 0, -1);
+        }
+    }
+
     // Use this for initialization
     void Awake()
     {
@@ -547,7 +577,8 @@ public class TurnManager : MonoBehaviour
                 }
                 else if (cursorTransform.position == buttonsTransform[4].position) // Rotate
                 {
-                    
+                    cursorIsActive = false;
+                    StartCoroutine(ActivateRotationCursor());
                 }
                 else if (cursorTransform.position == buttonsTransform[5].position) // Slide
                 {

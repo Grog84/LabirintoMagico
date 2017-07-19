@@ -75,7 +75,7 @@ public class MapManager : MonoBehaviour {
         return myMapTiles[myCoord.getX(), myCoord.getY()];
     }
 
-    GameObject PickTileObject(Coordinate myCoord)
+    public GameObject PickTileObject(Coordinate myCoord)
     {
         return myMap[myCoord.getX(), myCoord.getY()];
     }
