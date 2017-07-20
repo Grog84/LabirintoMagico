@@ -190,19 +190,56 @@ public class TurnManager : MonoBehaviour
     // TODO
     IEnumerator RotateTiles(int rotationDirection) // 1 clockwise, -1 counterclockwise
     {
-        Coordinate[] selectdCoords = rotationCursor.GetComponent<CursorMoving>().getSelectedCoords();
-        selectdCoords = mapManager.KeepMovableTiles(selectdCoords);
+        Coordinate[] selectedCoords = rotationCursor.GetComponent<CursorMoving>().getSelectedCoords();
+        selectedCoords = mapManager.KeepMovableTiles(selectedCoords);
 
         if (rotationDirection == 1)
         {
-            var tmp = new Coordinate[selectdCoords.Length];
+            var tmp = new Coordinate[selectedCoords.Length];
+            for (int i = 0; i < tmp.Length; i++)
+            {
+                tmp[tmp.Length - 1 - i] = selectedCoords[i];
+            }
         }
-        else
-        {
 
+        Tile tmpTile;
+        var tmpTileArray = new Tile[selectedCoords.Length];
+        GameObject tmpTileObj;
+        var tmpTileObjArray = new GameObject[selectedCoords.Length];
+
+        float animationTime = 3f;
+        var myMovement = new Vector2(0, 0);
+
+        for (int i = 0; i < selectedCoords.Length; i++)
+        {
+            tmpTile = mapManager.PickTileComponent(selectedCoords[i]);
+            tmpTileObj = mapManager.PickTileObject(selectedCoords[i]);
+            tmpTileArray[i] = tmpTile;
+            tmpTileObjArray[i] = tmpTileObj;
+
+            myMovement[0] = mapManager.PickTileObject(selectedCoords[(i + 1) % (selectedCoords.Length)]).transform.position.x - tmpTileObj.transform.position.x;
+            myMovement[1] = mapManager.PickTileObject(selectedCoords[(i + 1) % (selectedCoords.Length)]).transform.position.y - tmpTileObj.transform.position.y;
+            StartCoroutine(tmpTile.MoveToPosition(myMovement, animationTime));
+        }
+
+        for (int i = 0; i < selectedCoords.Length; i++)
+        {
+            mapManager.myMap[selectedCoords[(i + 1) % (selectedCoords.Length)].getX(), selectedCoords[(i + 1) % (selectedCoords.Length)].getY()] = tmpTileObjArray[i];
+            mapManager.myMapTiles[selectedCoords[(i + 1) % (selectedCoords.Length)].getX(), selectedCoords[(i + 1) % (selectedCoords.Length)].getY()] = tmpTileArray[i];
+        }
+
+        float waitingTime = 0;
+
+        while (waitingTime < animationTime + 0.5f)
+        {
+            waitingTime += Time.deltaTime;
+            if (waitingTime > animationTime)
+                isRotating = false;
+            yield return null;
         }
 
         yield return null;
+
     }
 
     IEnumerator InsertTile(int cardNbr, GameObject arrow, int slideDirection)
@@ -214,12 +251,10 @@ public class TurnManager : MonoBehaviour
 
         int tileType = 0;
 
-        while (isSliding) // cazzo era questo....da dire a fabio
+        while (isSliding)
         {
             yield return null;
         }
-
-        yield return new WaitForSeconds(1);
 
         CardButton activatedCard = null;
         if (cardNbr == 1)
@@ -515,6 +550,8 @@ public class TurnManager : MonoBehaviour
     {
         yield return null;
 
+        cursorArrows.transform.localPosition = rotationArrowsActivePosition;
+
         while (!Input.GetKeyDown(KeyCode.A) && !Input.GetKeyDown(KeyCode.D))
         {
             yield return null;
@@ -540,7 +577,8 @@ public class TurnManager : MonoBehaviour
 
         rotationCursor.GetComponent<CursorMoving>().CursorDeactivate();
         cursorIsActive = true;
-        ActivatePlayer(0);  // serve?
+        //ActivatePlayer(0);  // serve?
+        EndTerraform();
         ActivateBasePanel();
 
         yield return null;
@@ -609,7 +647,8 @@ public class TurnManager : MonoBehaviour
         AssignButtonsPosition();
         AssignPanelsPosition();
         AssignCardButtonComponent();
-        makePlayersChild();
+
+        //makePlayersChild();
 
     }
 

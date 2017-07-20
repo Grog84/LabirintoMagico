@@ -70,7 +70,7 @@ public class MapManager : MonoBehaviour {
         return movableCoordsList.ToArray();
     }
 
-    Tile PickTileComponent(Coordinate myCoord)
+    public Tile PickTileComponent(Coordinate myCoord)
     {
         return myMapTiles[myCoord.getX(), myCoord.getY()];
     }
