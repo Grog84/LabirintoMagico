@@ -40,10 +40,10 @@ public class CursorMoving : MonoBehaviour {
             {
                 StartCoroutine(MoveDown());
             }
-            if (Input.GetKeyDown(KeyCode.Space))
-            {
-                StartCoroutine(RotateTiles());
-            }
+            //if (Input.GetKeyDown(KeyCode.Space))
+            //{
+            //    StartCoroutine(RotateTiles());
+            //}
 
         }
     }
@@ -62,11 +62,23 @@ public class CursorMoving : MonoBehaviour {
     public void CursorDeactivate ()
     {
         isActive = false;
-        Vector3 resetta = new Vector3 (0, 0, 2);
-        transform.position = resetta;
+        Vector3 reset = new Vector3 (0, 0, 2);
+        transform.position = reset;
     }
 
-    public IEnumerator RotateTiles()
+    public Coordinate[] getSelectedCoords()
+    {
+        var selectedCoords = new Coordinate[4];
+        selectedCoords[0] = new Coordinate(coordinate.getX(), coordinate.getY());
+        selectedCoords[1] = new Coordinate(coordinate.getX(), coordinate.getY() - 1);
+        selectedCoords[2] = new Coordinate(coordinate.getX()+1, coordinate.getY()-1);
+        selectedCoords[3] = new Coordinate(coordinate.getX()+1, coordinate.getY());
+
+        return selectedCoords;
+    }
+
+    // deprecated method
+    public IEnumerator RotateTiles(int rotationDirection) // 1 clockwise, -1 counterclockwise
     {
         turnManagerComponent.makePlayersChild();
 
@@ -192,6 +204,5 @@ public class CursorMoving : MonoBehaviour {
         coordinate.setCoordinate(coordinate.getX() - 1, coordinate.getY());
         moving = false;
     }
-
 
 }

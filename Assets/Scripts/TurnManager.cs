@@ -10,10 +10,10 @@ public class TurnManager : MonoBehaviour
         rotateTileButton, slideTilesButton, terraformBackButton, card1Button, card2Button, cardsBackButton, rotationCursor;
     public GameObject[] portraits;
     public GameObject[] panels;
-    public GameObject arrows; // one is children of the other, thst's why there is no need for an array
+    public GameObject arrows, cursorArrows; // one is children of the other, thst's why there is no need for an array
     public Camera camera;
     public MapManager mapManager;
-    public bool isSliding = false;
+    public bool isSliding = false, isRotating = false;
 
     private int playerPlaying, playerPlayingIdx, turnNbr, selectedButton, selectionDepth;
     private int[] playerOrder;
@@ -27,6 +27,7 @@ public class TurnManager : MonoBehaviour
     private RectTransform cursorTransform;
     private Animator[] buttonsAnimator;
     private Vector2 panelParkingPosition, panelActivePosition, arrowsRelativePosition;
+    private Vector3 rotationArrowsParkingPosition, rotationArrowsActivePosition;
 
     enum myButtons
     {
@@ -186,6 +187,24 @@ public class TurnManager : MonoBehaviour
         terraformingButton.GetComponent<Animator>().SetBool("isActive", false);
     }
 
+    // TODO
+    IEnumerator RotateTiles(int rotationDirection) // 1 clockwise, -1 counterclockwise
+    {
+        Coordinate[] selectdCoords = rotationCursor.GetComponent<CursorMoving>().getSelectedCoords();
+        selectdCoords = mapManager.KeepMovableTiles(selectdCoords);
+
+        if (rotationDirection == 1)
+        {
+            var tmp = new Coordinate[selectdCoords.Length];
+        }
+        else
+        {
+
+        }
+
+        yield return null;
+    }
+
     IEnumerator InsertTile(int cardNbr, GameObject arrow, int slideDirection)
     {
         isSliding = true;
@@ -195,7 +214,7 @@ public class TurnManager : MonoBehaviour
 
         int tileType = 0;
 
-        while (!isSliding)
+        while (isSliding) // cazzo era questo....da dire a fabio
         {
             yield return null;
         }
@@ -472,6 +491,7 @@ public class TurnManager : MonoBehaviour
     IEnumerator ActivateMovementPhase()
     {
         Player p = playerComponent[playerPlayingIdx];
+        p.transform.parent = null;
         p.BrightPossibleTiles();
         ActivatePlayer(playerComponent[playerPlayingIdx].playerNbr);
         buttonsAnimator[0].SetBool("isActive", false);
@@ -486,6 +506,42 @@ public class TurnManager : MonoBehaviour
         p.SwitchOffTiles();
         cursorIsActive = true;
         ActivatePlayer(0);
+        makePlayersChild();
+
+        yield return null;
+    }
+
+    IEnumerator ActivateRotationCursorSelection()
+    {
+        yield return null;
+
+        while (!Input.GetKeyDown(KeyCode.A) && !Input.GetKeyDown(KeyCode.D))
+        {
+            yield return null;
+        }
+
+        if (Input.GetKeyDown(KeyCode.A))
+        {
+            isRotating = true;
+            StartCoroutine(RotateTiles(1));
+        }
+        else
+        {
+            isRotating = true;
+            StartCoroutine(RotateTiles(-1));
+        }
+
+        yield return null;
+
+        while (isRotating)
+        {
+
+        }
+
+        rotationCursor.GetComponent<CursorMoving>().CursorDeactivate();
+        cursorIsActive = true;
+        ActivatePlayer(0);  // serve?
+        ActivateBasePanel();
 
         yield return null;
     }
@@ -493,20 +549,24 @@ public class TurnManager : MonoBehaviour
     IEnumerator ActivateRotationCursor()
     {
         rotationCursor.GetComponent<CursorMoving>().CursorActivate(playerComponent[playerPlayingIdx].coordinate);
-        buttonsAnimator[1].SetBool("isActive", false);
-        canTerraform = false;
 
         yield return null;
 
-        while (!Input.GetKeyDown(KeyCode.Space))
+        while (!Input.GetKeyDown(KeyCode.B) && !Input.GetKeyDown(KeyCode.Space))
         {
             yield return null;
         }
 
-        rotationCursor.GetComponent<CursorMoving>().CursorDeactivate();
-        cursorIsActive = true;
-        ActivatePlayer(0);
-        ActivateBasePanel();
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            ActivateTerraformPanel();
+        }
+        else
+        {
+            canTerraform = false;
+            buttonsAnimator[1].SetBool("isActive", false);
+            StartCoroutine(ActivateRotationCursorSelection());
+        }
 
         yield return null;
     }
@@ -541,11 +601,15 @@ public class TurnManager : MonoBehaviour
         panelActivePosition = new Vector2(0, 50);
         arrowsRelativePosition = new Vector2(25, 0);
 
+        rotationArrowsParkingPosition = new Vector3(-500f, 0, 0);
+        rotationArrowsActivePosition = new Vector3(5, -1, 0f);
+
         // Assigns the position of ll the ui elements o the corresponding arrays
         AssignButtonsAnimators();
         AssignButtonsPosition();
         AssignPanelsPosition();
         AssignCardButtonComponent();
+        makePlayersChild();
 
     }
 
