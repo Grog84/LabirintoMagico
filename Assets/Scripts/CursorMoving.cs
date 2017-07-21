@@ -40,10 +40,6 @@ public class CursorMoving : MonoBehaviour {
             {
                 StartCoroutine(MoveDown());
             }
-            //if (Input.GetKeyDown(KeyCode.Space))
-            //{
-            //    StartCoroutine(RotateTiles());
-            //}
 
         }
     }
@@ -62,8 +58,11 @@ public class CursorMoving : MonoBehaviour {
     public void CursorDeactivate ()
     {
         isActive = false;
-        Vector3 reset = new Vector3 (0, 0, 2);
-        transform.position = reset;
+    }
+
+    public void SetAtPosition(Vector3 position)
+    {
+        transform.position = position;
     }
 
     public Coordinate[] getSelectedCoords()

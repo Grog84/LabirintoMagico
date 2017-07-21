@@ -94,7 +94,7 @@ public class Tile : MonoBehaviour {
         myCollider.size = new Vector2(myTexture.width/100f, myTexture.height/100f);
     }
 
-    public void setPossibleConnections(int type)
+    public void SetPossibleConnections(int type)
     {
         switch (type)
         {
@@ -231,12 +231,27 @@ public class Tile : MonoBehaviour {
 
         while (elapsedTime < animTime)
         {
-            this.transform.position = Vector3.Lerp(transform.position, destination, elapsedTime / animTime);
+            transform.position = Vector3.Lerp(transform.position, destination, elapsedTime / animTime);
             elapsedTime += Time.deltaTime;
             yield return null;
         }
 
         yield return null;
+    }
+
+    public void setCoordinates(int x, int y)
+    {
+        myCoord = new Coordinate(x, y);
+    }
+
+    public Coordinate getCoordinates()
+    {
+        return myCoord;
+    }
+
+    public void resetEffectiveConnectionMap()
+    {
+        effectiveConnections = new bool[4] { false, false, false, false };
     }
 
     void Awake () {

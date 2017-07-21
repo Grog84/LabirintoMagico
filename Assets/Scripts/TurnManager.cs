@@ -154,94 +154,141 @@ public class TurnManager : MonoBehaviour
     {
         selectionDepth = 0;
         selectedButton = 0;
-        cursorTransform.position = buttonsTransform[selectedButton].position;
         panelsTransform[0].anchoredPosition = panelActivePosition;
         panelsTransform[1].anchoredPosition = panelParkingPosition;
         panelsTransform[2].anchoredPosition = panelParkingPosition;
+        cursorTransform.position = buttonsTransform[selectedButton].position;
     }
 
     void ActivateTerraformPanel()
     {
         selectionDepth = 1;
         selectedButton = 4;
-        cursorTransform.position = buttonsTransform[selectedButton].position;
         panelsTransform[0].anchoredPosition = panelParkingPosition;
         panelsTransform[1].anchoredPosition = panelActivePosition;
         panelsTransform[2].anchoredPosition = panelParkingPosition;
+        cursorTransform.position = buttonsTransform[selectedButton].position;
     }
 
     void ActivateCardSelection()
     {
         selectionDepth = 2;
         selectedButton = 7;
-        cursorTransform.position = buttonsTransform[selectedButton].position;
         panelsTransform[0].anchoredPosition = panelParkingPosition;
         panelsTransform[1].anchoredPosition = panelParkingPosition;
         panelsTransform[2].anchoredPosition = panelActivePosition;
+        cursorTransform.position = buttonsTransform[selectedButton].position;
     }
 
     void EndTerraform()
     {
-        // TODO Update Connectivity Map
+        mapManager.updateTilesConnection();
         canTerraform = false;
         terraformingButton.GetComponent<Animator>().SetBool("isActive", false);
     }
 
-    // TODO
-    IEnumerator RotateTiles(int rotationDirection) // 1 clockwise, -1 counterclockwise
+    void AssignCardsToButtons()
     {
-        Coordinate[] selectedCoords = rotationCursor.GetComponent<CursorMoving>().getSelectedCoords();
-        selectedCoords = mapManager.KeepMovableTiles(selectedCoords);
+        GameObject activePortrait = portraits[playerPlayingIdx];
+        activeCards = activePortrait.GetComponentsInChildren<Card>();
 
-        if (rotationDirection == 1)
+        int card1_type = activeCards[0].getTileType();
+        int card2_type = activeCards[1].getTileType();
+
+        cardsButtonComponent[0].setTileType(card1_type);
+        cardsButtonComponent[1].setTileType(card2_type);
+    }
+
+    void MoveCursor()
+    {
+        if (selectionDepth == 0)
         {
-            var tmp = new Coordinate[selectedCoords.Length];
-            for (int i = 0; i < tmp.Length; i++)
+            if (Input.GetKeyDown(KeyCode.D) || Input.GetAxis("HorizontalJoy") == 1)
             {
-                tmp[tmp.Length - 1 - i] = selectedCoords[i];
+                selectedButton = Mathf.Clamp(selectedButton + 1, 0, 3);
+            }
+            if (Input.GetKeyDown(KeyCode.A) || Input.GetAxis("HorizontalJoy") == -1)
+            {
+                selectedButton = Mathf.Clamp(selectedButton - 1, 0, 3);
             }
         }
-
-        Tile tmpTile;
-        var tmpTileArray = new Tile[selectedCoords.Length];
-        GameObject tmpTileObj;
-        var tmpTileObjArray = new GameObject[selectedCoords.Length];
-
-        float animationTime = 3f;
-        var myMovement = new Vector2(0, 0);
-
-        for (int i = 0; i < selectedCoords.Length; i++)
+        else if (selectionDepth == 1)
         {
-            tmpTile = mapManager.PickTileComponent(selectedCoords[i]);
-            tmpTileObj = mapManager.PickTileObject(selectedCoords[i]);
-            tmpTileArray[i] = tmpTile;
-            tmpTileObjArray[i] = tmpTileObj;
+            if (Input.GetKeyDown(KeyCode.D) || Input.GetAxis("HorizontalJoy") == 1)
+            {
+                selectedButton = Mathf.Clamp(selectedButton + 1, 4, 6);
+            }
+            if (Input.GetKeyDown(KeyCode.A) || Input.GetAxis("HorizontalJoy") == -1)
+            {
+                selectedButton = Mathf.Clamp(selectedButton - 1, 4, 6);
+            }
 
-            myMovement[0] = mapManager.PickTileObject(selectedCoords[(i + 1) % (selectedCoords.Length)]).transform.position.x - tmpTileObj.transform.position.x;
-            myMovement[1] = mapManager.PickTileObject(selectedCoords[(i + 1) % (selectedCoords.Length)]).transform.position.y - tmpTileObj.transform.position.y;
-            StartCoroutine(tmpTile.MoveToPosition(myMovement, animationTime));
         }
-
-        for (int i = 0; i < selectedCoords.Length; i++)
+        else if (selectionDepth == 2)
         {
-            mapManager.myMap[selectedCoords[(i + 1) % (selectedCoords.Length)].getX(), selectedCoords[(i + 1) % (selectedCoords.Length)].getY()] = tmpTileObjArray[i];
-            mapManager.myMapTiles[selectedCoords[(i + 1) % (selectedCoords.Length)].getX(), selectedCoords[(i + 1) % (selectedCoords.Length)].getY()] = tmpTileArray[i];
+            if (Input.GetKeyDown(KeyCode.D) || Input.GetAxis("HorizontalJoy") == 1)
+            {
+                selectedButton = Mathf.Clamp(selectedButton + 1, 7, 9);
+            }
+            if (Input.GetKeyDown(KeyCode.A) || Input.GetAxis("HorizontalJoy") == -1)
+            {
+                selectedButton = Mathf.Clamp(selectedButton - 1, 7, 9);
+            }
+
         }
+        cursorTransform.position = buttonsTransform[selectedButton].position;
+    }
 
-        float waitingTime = 0;
-
-        while (waitingTime < animationTime + 0.5f)
+    void UpdatePlayersPosition()
+    {
+        foreach (Player player in playerComponent)
         {
-            waitingTime += Time.deltaTime;
-            if (waitingTime > animationTime)
-                isRotating = false;
-            yield return null;
+            player.UpdatePlayerPosition();
         }
+    }
 
-        yield return null;
+    public void PassTurn()
+    {
+        ActivatePlayer(0);
+        ResetButtons();
+
+        playerPlayingIdx ++;
+        playerPlayingIdx %= 4;
+        playerPlaying = playerOrder[playerPlayingIdx];
+
+        portraitSelection.transform.position = portraits[playerPlaying - 1].transform.position;
+        AssignCardsToButtons();
+        UpdatePlayersPosition();
+
+        // StartCoroutine(MoveCamera(players[playerPlayingIdx]));  
 
     }
 
+    // Player Movement
+    IEnumerator ActivateMovementPhase()
+    {
+        Player p = playerComponent[playerPlayingIdx];
+        p.transform.parent = null;
+        p.BrightPossibleTiles();
+        ActivatePlayer(playerComponent[playerPlayingIdx].playerNbr);
+        buttonsAnimator[0].SetBool("isActive", false);
+
+        yield return null;
+
+        while (!Input.GetKeyDown(KeyCode.Space))
+        {
+            yield return null;
+        }
+
+        p.SwitchOffTiles();
+        cursorIsActive = true;
+        ActivatePlayer(0);
+        makePlayersChild();
+
+        yield return null;
+    }
+
+    // Tile Slide
     IEnumerator InsertTile(int cardNbr, GameObject arrow, int slideDirection)
     {
         isSliding = true;
@@ -271,6 +318,7 @@ public class TurnManager : MonoBehaviour
         mapManager.InstantiateTileLive(tileType, lineCoordinates[0]);
 
         arrow.GetComponent<Animator>().SetBool("isActive", false);
+        arrows.transform.localPosition = new Vector3(0f, -100f, 0f);
         EndTerraform();
         ActivateBasePanel();
 
@@ -455,97 +503,7 @@ public class TurnManager : MonoBehaviour
         yield return null;
     }
 
-    void AssignCardsToButtons()
-    {
-        GameObject activePortrait = portraits[playerPlayingIdx];
-        activeCards = activePortrait.GetComponentsInChildren<Card>();
-
-        int card1_type = activeCards[0].getTileType();
-        int card2_type = activeCards[1].getTileType();
-
-        cardsButtonComponent[0].setTileType(card1_type);
-        cardsButtonComponent[1].setTileType(card2_type);
-    }
-
-    void MoveCursor()
-    {
-        if (selectionDepth == 0)
-        {
-            if (Input.GetKeyDown(KeyCode.D) || Input.GetAxis("HorizontalJoy") == 1)
-            {
-                selectedButton = Mathf.Clamp(selectedButton + 1, 0, 3);
-            }
-            if (Input.GetKeyDown(KeyCode.A) || Input.GetAxis("HorizontalJoy") == -1)
-            {
-                selectedButton = Mathf.Clamp(selectedButton - 1, 0, 3);
-            }
-        }
-        else if (selectionDepth == 1)
-        {
-            if (Input.GetKeyDown(KeyCode.D) || Input.GetAxis("HorizontalJoy") == 1)
-            {
-                selectedButton = Mathf.Clamp(selectedButton + 1, 4, 6);
-            }
-            if (Input.GetKeyDown(KeyCode.A) || Input.GetAxis("HorizontalJoy") == -1)
-            {
-                selectedButton = Mathf.Clamp(selectedButton - 1, 4, 6);
-            }
-
-        }
-        else if (selectionDepth == 2)
-        {
-            if (Input.GetKeyDown(KeyCode.D) || Input.GetAxis("HorizontalJoy") == 1)
-            {
-                selectedButton = Mathf.Clamp(selectedButton + 1, 7, 9);
-            }
-            if (Input.GetKeyDown(KeyCode.A) || Input.GetAxis("HorizontalJoy") == -1)
-            {
-                selectedButton = Mathf.Clamp(selectedButton - 1, 7, 9);
-            }
-
-        }
-        cursorTransform.position = buttonsTransform[selectedButton].position;
-    }
-
-    public void PassTurn()
-    {
-        ActivatePlayer(0);
-        ResetButtons();
-
-        playerPlayingIdx ++;
-        playerPlayingIdx %= 4;
-        playerPlaying = playerOrder[playerPlayingIdx];
-
-        portraitSelection.transform.position = portraits[playerPlaying - 1].transform.position;
-        AssignCardsToButtons();
-
-        // StartCoroutine(MoveCamera(players[playerPlayingIdx]));  
-
-    }
-
-    IEnumerator ActivateMovementPhase()
-    {
-        Player p = playerComponent[playerPlayingIdx];
-        p.transform.parent = null;
-        p.BrightPossibleTiles();
-        ActivatePlayer(playerComponent[playerPlayingIdx].playerNbr);
-        buttonsAnimator[0].SetBool("isActive", false);
-
-        yield return null;
-
-        while (!Input.GetKeyDown(KeyCode.Space))
-        {
-            yield return null;
-        }
-
-        p.SwitchOffTiles();
-        cursorIsActive = true;
-        ActivatePlayer(0);
-        makePlayersChild();
-
-        yield return null;
-    }
-
+    // Tile Rotation
     IEnumerator ActivateRotationCursorSelection()
     {
         yield return null;
@@ -557,25 +515,27 @@ public class TurnManager : MonoBehaviour
             yield return null;
         }
 
+        Coordinate[] selectedCoords = rotationCursor.GetComponent<CursorMoving>().getSelectedCoords();
+
         if (Input.GetKeyDown(KeyCode.A))
         {
             isRotating = true;
-            StartCoroutine(RotateTiles(1));
+            StartCoroutine(mapManager.RotateTiles(selectedCoords, 1));
         }
         else
         {
             isRotating = true;
-            StartCoroutine(RotateTiles(-1));
+            StartCoroutine(mapManager.RotateTiles(selectedCoords, -1));
         }
 
-        yield return null;
+        rotationCursor.GetComponent<CursorMoving>().SetAtPosition(rotationArrowsParkingPosition);
+        cursorArrows.transform.localPosition = rotationArrowsParkingPosition;
 
         while (isRotating)
         {
-
+            yield return null;
         }
 
-        rotationCursor.GetComponent<CursorMoving>().CursorDeactivate();
         cursorIsActive = true;
         //ActivatePlayer(0);  // serve?
         EndTerraform();
@@ -603,6 +563,7 @@ public class TurnManager : MonoBehaviour
         {
             canTerraform = false;
             buttonsAnimator[1].SetBool("isActive", false);
+            rotationCursor.GetComponent<CursorMoving>().CursorDeactivate();
             StartCoroutine(ActivateRotationCursorSelection());
         }
 

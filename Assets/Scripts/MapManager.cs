@@ -122,6 +122,7 @@ public class MapManager : MonoBehaviour {
             myMovement[0] = PickTileObject(myCoords[i+1]).transform.position.x - tmpTileObj.transform.position.x;
             myMovement[1] = PickTileObject(myCoords[i + 1]).transform.position.y - tmpTileObj.transform.position.y;
             StartCoroutine(tmpTile.MoveToPosition(myMovement, animationTime));
+            tmpTile.setCoordinates(myCoords[i + 1].getX(), myCoords[i + 1].getY());
 
             myMap[myCoords[i + 1].getX(), myCoords[i + 1].getY()] = tmpTileObj;
             myMapTiles[myCoords[i + 1].getX(), myCoords[i + 1].getY()] = tmpTile;
@@ -135,6 +136,59 @@ public class MapManager : MonoBehaviour {
             waitingTime += Time.deltaTime;
             if (waitingTime > animationTime)
                 turnManager.isSliding = false;
+            yield return null;
+        }
+
+        yield return null;
+
+    }
+
+    public IEnumerator RotateTiles(Coordinate[] selectedCoords, int rotationDirection) // 1 clockwise, -1 counterclockwise
+    {
+        selectedCoords = KeepMovableTiles(selectedCoords);
+
+        if (rotationDirection == -1)
+        {
+            selectedCoords = GeneralMethods.ReverseArray(selectedCoords);
+        }
+
+        Tile tmpTile;
+        var tmpTileMatrix = new Tile[selectedCoords.Length];
+        GameObject tmpTileObj;
+        var tmpTileObjMatrix = new GameObject[selectedCoords.Length];
+
+        float animationTime = 3f;
+        var myMovement = new Vector2(0, 0);
+
+        for (int i = 0; i < selectedCoords.Length; i++)
+        {
+            tmpTile = PickTileComponent(selectedCoords[i]);
+            tmpTileObj = PickTileObject(selectedCoords[i]);
+
+            myMovement[0] = PickTileObject(selectedCoords[(i + 1) % (selectedCoords.Length)]).transform.position.x - tmpTileObj.transform.position.x;
+            myMovement[1] = PickTileObject(selectedCoords[(i + 1) % (selectedCoords.Length)]).transform.position.y - tmpTileObj.transform.position.y;
+
+            StartCoroutine(tmpTile.MoveToPosition(myMovement, animationTime));
+            tmpTile.setCoordinates(selectedCoords[(i + 1) % (selectedCoords.Length)].getX(), selectedCoords[(i + 1) % (selectedCoords.Length)].getY());
+
+            tmpTileMatrix[i] = tmpTile;
+            tmpTileObjMatrix[i] = tmpTileObj;
+
+        }
+
+        for (int i = 0; i < selectedCoords.Length; i++)
+        {
+            myMap[selectedCoords[(i + 1) % (selectedCoords.Length)].getX(), selectedCoords[(i + 1) % (selectedCoords.Length)].getY()] = tmpTileObjMatrix[i];
+            myMapTiles[selectedCoords[(i + 1) % (selectedCoords.Length)].getX(), selectedCoords[(i + 1) % (selectedCoords.Length)].getY()] = tmpTileMatrix[i];
+        }
+
+        float waitingTime = 0;
+
+        while (waitingTime < animationTime + 0.5f)
+        {
+            waitingTime += Time.deltaTime;
+            if (waitingTime > animationTime)
+                turnManager.isRotating = false;
             yield return null;
         }
 
@@ -209,7 +263,7 @@ public class MapManager : MonoBehaviour {
         // TODO modificare type per diventare come quello non speciale
         myTileComponent.canBeMoved = canBeMoved;
         myTileComponent.myCoord = coordinate;
-        myTileComponent.setPossibleConnections(tileType);
+        myTileComponent.SetPossibleConnections(tileType);
         
         myMap[coordinate.getX(), coordinate.getY()] = tileInstance;
         myMapTiles[coordinate.getX(), coordinate.getY()] = tileInstance.GetComponent<Tile>();
@@ -226,7 +280,7 @@ public class MapManager : MonoBehaviour {
         // TODO modificare type per diventare come quello non speciale
         myTileComponent.canBeMoved = canBeMoved;
         myTileComponent.myCoord = coordinate;
-        myTileComponent.setPossibleConnections(tileType);
+        myTileComponent.SetPossibleConnections(tileType);
 
         myMap[coordinate.getX(), coordinate.getY()] = tileInstance;
         myMapTiles[coordinate.getX(), coordinate.getY()] = tileInstance.GetComponent<Tile>();
@@ -239,23 +293,31 @@ public class MapManager : MonoBehaviour {
 
         if (playerNbr == 1)
         {
-            playerInstance = Instantiate(player, new Vector3(2f, rows-1, -1f) * tileSize + finalShift, Quaternion.identity);
-            playerInstance.GetComponent<Player>().coordinate = new Coordinate (2, rows - 1);
+            //playerInstance = Instantiate(player, new Vector3(0f, rows-1, -1f) * tileSize + finalShift, Quaternion.identity);
+            playerInstance = Instantiate(player, new Vector3(0f, rows - 1, -1f) * tileSize, Quaternion.identity);
+            playerInstance.GetComponent<Player>().coordinate = new Coordinate (0, rows - 1);
+            playerInstance.transform.SetParent(myMap[0, rows-1].transform);
         }
         else if (playerNbr == 2)
         {
-            playerInstance = Instantiate(player, new Vector3(columns-1, rows-1, -1f) * tileSize + finalShift, Quaternion.identity);
+            //playerInstance = Instantiate(player, new Vector3(columns-1, rows-1, -1f) * tileSize + finalShift, Quaternion.identity);
+            playerInstance = Instantiate(player, new Vector3(columns - 1, rows - 1, -1f) * tileSize, Quaternion.identity);
             playerInstance.GetComponent<Player>().coordinate = new Coordinate(columns - 1, rows - 1);
+            playerInstance.transform.SetParent(myMap[columns - 1, rows - 1].transform);
         }
         else if (playerNbr == 3)
         {
-            playerInstance = Instantiate(player, new Vector3(0f, 0f, -1f) * tileSize + finalShift, Quaternion.identity);
+            //playerInstance = Instantiate(player, new Vector3(0f, 0f, -1f) * tileSize + finalShift, Quaternion.identity);
+            playerInstance = Instantiate(player, new Vector3(0f, 0f, -1f) * tileSize, Quaternion.identity);
             playerInstance.GetComponent<Player>().coordinate = new Coordinate(0, 0);
+            playerInstance.transform.SetParent(myMap[0, 0].transform);
         }
         else
         {
-            playerInstance = Instantiate(player, new Vector3(columns-1, 0f, -1f) * tileSize + finalShift, Quaternion.identity);
+            //playerInstance = Instantiate(player, new Vector3(columns-1, 0f, -1f) * tileSize + finalShift, Quaternion.identity);
+            playerInstance = Instantiate(player, new Vector3(columns - 1, 0f, -1f) * tileSize, Quaternion.identity);
             playerInstance.GetComponent<Player>().coordinate = new Coordinate(columns - 1, 0);
+            playerInstance.transform.SetParent(myMap[columns - 1, 0].transform);
         }
 
         allPlayers[playerNbr-1] = playerInstance;
@@ -487,8 +549,20 @@ public class MapManager : MonoBehaviour {
         }
     }
 
-    void updateTilesConnection()
+    public void ResetEffectiveConnections()
     {
+        for (int i = 0; i < columns; i++)
+        {
+            for (int j = 0; j < rows; j++)
+            {
+                myMapTiles[i, j].resetEffectiveConnectionMap();
+            }
+        }
+    }
+
+    public void updateTilesConnection()
+    {
+        ResetEffectiveConnections();
 
         for (int i = 0; i < columns; i++)
         {
@@ -503,7 +577,7 @@ public class MapManager : MonoBehaviour {
                 
                 if (j - 1 > 0)
                 {
-                questa.checkConnections(myMap[i, j - 1].GetComponent<Tile>(), 2);
+                    questa.checkConnections(myMap[i, j - 1].GetComponent<Tile>(), 2);
                 }
                 
                 if (j + 1 < rows)
@@ -513,7 +587,7 @@ public class MapManager : MonoBehaviour {
                 
                 if (i + 1 < columns)
                 {
-                questa.checkConnections(myMap[i + 1, j].GetComponent<Tile>(), 1);
+                    questa.checkConnections(myMap[i + 1, j].GetComponent<Tile>(), 1);
                 }
                 
             }

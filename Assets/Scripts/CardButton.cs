@@ -13,7 +13,7 @@ public class CardButton : MonoBehaviour
     private Image myImage;
     private int tileType, rotation;
     private Sprite mySprite;
-    private int[] tileTypesInClockwiseRotation = new int[4] { 0 , 1, 3, 2 };
+    private int[] curveTypesInClockwiseRotation = new int[4] { 0 , 1, 3, 2 };
 
     public void setTileType(int type)
     {
@@ -65,25 +65,71 @@ public class CardButton : MonoBehaviour
     public void RotateTile(int rotation)  // 1 is clockwise, -1 is counterclockwise
     {
         myImage.transform.Rotate(Vector3.forward * rotation * 90);
-        this.rotation += rotation;
+        this.rotation -= rotation;
     }
 
     public int GetTileType()
     {
-        int myRotationValue = rotation % 4;
-        int myType;
+        int myType = -1;
 
-        if (myRotationValue == 0)
+        if (rotation % 4 == 0) // no rotation
         {
             myType = tileType;
         }
-        else if (myRotationValue > 0)
-        {
-            myType = tileType + myRotationValue;
-        }
+
         else
         {
-            myType = tileType + (4 + myRotationValue);
+            if (tileType <= 3) // curve
+            {
+                int myRotationValue = rotation % 4;
+                int tileIDX = GeneralMethods.FindElementIdx(curveTypesInClockwiseRotation, tileType);
+                if (myRotationValue > 0)
+                {
+                    tileIDX = (tileIDX + myRotationValue) % 4;
+                }
+                else
+                {
+                    tileIDX = (tileIDX + (4 + myRotationValue) ) % 4;
+                }
+                myType = curveTypesInClockwiseRotation[tileIDX];
+                Debug.Log(tileType.ToString());
+                Debug.Log(rotation.ToString());
+                Debug.Log(myRotationValue.ToString());
+                Debug.Log(myType.ToString());
+            }
+            else if (tileType == (int)tileTypes.Straight_H || tileType == (int)tileTypes.Straight_H)
+            {
+                int myRotationValue = rotation % 2;
+
+                if(myRotationValue != 0)
+                {
+                    if (tileType == (int)tileTypes.Straight_H)
+                        myType = (int)tileTypes.Straight_V;
+                    else
+                        myType = (int)tileTypes.Straight_H;
+                }
+                Debug.Log(tileType.ToString());
+                Debug.Log(rotation.ToString());
+                Debug.Log(myRotationValue.ToString());
+                Debug.Log(myType.ToString());
+            }
+            else if (tileType >= (int)tileTypes.T_B && tileType <= (int)tileTypes.T_R)
+            {
+                int myRotationValue = rotation % 4;
+
+                if (myRotationValue < 0)
+                {
+                    myRotationValue = (4 + myRotationValue);
+                }
+
+                myType = 6 + ((tileType-6) + myRotationValue) % 4;
+                Debug.Log(tileType.ToString());
+                Debug.Log(rotation.ToString());
+                Debug.Log(myRotationValue.ToString());
+                Debug.Log(myType.ToString());
+            }
+            else
+                myType = tileType;
         }
 
         tileType = myType;

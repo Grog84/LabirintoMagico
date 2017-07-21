@@ -18,6 +18,25 @@ public class Player : MonoBehaviour
     public MapManager mapManagerComponent;
     private List<Tile> toBright;
 
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Tile")
+        {
+            Tile myTile = collision.gameObject.GetComponent<Tile>();
+            UpdatePlayerPosition(myTile);
+        }
+    }
+
+    public void UpdatePlayerPosition(Tile myTile)
+    {
+        coordinate = myTile.getCoordinates();
+    }
+
+    public void UpdatePlayerPosition()
+    {
+        Tile myTile = transform.parent.GetComponent<Tile>();
+        coordinate = myTile.getCoordinates();
+    }
 
     public void setPlayerSprite()
     {
@@ -50,7 +69,7 @@ public class Player : MonoBehaviour
         //Debug.Log("passaaa");
         Tile nextToAdd;
         Tile actualPosition = mapManagerComponent.myMap[coordinate.getX(), coordinate.getY()].GetComponent<Tile>();
-        Debug.Log("passa");
+
         toBright.Add(actualPosition);
         for (int i = 0; i < toBright.Count; i++)
         {
