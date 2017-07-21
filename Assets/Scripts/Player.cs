@@ -123,19 +123,19 @@ public class Player : MonoBehaviour
     {
         if (!moving && playerNbr == isPlayerTurn)
         {
-            if (Input.GetKeyDown(KeyCode.D))
+            if (Input.GetKeyDown(KeyCode.D) || Input.GetAxis("HorizontalJoy") == 1)
             {
                 StartCoroutine(MoveRight());
             }
-            if (Input.GetKeyDown(KeyCode.A))
+            if (Input.GetKeyDown(KeyCode.A) || Input.GetAxis("HorizontalJoy") == -1)
             {
                 StartCoroutine(MoveLeft());
             }
-            if (Input.GetKeyDown(KeyCode.W))
+            if (Input.GetKeyDown(KeyCode.W) || Input.GetAxis("VerticalJoy") == -1)
             {
                 StartCoroutine(MoveUp());
             }
-            if (Input.GetKeyDown(KeyCode.S))
+            if (Input.GetKeyDown(KeyCode.S) || Input.GetAxis("VerticalJoy") == 1)
             {
                 StartCoroutine(MoveDown());
             }

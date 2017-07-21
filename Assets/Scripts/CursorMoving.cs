@@ -23,20 +23,20 @@ public class CursorMoving : MonoBehaviour {
     {
         if (isActive && !moving)
         {
-            if (Input.GetKeyDown(KeyCode.D) && coordinate.getX() < mapManagerComponent.columns-1)
+            if ((Input.GetKeyDown(KeyCode.D) || Input.GetAxis("HorizontalJoy") == 1) && coordinate.getX() < mapManagerComponent.columns-1)
             {
                 StartCoroutine(MoveRight());
                 Debug.Log(coordinate.getX());
             }
-            if (Input.GetKeyDown(KeyCode.A) && coordinate.getX() >= 0)
+            if ((Input.GetKeyDown(KeyCode.A) || Input.GetAxis("HorizontalJoy") == -1) && coordinate.getX() >= 0)
             {
                 StartCoroutine(MoveLeft());
             }
-            if (Input.GetKeyDown(KeyCode.W) && coordinate.getY() < mapManagerComponent.rows - 1)
+            if ((Input.GetKeyDown(KeyCode.W) || Input.GetAxis("VerticalJoy") == -1) && coordinate.getY() < mapManagerComponent.rows - 1)
             {
                 StartCoroutine(MoveUp());
             }
-            if (Input.GetKeyDown(KeyCode.S) && coordinate.getY() >= 0)
+            if ((Input.GetKeyDown(KeyCode.S) || Input.GetAxis("VerticalJoy") == 1) && coordinate.getY() >= 0)
             {
                 StartCoroutine(MoveDown());
             }

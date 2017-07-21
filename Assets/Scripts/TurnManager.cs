@@ -286,7 +286,7 @@ public class TurnManager : MonoBehaviour
 
         while (!Input.GetKeyDown(KeyCode.B) && !Input.GetKeyDown(KeyCode.Space))
         {
-            if (Input.GetKeyDown(KeyCode.D))
+            if (Input.GetKeyDown(KeyCode.D) || Input.GetAxis("HorizontalJoy") == 1)
             {
                 if (currentSelection >= 26 && currentSelection <= 39)
                 {
@@ -311,7 +311,7 @@ public class TurnManager : MonoBehaviour
                 }
             }
 
-            else if (Input.GetKeyDown(KeyCode.A))
+            else if (Input.GetKeyDown(KeyCode.A) || Input.GetAxis("HorizontalJoy") == -1)
             {
                 if (currentSelection >= 1 && currentSelection <= 13)
                 {
@@ -471,22 +471,22 @@ public class TurnManager : MonoBehaviour
     {
         if (selectionDepth == 0)
         {
-            if (Input.GetKeyDown(KeyCode.D))
+            if (Input.GetKeyDown(KeyCode.D) || Input.GetAxis("HorizontalJoy") == 1)
             {
                 selectedButton = Mathf.Clamp(selectedButton + 1, 0, 3);
             }
-            if (Input.GetKeyDown(KeyCode.A))
+            if (Input.GetKeyDown(KeyCode.A) || Input.GetAxis("HorizontalJoy") == -1)
             {
                 selectedButton = Mathf.Clamp(selectedButton - 1, 0, 3);
             }
         }
         else if (selectionDepth == 1)
         {
-            if(Input.GetKeyDown(KeyCode.D))
+            if (Input.GetKeyDown(KeyCode.D) || Input.GetAxis("HorizontalJoy") == 1)
             {
                 selectedButton = Mathf.Clamp(selectedButton + 1, 4, 6);
             }
-            if (Input.GetKeyDown(KeyCode.A))
+            if (Input.GetKeyDown(KeyCode.A) || Input.GetAxis("HorizontalJoy") == -1)
             {
                 selectedButton = Mathf.Clamp(selectedButton - 1, 4, 6);
             }
@@ -494,11 +494,11 @@ public class TurnManager : MonoBehaviour
         }
         else if (selectionDepth == 2)
         {
-            if (Input.GetKeyDown(KeyCode.D))
+            if (Input.GetKeyDown(KeyCode.D) || Input.GetAxis("HorizontalJoy") == 1)
             {
                 selectedButton = Mathf.Clamp(selectedButton + 1, 7, 9);
             }
-            if (Input.GetKeyDown(KeyCode.A))
+            if (Input.GetKeyDown(KeyCode.A) || Input.GetAxis("HorizontalJoy") == -1)
             {
                 selectedButton = Mathf.Clamp(selectedButton - 1, 7, 9);
             }
