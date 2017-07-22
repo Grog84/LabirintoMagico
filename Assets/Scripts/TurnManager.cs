@@ -158,6 +158,7 @@ public class TurnManager : MonoBehaviour
         panelsTransform[1].anchoredPosition = panelParkingPosition;
         panelsTransform[2].anchoredPosition = panelParkingPosition;
         cursorTransform.position = buttonsTransform[selectedButton].position;
+        cursorIsActive = true;
     }
 
     void ActivateTerraformPanel()
@@ -168,6 +169,7 @@ public class TurnManager : MonoBehaviour
         panelsTransform[1].anchoredPosition = panelActivePosition;
         panelsTransform[2].anchoredPosition = panelParkingPosition;
         cursorTransform.position = buttonsTransform[selectedButton].position;
+        cursorIsActive = true;
     }
 
     void ActivateCardSelection()
@@ -187,6 +189,12 @@ public class TurnManager : MonoBehaviour
         terraformingButton.GetComponent<Animator>().SetBool("isActive", false);
     }
 
+    void ResetCardsButtonRotation()
+    {
+        cardsButtonComponent[0].ResetCardRotation();
+        cardsButtonComponent[1].ResetCardRotation();
+    }
+
     void AssignCardsToButtons()
     {
         GameObject activePortrait = portraits[playerPlayingIdx];
@@ -195,8 +203,8 @@ public class TurnManager : MonoBehaviour
         int card1_type = activeCards[0].getTileType();
         int card2_type = activeCards[1].getTileType();
 
-        cardsButtonComponent[0].setTileType(card1_type);
-        cardsButtonComponent[1].setTileType(card2_type);
+        cardsButtonComponent[0].SetTileType(card1_type);
+        cardsButtonComponent[1].SetTileType(card2_type);
     }
 
     void MoveCursor()
@@ -257,6 +265,7 @@ public class TurnManager : MonoBehaviour
         playerPlaying = playerOrder[playerPlayingIdx];
 
         portraitSelection.transform.position = portraits[playerPlaying - 1].transform.position;
+        ResetCardsButtonRotation();
         AssignCardsToButtons();
         UpdatePlayersPosition();
 
@@ -546,6 +555,7 @@ public class TurnManager : MonoBehaviour
 
     IEnumerator ActivateRotationCursor()
     {
+
         rotationCursor.GetComponent<CursorMoving>().CursorActivate(playerComponent[playerPlayingIdx].coordinate);
 
         yield return null;
@@ -557,6 +567,8 @@ public class TurnManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.B))
         {
+            rotationCursor.GetComponent<CursorMoving>().CursorDeactivate();
+            rotationCursor.GetComponent<CursorMoving>().SetAtPosition(rotationArrowsParkingPosition);
             ActivateTerraformPanel();
         }
         else

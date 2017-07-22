@@ -23,10 +23,9 @@ public class CursorMoving : MonoBehaviour {
     {
         if (isActive && !moving)
         {
-            if ((Input.GetKeyDown(KeyCode.D) || Input.GetAxis("HorizontalJoy") == 1) && coordinate.getX() < mapManagerComponent.columns-1)
+            if ((Input.GetKeyDown(KeyCode.D) || Input.GetAxis("HorizontalJoy") == 1) && coordinate.getX() < mapManagerComponent.columns-2)
             {
                 StartCoroutine(MoveRight());
-                Debug.Log(coordinate.getX());
             }
             if ((Input.GetKeyDown(KeyCode.A) || Input.GetAxis("HorizontalJoy") == -1) && coordinate.getX() >= 0)
             {
@@ -36,7 +35,7 @@ public class CursorMoving : MonoBehaviour {
             {
                 StartCoroutine(MoveUp());
             }
-            if ((Input.GetKeyDown(KeyCode.S) || Input.GetAxis("VerticalJoy") == 1) && coordinate.getY() >= 0)
+            if ((Input.GetKeyDown(KeyCode.S) || Input.GetAxis("VerticalJoy") == 1) && coordinate.getY() >= 1)
             {
                 StartCoroutine(MoveDown());
             }
@@ -123,11 +122,14 @@ public class CursorMoving : MonoBehaviour {
         float elapsedTime = 0;
         float animTime = 0.2f;
 
+        int newX = Mathf.Clamp(coordinate.getX(), 0, mapManagerComponent.columns - 2);
+        int newY = Mathf.Clamp(coordinate.getY() + 1, 1, mapManagerComponent.rows - 1);
+        GameObject destinationTile = mapManagerComponent.myMap[newX, newY];
+        Vector3 destination = destinationTile.GetComponent<Transform>().position;
+        destination.z--;
+
         while (elapsedTime < animTime)
         {
-            GameObject destinationTile = mapManagerComponent.myMap[coordinate.getX(), coordinate.getY() + 1];
-            Vector3 destination = destinationTile.GetComponent<Transform>().position;
-            destination.z--;
             transform.position = Vector3.Lerp(transform.position, destination, elapsedTime / animTime);
 
             elapsedTime += Time.deltaTime;
@@ -145,11 +147,14 @@ public class CursorMoving : MonoBehaviour {
         float elapsedTime = 0;
         float animTime = 0.2f;
 
+        int newX = Mathf.Clamp(coordinate.getX() + 1, 0, mapManagerComponent.columns - 2);
+        int newY = Mathf.Clamp(coordinate.getY(), 1, mapManagerComponent.rows - 1);
+        GameObject destinationTile = mapManagerComponent.myMap[newX, newY];
+        Vector3 destination = destinationTile.GetComponent<Transform>().position;
+        destination.z--;
+
         while (elapsedTime < animTime)
         {
-            GameObject destinationTile = mapManagerComponent.myMap[coordinate.getX() + 1, coordinate.getY()];
-            Vector3 destination = destinationTile.GetComponent<Transform>().position;
-            destination.z--;
             transform.position = Vector3.Lerp(transform.position, destination, elapsedTime / animTime);
 
             elapsedTime += Time.deltaTime;
@@ -167,11 +172,14 @@ public class CursorMoving : MonoBehaviour {
         float elapsedTime = 0;
         float animTime = 0.2f;
 
+        int newX = Mathf.Clamp(coordinate.getX(), 0, mapManagerComponent.columns - 2);
+        int newY = Mathf.Clamp(coordinate.getY() - 1, 1, mapManagerComponent.rows - 1);
+        GameObject destinationTile = mapManagerComponent.myMap[newX, newY];
+        Vector3 destination = destinationTile.GetComponent<Transform>().position;
+        destination.z--;
+
         while (elapsedTime < animTime)
         {
-            GameObject destinationTile = mapManagerComponent.myMap[coordinate.getX(), coordinate.getY() - 1];
-            Vector3 destination = destinationTile.GetComponent<Transform>().position;
-            destination.z--;
             transform.position = Vector3.Lerp(transform.position, destination, elapsedTime / animTime);
 
             elapsedTime += Time.deltaTime;
@@ -189,11 +197,14 @@ public class CursorMoving : MonoBehaviour {
         float elapsedTime = 0;
         float animTime = 0.2f;
 
+        int newX = Mathf.Clamp(coordinate.getX() - 1, 0, mapManagerComponent.columns - 2);
+        int newY = Mathf.Clamp(coordinate.getY(), 1, mapManagerComponent.rows - 1);
+        GameObject destinationTile = mapManagerComponent.myMap[newX, newY];
+        Vector3 destination = destinationTile.GetComponent<Transform>().position;
+        destination.z--;
+
         while (elapsedTime < animTime)
         {
-            GameObject destinationTile = mapManagerComponent.myMap[coordinate.getX() - 1, coordinate.getY()];
-            Vector3 destination = destinationTile.GetComponent<Transform>().position;
-            destination.z--;
             transform.position = Vector3.Lerp(transform.position, destination, elapsedTime / animTime);
 
             elapsedTime += Time.deltaTime;

@@ -11,11 +11,11 @@ public class CardButton : MonoBehaviour
     };
 
     private Image myImage;
-    private int tileType, rotation;
+    public int tileType, rotation;
     private Sprite mySprite;
     private int[] curveTypesInClockwiseRotation = new int[4] { 0 , 1, 3, 2 };
 
-    public void setTileType(int type)
+    public void SetTileType(int type)
     {
         Texture2D myTexture = null;
         tileType = type;
@@ -65,6 +65,7 @@ public class CardButton : MonoBehaviour
     public void RotateTile(int rotation)  // 1 is clockwise, -1 is counterclockwise
     {
         myImage.transform.Rotate(Vector3.forward * rotation * 90);
+        //myImage.transform.Rotate(Vector3.forward * rotation * 90);
         this.rotation -= rotation;
     }
 
@@ -92,10 +93,7 @@ public class CardButton : MonoBehaviour
                     tileIDX = (tileIDX + (4 + myRotationValue) ) % 4;
                 }
                 myType = curveTypesInClockwiseRotation[tileIDX];
-                Debug.Log(tileType.ToString());
-                Debug.Log(rotation.ToString());
-                Debug.Log(myRotationValue.ToString());
-                Debug.Log(myType.ToString());
+
             }
             else if (tileType == (int)tileTypes.Straight_H || tileType == (int)tileTypes.Straight_H)
             {
@@ -108,10 +106,7 @@ public class CardButton : MonoBehaviour
                     else
                         myType = (int)tileTypes.Straight_H;
                 }
-                Debug.Log(tileType.ToString());
-                Debug.Log(rotation.ToString());
-                Debug.Log(myRotationValue.ToString());
-                Debug.Log(myType.ToString());
+
             }
             else if (tileType >= (int)tileTypes.T_B && tileType <= (int)tileTypes.T_R)
             {
@@ -123,10 +118,6 @@ public class CardButton : MonoBehaviour
                 }
 
                 myType = 6 + ((tileType-6) + myRotationValue) % 4;
-                Debug.Log(tileType.ToString());
-                Debug.Log(rotation.ToString());
-                Debug.Log(myRotationValue.ToString());
-                Debug.Log(myType.ToString());
             }
             else
                 myType = tileType;
@@ -135,6 +126,11 @@ public class CardButton : MonoBehaviour
         tileType = myType;
         rotation = 0;
         return myType;
+    }
+
+    public void ResetCardRotation()
+    {
+        myImage.transform.rotation = new Quaternion(0, 0 ,0, 0);
     }
 
     // Use this for initialization

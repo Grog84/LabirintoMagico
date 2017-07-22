@@ -10,7 +10,7 @@ public class Card : MonoBehaviour {
         Curve_BR, Curve_LB, Curve_RT, Curve_TL, Straight_V, Straight_H, T_B, T_L, T_T, T_R, Cross
     };
 
-    private int tileType;
+    public int tileType;
     private Image myImage;
     private Sprite mySprite;
 
