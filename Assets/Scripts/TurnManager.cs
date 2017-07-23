@@ -185,6 +185,7 @@ public class TurnManager : MonoBehaviour
     void EndTerraform()
     {
         mapManager.updateTilesConnection();
+        UpdatePlayersPosition();
         canTerraform = false;
         terraformingButton.GetComponent<Animator>().SetBool("isActive", false);
     }
@@ -267,7 +268,6 @@ public class TurnManager : MonoBehaviour
         portraitSelection.transform.position = portraits[playerPlaying - 1].transform.position;
         ResetCardsButtonRotation();
         AssignCardsToButtons();
-        UpdatePlayersPosition();
 
         // StartCoroutine(MoveCamera(players[playerPlayingIdx]));  
 
@@ -303,6 +303,8 @@ public class TurnManager : MonoBehaviour
         isSliding = true;
         Coordinate[] lineCoordinates = arrow.GetComponent<InsertArrow>().getPointedCoords();
         lineCoordinates = mapManager.KeepMovableTiles(lineCoordinates);
+
+        int newCardType = mapManager.PickTileComponent(lineCoordinates[lineCoordinates.Length-1]).type;
         StartCoroutine(mapManager.SlideLine(lineCoordinates, slideDirection));
 
         int tileType = 0;
@@ -325,6 +327,14 @@ public class TurnManager : MonoBehaviour
         tileType = activatedCard.GetTileType();
 
         mapManager.InstantiateTileLive(tileType, lineCoordinates[0]);
+
+        GameObject activePortrait = portraits[playerPlayingIdx];
+        activeCards = activePortrait.GetComponentsInChildren<Card>();
+
+        if (cardNbr == 1)
+            activeCards[0].AssignType(newCardType);
+        else
+            activeCards[1].AssignType(newCardType);
 
         arrow.GetComponent<Animator>().SetBool("isActive", false);
         arrows.transform.localPosition = new Vector3(0f, -100f, 0f);
@@ -545,6 +555,7 @@ public class TurnManager : MonoBehaviour
             yield return null;
         }
 
+        UpdatePlayersPosition();
         cursorIsActive = true;
         //ActivatePlayer(0);  // serve?
         EndTerraform();
@@ -624,7 +635,6 @@ public class TurnManager : MonoBehaviour
         //makePlayersChild();
 
     }
-
 
     // Update is called once per frame
     void Update()

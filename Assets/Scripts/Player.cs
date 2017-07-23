@@ -16,7 +16,7 @@ public class Player : MonoBehaviour
     public Coordinate coordinate;
     public GameObject mapManager;
     public MapManager mapManagerComponent;
-    private List<Tile> toBright;
+    public List<Tile> toBright;
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
@@ -29,13 +29,13 @@ public class Player : MonoBehaviour
 
     public void UpdatePlayerPosition(Tile myTile)
     {
-        coordinate = myTile.getCoordinates();
+        coordinate = myTile.GetCoordinatesCopy();
     }
 
     public void UpdatePlayerPosition()
     {
         Tile myTile = transform.parent.GetComponent<Tile>();
-        coordinate = myTile.getCoordinates();
+        coordinate = myTile.GetCoordinatesCopy();
     }
 
     public void setPlayerSprite()
@@ -68,9 +68,9 @@ public class Player : MonoBehaviour
     {
         //Debug.Log("passaaa");
         Tile nextToAdd;
-        Tile actualPosition = mapManagerComponent.myMap[coordinate.getX(), coordinate.getY()].GetComponent<Tile>();
+        Tile currentPosition = mapManagerComponent.myMap[coordinate.getX(), coordinate.getY()].GetComponent<Tile>();
 
-        toBright.Add(actualPosition);
+        toBright.Add(currentPosition);
         for (int i = 0; i < toBright.Count; i++)
         {
             if (toBright[i].effectiveConnections[0])
@@ -124,6 +124,39 @@ public class Player : MonoBehaviour
             toBright[i].GetComponent<SpriteRenderer>().color = Color.white;
         }
         toBright.Clear();
+    }
+
+    public void ResetToStartingPosition()
+    {
+        Vector3 cornerTransform;
+
+        switch (playerNbr)
+        {
+
+            case 1:
+                cornerTransform = mapManagerComponent.myMap[0, mapManagerComponent.rows - 1].transform.position;
+                transform.position = new Vector3(cornerTransform.x, cornerTransform.y, -1);
+                transform.SetParent(mapManagerComponent.myMap[0, mapManagerComponent.rows - 1].transform);
+                
+                break;
+            case 2:
+                cornerTransform = mapManagerComponent.myMap[mapManagerComponent.columns - 1, mapManagerComponent.rows - 1].transform.position;
+                transform.position = new Vector3(cornerTransform.x, cornerTransform.y, -1);
+                transform.SetParent(mapManagerComponent.myMap[mapManagerComponent.columns - 1, mapManagerComponent.rows - 1].transform);
+                break;
+            case 3:
+                cornerTransform = mapManagerComponent.myMap[0, 0].transform.position;
+                transform.position = new Vector3(cornerTransform.x, cornerTransform.y, -1);
+                transform.SetParent(mapManagerComponent.myMap[0, 0].transform);
+                break;
+            case 4:
+                cornerTransform = mapManagerComponent.myMap[mapManagerComponent.columns - 1, 0].transform.position;
+                transform.position = new Vector3(cornerTransform.x, cornerTransform.y, -1);
+                transform.SetParent(mapManagerComponent.myMap[mapManagerComponent.columns - 1, 0].transform);
+                break;
+            default:
+                break;
+        }
     }
 
     // Use this for initialization

@@ -105,13 +105,30 @@ public class MapManager : MonoBehaviour {
         return newCoord;
     }
 
+    void DestroyTile(GameObject myTile) // checks whether or not a player is present on the tile
+    {
+        // TODO NO-UNCHILD
+        for (int i = 0; i < myTile.transform.childCount; i++)
+        {
+            Transform childTrans = myTile.transform.GetChild(i);
+            if (childTrans.gameObject.tag == "Player")
+            {
+                childTrans.parent = null;
+                childTrans.gameObject.GetComponent<Player>().ResetToStartingPosition();
+            }
+        }
+
+        Destroy(myTile);
+    }
+
     public IEnumerator SlideLine(Coordinate[] myCoords, int mySlideDirection)
     {
         Tile tmpTile;
         GameObject tmpTileObj;
 
         float animationTime = 3f;
-        Destroy(PickTileObject(myCoords[myCoords.Length - 1])); // destroys the last movable tile
+
+        DestroyTile(PickTileObject(myCoords[myCoords.Length - 1])); // destroys the last movable tile
 
         var myMovement = new Vector2(0, 0);
 
@@ -560,6 +577,17 @@ public class MapManager : MonoBehaviour {
         }
     }
 
+    public void ResetEffectiveConnections(Coordinate topLeft, Coordinate botRight) // works only in a squared area defined by the 2 coordinates included
+    {
+        for (int i = topLeft.getX(); i <= botRight.getX(); i++)
+        {
+            for (int j = botRight.getY(); j <= topLeft.getY(); j++)
+            {
+                myMapTiles[i, j].resetEffectiveConnectionMap();
+            }
+        }
+    }
+
     public void updateTilesConnection()
     {
         ResetEffectiveConnections();
@@ -590,6 +618,41 @@ public class MapManager : MonoBehaviour {
                     questa.checkConnections(myMap[i + 1, j].GetComponent<Tile>(), 1);
                 }
                 
+            }
+        }
+
+    }
+
+    public void updateTilesConnection(Coordinate topLeft, Coordinate botRight)
+    {
+        ResetEffectiveConnections(topLeft, botRight);
+
+        for (int i = topLeft.getX(); i <= botRight.getX(); i++)
+        {
+            for (int j = botRight.getY(); j <= topLeft.getY(); j++)
+            {
+                Tile questa = myMap[i, j].GetComponent<Tile>();
+
+                if (i - 1 > 0)
+                {
+                    questa.checkConnections(myMap[i - 1, j].GetComponent<Tile>(), 3);
+                }
+
+                if (j - 1 > 0)
+                {
+                    questa.checkConnections(myMap[i, j - 1].GetComponent<Tile>(), 2);
+                }
+
+                if (j + 1 < rows)
+                {
+                    questa.checkConnections(myMap[i, j + 1].GetComponent<Tile>(), 0);
+                }
+
+                if (i + 1 < columns)
+                {
+                    questa.checkConnections(myMap[i + 1, j].GetComponent<Tile>(), 1);
+                }
+
             }
         }
     }

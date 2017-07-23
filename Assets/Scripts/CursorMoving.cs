@@ -45,8 +45,8 @@ public class CursorMoving : MonoBehaviour {
 
     public void CursorActivate (Coordinate pcoord)
     {
-        int x = pcoord.getX();
-        int y = pcoord.getY();
+        int x = Mathf.Clamp(pcoord.getX(), 0, mapManagerComponent.columns-2);
+        int y = Mathf.Clamp(pcoord.getY(), 1, mapManagerComponent.rows-1);
         coordinate.setCoordinate(x, y);
         isActive = true;
         Vector3 destination = mapManagerComponent.myMap[x,y].transform.position;

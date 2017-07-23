@@ -23,6 +23,7 @@ public class Tile : MonoBehaviour {
 
     public void setSprite(int type)
     {
+        this.type = type;
         switch (type)
         {
             case (int)tileTypes.Curve_BR:
@@ -247,6 +248,11 @@ public class Tile : MonoBehaviour {
     public Coordinate getCoordinates()
     {
         return myCoord;
+    }
+
+    public Coordinate GetCoordinatesCopy()
+    {
+        return new Coordinate(myCoord.getX(), myCoord.getY());
     }
 
     public void resetEffectiveConnectionMap()

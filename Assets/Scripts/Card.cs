@@ -19,9 +19,9 @@ public class Card : MonoBehaviour {
         return tileType;
     }
 
-    void AssignRandomType()
+    public void AssignType(int type)
     {
-        tileType = Random.Range(0, 11);
+        tileType = type;
         Texture2D myTexture = null;
 
         switch (tileType)
@@ -59,13 +59,19 @@ public class Card : MonoBehaviour {
             case (int)tileTypes.Cross:
                 myTexture = (Texture2D)Resources.Load("TileProva/cross");
                 break;
-            
+
             default:
                 break;
         }
 
         mySprite = Sprite.Create(myTexture, new Rect(0, 0, myTexture.width, myTexture.height), new Vector2(0.5f, 0.5f));
         myImage.sprite = mySprite;
+    }
+
+    void AssignRandomType()
+    {
+        int randType = Random.Range(0, 11);
+        AssignType(randType);
     }
 
     // Use this for initialization

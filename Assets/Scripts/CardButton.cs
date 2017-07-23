@@ -19,6 +19,8 @@ public class CardButton : MonoBehaviour
     {
         Texture2D myTexture = null;
         tileType = type;
+        rotation = 0;
+
         switch (tileType)
         {
             case (int)tileTypes.Curve_BR:
@@ -95,15 +97,15 @@ public class CardButton : MonoBehaviour
                 myType = curveTypesInClockwiseRotation[tileIDX];
 
             }
-            else if (tileType == (int)tileTypes.Straight_H || tileType == (int)tileTypes.Straight_H)
+            else if (tileType == (int)tileTypes.Straight_H || tileType == (int)tileTypes.Straight_V)
             {
                 int myRotationValue = rotation % 2;
 
-                if(myRotationValue != 0)
+                if(myRotationValue == 1)
                 {
                     if (tileType == (int)tileTypes.Straight_H)
                         myType = (int)tileTypes.Straight_V;
-                    else
+                    else if (tileType == (int)tileTypes.Straight_V)
                         myType = (int)tileTypes.Straight_H;
                 }
 
