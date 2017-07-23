@@ -6,9 +6,9 @@ public class Trap : MonoBehaviour {
 
     private int playerDropping;
 
-    public void SetPlayerDropping()
+    public void SetPlayerDropping(int player)
     {
-
+        playerDropping = player;
     }
 
 	// Use this for initialization

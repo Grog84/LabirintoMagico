@@ -12,36 +12,7 @@ public class CursorMoving : MonoBehaviour {
     public GameObject turnManager;
     private TurnManager turnManagerComponent;
 
-	void Awake ()
-    {
-        mapManagerComponent = mapManager.GetComponent<MapManager>();
-        turnManagerComponent = turnManager.GetComponent<TurnManager>();
-        coordinate = new Coordinate(0, 0);
-    }
-	
-	void Update ()
-    {
-        if (isActive && !moving)
-        {
-            if ((Input.GetKeyDown(KeyCode.D) || Input.GetAxis("HorizontalJoy") == 1) && coordinate.getX() < mapManagerComponent.columns-2)
-            {
-                StartCoroutine(MoveRight());
-            }
-            if ((Input.GetKeyDown(KeyCode.A) || Input.GetAxis("HorizontalJoy") == -1) && coordinate.getX() >= 0)
-            {
-                StartCoroutine(MoveLeft());
-            }
-            if ((Input.GetKeyDown(KeyCode.W) || Input.GetAxis("VerticalJoy") == -1) && coordinate.getY() < mapManagerComponent.rows - 1)
-            {
-                StartCoroutine(MoveUp());
-            }
-            if ((Input.GetKeyDown(KeyCode.S) || Input.GetAxis("VerticalJoy") == 1) && coordinate.getY() >= 1)
-            {
-                StartCoroutine(MoveDown());
-            }
-
-        }
-    }
+    // Activation/Deactivation
 
     public void CursorActivate (Coordinate pcoord)
     {
@@ -59,6 +30,8 @@ public class CursorMoving : MonoBehaviour {
         isActive = false;
     }
 
+    // Movement Utilities
+
     public void SetAtPosition(Vector3 position)
     {
         transform.position = position;
@@ -75,45 +48,7 @@ public class CursorMoving : MonoBehaviour {
         return selectedCoords;
     }
 
-    // deprecated method
-    public IEnumerator RotateTiles(int rotationDirection) // 1 clockwise, -1 counterclockwise
-    {
-        turnManagerComponent.makePlayersChild();
-
-        GameObject tmpTile = mapManagerComponent.myMap[coordinate.getX(), coordinate.getY()];
-        GameObject tmpBottomTile = mapManagerComponent.myMap[coordinate.getX(), coordinate.getY() - 1];
-        GameObject tmpBottomRightTile = mapManagerComponent.myMap[coordinate.getX() + 1, coordinate.getY() - 1];
-        GameObject tmpRightTile = mapManagerComponent.myMap[coordinate.getX() + 1, coordinate.getY()];
-
-        mapManagerComponent.myMap[coordinate.getX(), coordinate.getY()] = tmpBottomTile;
-
-        mapManagerComponent.myMap[coordinate.getX(), coordinate.getY() - 1] = tmpBottomRightTile;
-
-        mapManagerComponent.myMap[coordinate.getX() + 1, coordinate.getY() - 1] = tmpRightTile;
-
-        mapManagerComponent.myMap[coordinate.getX() + 1, coordinate.getY()] = tmpTile;
-
-        tmpTile.GetComponent<Tile>().myCoord.setCoordinate(coordinate.getX(), coordinate.getY());
-        tmpBottomTile.GetComponent<Tile>().myCoord.setCoordinate(coordinate.getX(), coordinate.getY() - 1);
-        tmpBottomRightTile.GetComponent<Tile>().myCoord.setCoordinate(coordinate.getX() + 1, coordinate.getY() - 1);
-        tmpRightTile.GetComponent<Tile>().myCoord.setCoordinate(coordinate.getX() + 1, coordinate.getY());
-
-
-        Vector3 newPosition = tmpTile.transform.position;
-        newPosition.x = newPosition.x + 5;
-        tmpTile.transform.position = newPosition;
-
-        newPosition.y = newPosition.y - 5;
-        tmpRightTile.transform.position = newPosition;
-
-        newPosition.x = newPosition.x - 5;
-        tmpBottomRightTile.transform.position = newPosition;
-
-        newPosition.y = newPosition.y + 5;
-        tmpBottomTile.transform.position = newPosition;
-
-        yield return null;
-    }
+    // Movement Coroutines
 
     public IEnumerator MoveUp()
     {
@@ -213,6 +148,80 @@ public class CursorMoving : MonoBehaviour {
 
         coordinate.setCoordinate(coordinate.getX() - 1, coordinate.getY());
         moving = false;
+    }
+
+    // Unity Specific methods
+
+    void Awake ()
+    {
+        mapManagerComponent = mapManager.GetComponent<MapManager>();
+        turnManagerComponent = turnManager.GetComponent<TurnManager>();
+        coordinate = new Coordinate(0, 0);
+    }
+	
+	void Update ()
+    {
+        if (isActive && !moving)
+        {
+            if ((Input.GetKeyDown(KeyCode.D) || Input.GetAxis("HorizontalJoy") == 1) && coordinate.getX() < mapManagerComponent.columns-2)
+            {
+                StartCoroutine(MoveRight());
+            }
+            if ((Input.GetKeyDown(KeyCode.A) || Input.GetAxis("HorizontalJoy") == -1) && coordinate.getX() >= 0)
+            {
+                StartCoroutine(MoveLeft());
+            }
+            if ((Input.GetKeyDown(KeyCode.W) || Input.GetAxis("VerticalJoy") == -1) && coordinate.getY() < mapManagerComponent.rows - 1)
+            {
+                StartCoroutine(MoveUp());
+            }
+            if ((Input.GetKeyDown(KeyCode.S) || Input.GetAxis("VerticalJoy") == 1) && coordinate.getY() >= 1)
+            {
+                StartCoroutine(MoveDown());
+            }
+
+        }
+    }
+
+    // deprecated methods
+
+    public IEnumerator RotateTiles(int rotationDirection) // 1 clockwise, -1 counterclockwise
+    {
+        turnManagerComponent.makePlayersChild();
+
+        GameObject tmpTile = mapManagerComponent.myMap[coordinate.getX(), coordinate.getY()];
+        GameObject tmpBottomTile = mapManagerComponent.myMap[coordinate.getX(), coordinate.getY() - 1];
+        GameObject tmpBottomRightTile = mapManagerComponent.myMap[coordinate.getX() + 1, coordinate.getY() - 1];
+        GameObject tmpRightTile = mapManagerComponent.myMap[coordinate.getX() + 1, coordinate.getY()];
+
+        mapManagerComponent.myMap[coordinate.getX(), coordinate.getY()] = tmpBottomTile;
+
+        mapManagerComponent.myMap[coordinate.getX(), coordinate.getY() - 1] = tmpBottomRightTile;
+
+        mapManagerComponent.myMap[coordinate.getX() + 1, coordinate.getY() - 1] = tmpRightTile;
+
+        mapManagerComponent.myMap[coordinate.getX() + 1, coordinate.getY()] = tmpTile;
+
+        tmpTile.GetComponent<Tile>().myCoord.setCoordinate(coordinate.getX(), coordinate.getY());
+        tmpBottomTile.GetComponent<Tile>().myCoord.setCoordinate(coordinate.getX(), coordinate.getY() - 1);
+        tmpBottomRightTile.GetComponent<Tile>().myCoord.setCoordinate(coordinate.getX() + 1, coordinate.getY() - 1);
+        tmpRightTile.GetComponent<Tile>().myCoord.setCoordinate(coordinate.getX() + 1, coordinate.getY());
+
+
+        Vector3 newPosition = tmpTile.transform.position;
+        newPosition.x = newPosition.x + 5;
+        tmpTile.transform.position = newPosition;
+
+        newPosition.y = newPosition.y - 5;
+        tmpRightTile.transform.position = newPosition;
+
+        newPosition.x = newPosition.x - 5;
+        tmpBottomRightTile.transform.position = newPosition;
+
+        newPosition.y = newPosition.y + 5;
+        tmpBottomTile.transform.position = newPosition;
+
+        yield return null;
     }
 
 }

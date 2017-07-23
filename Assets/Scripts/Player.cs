@@ -18,25 +18,7 @@ public class Player : MonoBehaviour
     public MapManager mapManagerComponent;
     public List<Tile> toBright;
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.tag == "Tile")
-        {
-            Tile myTile = collision.gameObject.GetComponent<Tile>();
-            UpdatePlayerPosition(myTile);
-        }
-    }
-
-    public void UpdatePlayerPosition(Tile myTile)
-    {
-        coordinate = myTile.GetCoordinatesCopy();
-    }
-
-    public void UpdatePlayerPosition()
-    {
-        Tile myTile = transform.parent.GetComponent<Tile>();
-        coordinate = myTile.GetCoordinatesCopy();
-    }
+    // Animation
 
     public void setPlayerSprite()
     {
@@ -63,6 +45,8 @@ public class Player : MonoBehaviour
         myCollider.size = new Vector2(myTexture.width, myTexture.height);
 
     }
+
+    // Walking Path
 
     public void BrightPossibleTiles()
     {
@@ -126,6 +110,28 @@ public class Player : MonoBehaviour
         toBright.Clear();
     }
 
+    // Player position update
+
+    public void UpdatePlayerPosition(Tile myTile)
+    {
+        coordinate = myTile.GetCoordinatesCopy();
+    }
+
+    public void UpdatePlayerPosition()
+    {
+        Tile myTile = transform.parent.GetComponent<Tile>();
+        coordinate = myTile.GetCoordinatesCopy();
+    }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.tag == "Tile")
+        {
+            Tile myTile = collision.gameObject.GetComponent<Tile>();
+            UpdatePlayerPosition(myTile);
+        }
+    }
+
     public void ResetToStartingPosition()
     {
         Vector3 cornerTransform;
@@ -159,40 +165,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    // Use this for initialization
-    void Awake()
-    {
-
-        myRenderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
-        myCollider = GetComponent<BoxCollider2D>();
-        mapManager = GameObject.FindGameObjectWithTag("MapManager");
-        toBright = new List<Tile>();
-        mapManagerComponent = mapManager.GetComponent<MapManager>();
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        if (!moving && playerNbr == isPlayerTurn)
-        {
-            if (Input.GetKeyDown(KeyCode.D) || Input.GetAxis("HorizontalJoy") == 1)
-            {
-                StartCoroutine(MoveRight());
-            }
-            if (Input.GetKeyDown(KeyCode.A) || Input.GetAxis("HorizontalJoy") == -1)
-            {
-                StartCoroutine(MoveLeft());
-            }
-            if (Input.GetKeyDown(KeyCode.W) || Input.GetAxis("VerticalJoy") == -1)
-            {
-                StartCoroutine(MoveUp());
-            }
-            if (Input.GetKeyDown(KeyCode.S) || Input.GetAxis("VerticalJoy") == 1)
-            {
-                StartCoroutine(MoveDown());
-            }
-        }
-    }
+    // Movement Coroutines
 
     public IEnumerator MoveRight()
     {
@@ -319,6 +292,42 @@ public class Player : MonoBehaviour
 
         moving = false;
     }
+
+    // Unity Specific methods
+
+    void Awake()
+    {
+
+        myRenderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
+        myCollider = GetComponent<BoxCollider2D>();
+        mapManager = GameObject.FindGameObjectWithTag("MapManager");
+        toBright = new List<Tile>();
+        mapManagerComponent = mapManager.GetComponent<MapManager>();
+    }
+
+    void Update()
+    {
+        if (!moving && playerNbr == isPlayerTurn)
+        {
+            if (Input.GetKeyDown(KeyCode.D) || Input.GetAxis("HorizontalJoy") == 1)
+            {
+                StartCoroutine(MoveRight());
+            }
+            if (Input.GetKeyDown(KeyCode.A) || Input.GetAxis("HorizontalJoy") == -1)
+            {
+                StartCoroutine(MoveLeft());
+            }
+            if (Input.GetKeyDown(KeyCode.W) || Input.GetAxis("VerticalJoy") == -1)
+            {
+                StartCoroutine(MoveUp());
+            }
+            if (Input.GetKeyDown(KeyCode.S) || Input.GetAxis("VerticalJoy") == 1)
+            {
+                StartCoroutine(MoveDown());
+            }
+        }
+    }
+
 }
 
 

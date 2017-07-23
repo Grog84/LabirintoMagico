@@ -21,7 +21,9 @@ public class Tile : MonoBehaviour {
         Curve_BR_alt, Curve_LB_alt, Curve_RT_alt, Curve_TL_alt, T_B_alt, T_L_alt, T_T_alt, T_R_alt, Goal
     };
 
-    public void setSprite(int type)
+    // Animation
+
+    public void SetSprite(int type)
     {
         this.type = type;
         switch (type)
@@ -94,6 +96,8 @@ public class Tile : MonoBehaviour {
         myRenderer.sprite = mySprite;
         myCollider.size = new Vector2(myTexture.width/100f, myTexture.height/100f);
     }
+
+    // Tiles connectivity
 
     public void SetPossibleConnections(int type)
     {
@@ -180,7 +184,7 @@ public class Tile : MonoBehaviour {
         }
     }
 
-    public void checkConnections(Tile other, int lato)
+    public void CheckConnections(Tile other, int lato)
     {
         if (other != null)
         {
@@ -222,6 +226,8 @@ public class Tile : MonoBehaviour {
         }
     }
 
+    // Position update
+
     public IEnumerator MoveToPosition(Vector2 movement, float animTime)
     {
         // Might there be a child unchild issue?
@@ -259,6 +265,8 @@ public class Tile : MonoBehaviour {
     {
         effectiveConnections = new bool[4] { false, false, false, false };
     }
+
+    // Unity Specific methods
 
     void Awake () {
         myRenderer = GetComponent<SpriteRenderer>();

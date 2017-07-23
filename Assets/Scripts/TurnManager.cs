@@ -39,16 +39,7 @@ public class TurnManager : MonoBehaviour
         leftToRight, botToTop, rightToLeft, topToBot
     };
 
-    public void setInsertArrows(GameObject[] inputArrows)
-    {
-        allInsertArrows = inputArrows;
-    }
-
-    public void AssignCardButtonComponent()
-    {
-        cardsButtonComponent[0] = card1Button.GetComponent<CardButton>();
-        cardsButtonComponent[1] = card2Button.GetComponent<CardButton>();
-    }
+    // Initialization Methods - variables assignments of the automatically generated objects
 
     public void AssignPanelsPosition()
     {
@@ -109,35 +100,42 @@ public class TurnManager : MonoBehaviour
         }
     }
 
+    public void setInsertArrows(GameObject[] inputArrows)
+    {
+        allInsertArrows = inputArrows;
+    }
+
+    public void AssignCardButtonComponent()
+    {
+        cardsButtonComponent[0] = card1Button.GetComponent<CardButton>();
+        cardsButtonComponent[1] = card2Button.GetComponent<CardButton>();
+    }
+
+    // Turn Management
+
+    public void PassTurn()
+    {
+        ActivatePlayer(0);
+        ResetButtons();
+
+        playerPlayingIdx ++;
+        playerPlayingIdx %= 4;
+        playerPlaying = playerOrder[playerPlayingIdx];
+
+        portraitSelection.transform.position = portraits[playerPlaying - 1].transform.position;
+        ResetCardsButtonRotation();
+        AssignCardsToButtons();
+
+        // StartCoroutine(MoveCamera(players[playerPlayingIdx]));  
+
+    }
+
     public void ActivatePlayer(int nbr) // if 0 no player is active - The method acts on the flag inside player allowing movement
     {
         for (int i = 0; i < 4; i++)
         {
             playerComponent[i].isPlayerTurn = nbr;
         }
-    }
-
-    public IEnumerator MoveCamera(GameObject player) // Temporarly deactivated untill the camera position is properly fixed
-    {
-        float elapsedTime = 0;
-        float animTime = 1f;
-
-        Vector3 old_position = camera.transform.GetComponentInParent<Transform>().position;
-
-        camera.transform.parent = null;
-        camera.transform.position = old_position;
-        Vector3 destination = player.GetComponent<Transform>().position;
-        destination.z = camera.transform.position.z; // 
-
-        while (elapsedTime < animTime)
-        {
-            camera.transform.position = Vector3.Lerp(camera.transform.position, destination, elapsedTime / animTime);
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-
-        camera.transform.SetParent(player.transform);
-        //ActivatePlayer(player.GetComponent<Player>().playerNbr);
     }
 
     void ResetButtons() // add reset of the animation
@@ -149,6 +147,27 @@ public class TurnManager : MonoBehaviour
         canUseCrystal = false;
 
     }
+
+    void UpdatePlayersPosition()
+    {
+        foreach (Player player in playerComponent)
+        {
+            player.UpdatePlayerPosition();
+        }
+    }
+
+    public void makePlayersChild()
+    {
+        for (int i = 0; i < 4; i++)
+        {
+            playerComponent[i].gameObject.transform.SetParent(mapManager.PickTileObject(playerComponent[i].coordinate).transform);
+            //playerComponent[i].gameObject.transform.localPosition = new Vector3 (0, 0, -1);
+        }
+    }
+
+    // // UI
+
+    // Panel Selection
 
     void ActivateBasePanel()
     {
@@ -182,31 +201,7 @@ public class TurnManager : MonoBehaviour
         cursorTransform.position = buttonsTransform[selectedButton].position;
     }
 
-    void EndTerraform()
-    {
-        mapManager.updateTilesConnection();
-        UpdatePlayersPosition();
-        canTerraform = false;
-        terraformingButton.GetComponent<Animator>().SetBool("isActive", false);
-    }
-
-    void ResetCardsButtonRotation()
-    {
-        cardsButtonComponent[0].ResetCardRotation();
-        cardsButtonComponent[1].ResetCardRotation();
-    }
-
-    void AssignCardsToButtons()
-    {
-        GameObject activePortrait = portraits[playerPlayingIdx];
-        activeCards = activePortrait.GetComponentsInChildren<Card>();
-
-        int card1_type = activeCards[0].getTileType();
-        int card2_type = activeCards[1].getTileType();
-
-        cardsButtonComponent[0].SetTileType(card1_type);
-        cardsButtonComponent[1].SetTileType(card2_type);
-    }
+    // Cursors
 
     void MoveCursor()
     {
@@ -248,30 +243,33 @@ public class TurnManager : MonoBehaviour
         cursorTransform.position = buttonsTransform[selectedButton].position;
     }
 
-    void UpdatePlayersPosition()
+    void EndTerraform()
     {
-        foreach (Player player in playerComponent)
-        {
-            player.UpdatePlayerPosition();
-        }
+        mapManager.updateTilesConnection();
+        UpdatePlayersPosition();
+        canTerraform = false;
+        terraformingButton.GetComponent<Animator>().SetBool("isActive", false);
     }
 
-    public void PassTurn()
+    void ResetCardsButtonRotation()
     {
-        ActivatePlayer(0);
-        ResetButtons();
-
-        playerPlayingIdx ++;
-        playerPlayingIdx %= 4;
-        playerPlaying = playerOrder[playerPlayingIdx];
-
-        portraitSelection.transform.position = portraits[playerPlaying - 1].transform.position;
-        ResetCardsButtonRotation();
-        AssignCardsToButtons();
-
-        // StartCoroutine(MoveCamera(players[playerPlayingIdx]));  
-
+        cardsButtonComponent[0].ResetCardRotation();
+        cardsButtonComponent[1].ResetCardRotation();
     }
+
+    void AssignCardsToButtons()
+    {
+        GameObject activePortrait = portraits[playerPlayingIdx];
+        activeCards = activePortrait.GetComponentsInChildren<Card>();
+
+        int card1_type = activeCards[0].getTileType();
+        int card2_type = activeCards[1].getTileType();
+
+        cardsButtonComponent[0].SetTileType(card1_type);
+        cardsButtonComponent[1].SetTileType(card2_type);
+    }
+
+    // // Terraforming
 
     // Player Movement
     IEnumerator ActivateMovementPhase()
@@ -593,16 +591,8 @@ public class TurnManager : MonoBehaviour
         yield return null;
     }
 
-    public void makePlayersChild()
-    {
-        for (int i = 0; i < 4; i++)
-        {
-            playerComponent[i].gameObject.transform.SetParent(mapManager.PickTileObject(playerComponent[i].coordinate).transform);
-            //playerComponent[i].gameObject.transform.localPosition = new Vector3 (0, 0, -1);
-        }
-    }
+    // Unity Specific methods
 
-    // Use this for initialization
     void Awake()
     {
         selectionDepth = 0; // corresponds to the first panel. 1 is the terraform panel. 2 is the card selection
@@ -636,7 +626,6 @@ public class TurnManager : MonoBehaviour
 
     }
 
-    // Update is called once per frame
     void Update()
     {
         if (cursorIsActive)
@@ -689,4 +678,29 @@ public class TurnManager : MonoBehaviour
             }
         }
     }
+
+    //deprecated
+    public IEnumerator MoveCamera(GameObject player) // Temporarly deactivated untill the camera position is properly fixed
+    {
+        float elapsedTime = 0;
+        float animTime = 1f;
+
+        Vector3 old_position = camera.transform.GetComponentInParent<Transform>().position;
+
+        camera.transform.parent = null;
+        camera.transform.position = old_position;
+        Vector3 destination = player.GetComponent<Transform>().position;
+        destination.z = camera.transform.position.z; // 
+
+        while (elapsedTime < animTime)
+        {
+            camera.transform.position = Vector3.Lerp(camera.transform.position, destination, elapsedTime / animTime);
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        camera.transform.SetParent(player.transform);
+        //ActivatePlayer(player.GetComponent<Player>().playerNbr);
+    }
+
 }

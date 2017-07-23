@@ -58,158 +58,58 @@ public class MapManager : MonoBehaviour {
     int[] noTop = { 0, 1, 5, 6 };
     int[] noLeft = { 0, 2, 4, 9 };
 
-    public Coordinate[] KeepMovableTiles(Coordinate[] myCoords)
-    {
-        List<Coordinate> movableCoordsList = new List<Coordinate>();
-        for (int i = 0; i < myCoords.Length; i++)
-        {
-            if (PickTileComponent(myCoords[i]).canBeMoved)
-                movableCoordsList.Add(myCoords[i]);
-        }
 
-        return movableCoordsList.ToArray();
+    // Map Generation At game start
+
+    public void CreatePlayers()
+    {
+        for (int i = 1; i < 5; i++)
+        {
+            InstantiatePlayer(i);
+        }
     }
 
-    public Tile PickTileComponent(Coordinate myCoord)
+    public void CreateInsertArrows()
     {
-        return myMapTiles[myCoord.getX(), myCoord.getY()];
-    }
+        allInsertArrows = new GameObject[2*columns + 2*rows];
+        int indx = 0;
+        GameObject arrowInstance;
 
-    public GameObject PickTileObject(Coordinate myCoord)
-    {
-        return myMap[myCoord.getX(), myCoord.getY()];
-    }
-
-    Coordinate slideCoordinate(Coordinate myCoord, int slideDir)
-    {
-        var newCoord = new Coordinate(myCoord.getX(), myCoord.getY());
-
-        switch (slideDir)
+        for (int i = 0; i < columns; i++) // bot arrows
         {
-            case (int)slideDirection.leftToRight:
-                newCoord.setCoordinate(newCoord.getX() + 1, newCoord.getY());
-                break;
-            case (int)slideDirection.botToTop:
-                newCoord.setCoordinate(newCoord.getX(), newCoord.getY() + 1);
-                break;
-            case (int)slideDirection.rightToLeft:
-                newCoord.setCoordinate(newCoord.getX() - 1, newCoord.getY());
-                break;
-            case (int)slideDirection.topToBot:
-                newCoord.setCoordinate(newCoord.getX(), newCoord.getY() - 1);
-                break;
-            default:
-                break;
+            arrowInstance = Instantiate(insertArrow, new Vector3((i * tileSize), -tileSize, 0f), Quaternion.identity);
+            arrowInstance.transform.Rotate(Vector3.forward * 90);
+            arrowInstance.GetComponent<InsertArrow>().setPointedCoords(i, i, 0, columns-1);
+            arrowInstance.transform.SetParent(transform);
+            allInsertArrows[i] = arrowInstance;
+            indx++;
         }
-
-        return newCoord;
-    }
-
-    void DestroyTile(GameObject myTile) // checks whether or not a player is present on the tile
-    {
-        // TODO NO-UNCHILD
-        for (int i = 0; i < myTile.transform.childCount; i++)
+        for (int i = 0; i < rows; i++) // right arrows
         {
-            Transform childTrans = myTile.transform.GetChild(i);
-            if (childTrans.gameObject.tag == "Player")
-            {
-                childTrans.parent = null;
-                childTrans.gameObject.GetComponent<Player>().ResetToStartingPosition();
-            }
+            arrowInstance = Instantiate(insertArrow, new Vector3(columns * tileSize, (i * tileSize), 0f), Quaternion.identity);
+            arrowInstance.transform.Rotate(Vector3.forward * 180);
+            arrowInstance.GetComponent<InsertArrow>().setPointedCoords(columns-1, 0, i, i);
+            arrowInstance.transform.SetParent(transform);
+            allInsertArrows[i+columns] = arrowInstance;
+            indx++;
         }
-
-        Destroy(myTile);
-    }
-
-    public IEnumerator SlideLine(Coordinate[] myCoords, int mySlideDirection)
-    {
-        Tile tmpTile;
-        GameObject tmpTileObj;
-
-        float animationTime = 3f;
-
-        DestroyTile(PickTileObject(myCoords[myCoords.Length - 1])); // destroys the last movable tile
-
-        var myMovement = new Vector2(0, 0);
-
-        for (int i = myCoords.Length - 2; i >= 0; i--)
+        for (int i = 0; i < columns; i++) // top arrows
         {
-            tmpTile = PickTileComponent(myCoords[i]);
-            tmpTileObj = PickTileObject(myCoords[i]);
-            myMovement[0] = PickTileObject(myCoords[i+1]).transform.position.x - tmpTileObj.transform.position.x;
-            myMovement[1] = PickTileObject(myCoords[i + 1]).transform.position.y - tmpTileObj.transform.position.y;
-            StartCoroutine(tmpTile.MoveToPosition(myMovement, animationTime));
-            tmpTile.setCoordinates(myCoords[i + 1].getX(), myCoords[i + 1].getY());
-
-            myMap[myCoords[i + 1].getX(), myCoords[i + 1].getY()] = tmpTileObj;
-            myMapTiles[myCoords[i + 1].getX(), myCoords[i + 1].getY()] = tmpTile;
-
+            arrowInstance = Instantiate(insertArrow, new Vector3((columns-1) * tileSize - ((i * tileSize)), rows * tileSize , 0f), Quaternion.identity);
+            arrowInstance.transform.Rotate(Vector3.forward * -90);
+            arrowInstance.GetComponent<InsertArrow>().setPointedCoords(columns - 1 - i, columns - 1 - i, rows-1, 0);
+            arrowInstance.transform.SetParent(transform);
+            allInsertArrows[i+(columns + rows)] = arrowInstance;
+            indx++;
         }
-
-        float waitingTime = 0;
-
-        while (waitingTime < animationTime + 0.5f)
+        for (int i = 0; i < rows; i++) // left arrows
         {
-            waitingTime += Time.deltaTime;
-            if (waitingTime > animationTime)
-                turnManager.isSliding = false;
-            yield return null;
+            arrowInstance = Instantiate(insertArrow, new Vector3(-tileSize, (rows-1) * tileSize - ((i * tileSize) ), 0f), Quaternion.identity);
+            arrowInstance.GetComponent<InsertArrow>().setPointedCoords(0, columns-1,rows-1- i, rows-1-i);
+            arrowInstance.transform.SetParent(transform);
+            allInsertArrows[i+ (2*columns + rows)] = arrowInstance;
+            indx++;
         }
-
-        yield return null;
-
-    }
-
-    public IEnumerator RotateTiles(Coordinate[] selectedCoords, int rotationDirection) // 1 clockwise, -1 counterclockwise
-    {
-        selectedCoords = KeepMovableTiles(selectedCoords);
-
-        if (rotationDirection == -1)
-        {
-            selectedCoords = GeneralMethods.ReverseArray(selectedCoords);
-        }
-
-        Tile tmpTile;
-        var tmpTileMatrix = new Tile[selectedCoords.Length];
-        GameObject tmpTileObj;
-        var tmpTileObjMatrix = new GameObject[selectedCoords.Length];
-
-        float animationTime = 3f;
-        var myMovement = new Vector2(0, 0);
-
-        for (int i = 0; i < selectedCoords.Length; i++)
-        {
-            tmpTile = PickTileComponent(selectedCoords[i]);
-            tmpTileObj = PickTileObject(selectedCoords[i]);
-
-            myMovement[0] = PickTileObject(selectedCoords[(i + 1) % (selectedCoords.Length)]).transform.position.x - tmpTileObj.transform.position.x;
-            myMovement[1] = PickTileObject(selectedCoords[(i + 1) % (selectedCoords.Length)]).transform.position.y - tmpTileObj.transform.position.y;
-
-            StartCoroutine(tmpTile.MoveToPosition(myMovement, animationTime));
-            tmpTile.setCoordinates(selectedCoords[(i + 1) % (selectedCoords.Length)].getX(), selectedCoords[(i + 1) % (selectedCoords.Length)].getY());
-
-            tmpTileMatrix[i] = tmpTile;
-            tmpTileObjMatrix[i] = tmpTileObj;
-
-        }
-
-        for (int i = 0; i < selectedCoords.Length; i++)
-        {
-            myMap[selectedCoords[(i + 1) % (selectedCoords.Length)].getX(), selectedCoords[(i + 1) % (selectedCoords.Length)].getY()] = tmpTileObjMatrix[i];
-            myMapTiles[selectedCoords[(i + 1) % (selectedCoords.Length)].getX(), selectedCoords[(i + 1) % (selectedCoords.Length)].getY()] = tmpTileMatrix[i];
-        }
-
-        float waitingTime = 0;
-
-        while (waitingTime < animationTime + 0.5f)
-        {
-            waitingTime += Time.deltaTime;
-            if (waitingTime > animationTime)
-                turnManager.isRotating = false;
-            yield return null;
-        }
-
-        yield return null;
 
     }
 
@@ -234,114 +134,6 @@ public class MapManager : MonoBehaviour {
         }
 
         return nbrOfTiles;
-    }
-
-    void InitializeGrid()
-    {
-        for (int i = 0; i < columns; i++)
-        {
-            for (int j = 0; j < rows; j++)
-            {
-                gridPositions.Add(new Vector3(i, j, 0f));
-            }
-        }
-    }
-
-    int[] ReshuffleArray(int[] nbrOfTiles)
-    {
-        int[] reshuffledArray;
-        var matrix = new SortedList();
-        reshuffledArray = new int[nbrOfTiles.Length];
-
-        var r = new System.Random();
-
-        for (int i = 0; i < nbrOfTiles.Length; i++)
-        {
-            var idx = r.Next();
-            // grants no duplicates idx
-            while (matrix.ContainsKey(idx)) { idx = r.Next(); }
-
-            matrix.Add(idx, nbrOfTiles[i]);
-        }
-
-        matrix.Values.CopyTo(reshuffledArray, 0);
-
-        return reshuffledArray;
-
-    }
-
-    void InstantiateTile(int tileType, Coordinate coordinate, bool canBeMoved = true)
-    {
-        GameObject tileInstance = Instantiate(tile, coordinate.getVect3(), Quaternion.identity);
-        tileInstance.transform.SetParent(transform);
-
-        Tile myTileComponent = tileInstance.GetComponent<Tile>();
-        myTileComponent.setSprite(tileType);
-        // TODO modificare type per diventare come quello non speciale
-        myTileComponent.canBeMoved = canBeMoved;
-        myTileComponent.myCoord = coordinate;
-        myTileComponent.SetPossibleConnections(tileType);
-        
-        myMap[coordinate.getX(), coordinate.getY()] = tileInstance;
-        myMapTiles[coordinate.getX(), coordinate.getY()] = tileInstance.GetComponent<Tile>();
-
-    }
-
-    public void InstantiateTileLive(int tileType, Coordinate coordinate, bool canBeMoved = true)
-    {
-        GameObject tileInstance = Instantiate(tile, coordinate.getVect3() + transform.position, Quaternion.identity);
-        tileInstance.transform.SetParent(transform);
-
-        Tile myTileComponent = tileInstance.GetComponent<Tile>();
-        myTileComponent.setSprite(tileType);
-        // TODO modificare type per diventare come quello non speciale
-        myTileComponent.canBeMoved = canBeMoved;
-        myTileComponent.myCoord = coordinate;
-        myTileComponent.SetPossibleConnections(tileType);
-
-        myMap[coordinate.getX(), coordinate.getY()] = tileInstance;
-        myMapTiles[coordinate.getX(), coordinate.getY()] = tileInstance.GetComponent<Tile>();
-
-    }
-
-    void InstantiatePlayer(int playerNbr)
-    {
-        GameObject playerInstance;
-
-        if (playerNbr == 1)
-        {
-            //playerInstance = Instantiate(player, new Vector3(0f, rows-1, -1f) * tileSize + finalShift, Quaternion.identity);
-            playerInstance = Instantiate(player, new Vector3(0f, rows - 1, -1f) * tileSize, Quaternion.identity);
-            playerInstance.GetComponent<Player>().coordinate = new Coordinate (0, rows - 1);
-            playerInstance.transform.SetParent(myMap[0, rows-1].transform);
-        }
-        else if (playerNbr == 2)
-        {
-            //playerInstance = Instantiate(player, new Vector3(columns-1, rows-1, -1f) * tileSize + finalShift, Quaternion.identity);
-            playerInstance = Instantiate(player, new Vector3(columns - 1, rows - 1, -1f) * tileSize, Quaternion.identity);
-            playerInstance.GetComponent<Player>().coordinate = new Coordinate(columns - 1, rows - 1);
-            playerInstance.transform.SetParent(myMap[columns - 1, rows - 1].transform);
-        }
-        else if (playerNbr == 3)
-        {
-            //playerInstance = Instantiate(player, new Vector3(0f, 0f, -1f) * tileSize + finalShift, Quaternion.identity);
-            playerInstance = Instantiate(player, new Vector3(0f, 0f, -1f) * tileSize, Quaternion.identity);
-            playerInstance.GetComponent<Player>().coordinate = new Coordinate(0, 0);
-            playerInstance.transform.SetParent(myMap[0, 0].transform);
-        }
-        else
-        {
-            //playerInstance = Instantiate(player, new Vector3(columns-1, 0f, -1f) * tileSize + finalShift, Quaternion.identity);
-            playerInstance = Instantiate(player, new Vector3(columns - 1, 0f, -1f) * tileSize, Quaternion.identity);
-            playerInstance.GetComponent<Player>().coordinate = new Coordinate(columns - 1, 0);
-            playerInstance.transform.SetParent(myMap[columns - 1, 0].transform);
-        }
-
-        allPlayers[playerNbr-1] = playerInstance;
-        var myPlayer = playerInstance.GetComponent<Player>();
-        myPlayer.playerNbr = playerNbr;
-        myPlayer.setPlayerSprite();
-                
     }
 
     void GenerateSpawningAreas()
@@ -526,137 +318,6 @@ public class MapManager : MonoBehaviour {
 
     }
 
-    bool checkTileRange(int tileIdx)  // checks wether or not the tile respects the given boundaries
-    {
-        
-        if (0 <= tileIdx && tileIdx < 4)
-        {
-            if (nbrOfTiles[0] < curvesCount.maximum)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        else if (4 <= tileIdx && tileIdx < 6)
-        {
-            if (nbrOfTiles[1] < straightCount.maximum)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        else
-        {
-            if (nbrOfTiles[2] < tCount.maximum)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-    }
-
-    public void ResetEffectiveConnections()
-    {
-        for (int i = 0; i < columns; i++)
-        {
-            for (int j = 0; j < rows; j++)
-            {
-                myMapTiles[i, j].resetEffectiveConnectionMap();
-            }
-        }
-    }
-
-    public void ResetEffectiveConnections(Coordinate topLeft, Coordinate botRight) // works only in a squared area defined by the 2 coordinates included
-    {
-        for (int i = topLeft.getX(); i <= botRight.getX(); i++)
-        {
-            for (int j = botRight.getY(); j <= topLeft.getY(); j++)
-            {
-                myMapTiles[i, j].resetEffectiveConnectionMap();
-            }
-        }
-    }
-
-    public void updateTilesConnection()
-    {
-        ResetEffectiveConnections();
-
-        for (int i = 0; i < columns; i++)
-        {
-            for (int j = 0; j < rows; j++)
-            {
-                Tile questa = myMap[i, j].GetComponent<Tile>();
-
-                if (i - 1 > 0)
-                {
-                    questa.checkConnections(myMap[i - 1, j].GetComponent<Tile>(), 3);
-                }
-                
-                if (j - 1 > 0)
-                {
-                    questa.checkConnections(myMap[i, j - 1].GetComponent<Tile>(), 2);
-                }
-                
-                if (j + 1 < rows)
-                {
-                    questa.checkConnections(myMap[i, j + 1].GetComponent<Tile>(), 0);
-                }
-                
-                if (i + 1 < columns)
-                {
-                    questa.checkConnections(myMap[i + 1, j].GetComponent<Tile>(), 1);
-                }
-                
-            }
-        }
-
-    }
-
-    public void updateTilesConnection(Coordinate topLeft, Coordinate botRight)
-    {
-        ResetEffectiveConnections(topLeft, botRight);
-
-        for (int i = topLeft.getX(); i <= botRight.getX(); i++)
-        {
-            for (int j = botRight.getY(); j <= topLeft.getY(); j++)
-            {
-                Tile questa = myMap[i, j].GetComponent<Tile>();
-
-                if (i - 1 > 0)
-                {
-                    questa.checkConnections(myMap[i - 1, j].GetComponent<Tile>(), 3);
-                }
-
-                if (j - 1 > 0)
-                {
-                    questa.checkConnections(myMap[i, j - 1].GetComponent<Tile>(), 2);
-                }
-
-                if (j + 1 < rows)
-                {
-                    questa.checkConnections(myMap[i, j + 1].GetComponent<Tile>(), 0);
-                }
-
-                if (i + 1 < columns)
-                {
-                    questa.checkConnections(myMap[i + 1, j].GetComponent<Tile>(), 1);
-                }
-
-            }
-        }
-    }
-
     public void MapSetup()
     {
         int finalTilesNbr = columns * rows, randomTilesNbr = finalTilesNbr - 21, generatedTilesNbr = 0;
@@ -754,7 +415,7 @@ public class MapManager : MonoBehaviour {
         }
 
         // Scramble the tiles inside the array
-        tilesArray = ReshuffleArray(tilesArray);
+        tilesArray = GeneralMethods.mArray(tilesArray);
 
         // Places the tiles
         tmpIdx = 0;
@@ -804,62 +465,380 @@ public class MapManager : MonoBehaviour {
 
     }
 
-    public void CreatePlayers()
+    //Objects Instance
+
+    void InstantiateTile(int tileType, Coordinate coordinate, bool canBeMoved = true)
     {
-        for (int i = 1; i < 5; i++)
+        GameObject tileInstance = Instantiate(tile, coordinate.getVect3(), Quaternion.identity);
+        tileInstance.transform.SetParent(transform);
+
+        Tile myTileComponent = tileInstance.GetComponent<Tile>();
+        myTileComponent.SetSprite(tileType);
+        // TODO modificare type per diventare come quello non speciale
+        myTileComponent.canBeMoved = canBeMoved;
+        myTileComponent.myCoord = coordinate;
+        myTileComponent.SetPossibleConnections(tileType);
+        
+        myMap[coordinate.getX(), coordinate.getY()] = tileInstance;
+        myMapTiles[coordinate.getX(), coordinate.getY()] = tileInstance.GetComponent<Tile>();
+
+    }
+
+    public void InstantiateTileLive(int tileType, Coordinate coordinate, bool canBeMoved = true)
+    {
+        GameObject tileInstance = Instantiate(tile, coordinate.getVect3() + transform.position, Quaternion.identity);
+        tileInstance.transform.SetParent(transform);
+
+        Tile myTileComponent = tileInstance.GetComponent<Tile>();
+        myTileComponent.SetSprite(tileType);
+        // TODO modificare type per diventare come quello non speciale
+        myTileComponent.canBeMoved = canBeMoved;
+        myTileComponent.myCoord = coordinate;
+        myTileComponent.SetPossibleConnections(tileType);
+
+        myMap[coordinate.getX(), coordinate.getY()] = tileInstance;
+        myMapTiles[coordinate.getX(), coordinate.getY()] = tileInstance.GetComponent<Tile>();
+
+    }
+
+    void InstantiatePlayer(int playerNbr)
+    {
+        GameObject playerInstance;
+
+        if (playerNbr == 1)
         {
-            InstantiatePlayer(i);
+            //playerInstance = Instantiate(player, new Vector3(0f, rows-1, -1f) * tileSize + finalShift, Quaternion.identity);
+            playerInstance = Instantiate(player, new Vector3(0f, rows - 1, -1f) * tileSize, Quaternion.identity);
+            playerInstance.GetComponent<Player>().coordinate = new Coordinate (0, rows - 1);
+            playerInstance.transform.SetParent(myMap[0, rows-1].transform);
+        }
+        else if (playerNbr == 2)
+        {
+            //playerInstance = Instantiate(player, new Vector3(columns-1, rows-1, -1f) * tileSize + finalShift, Quaternion.identity);
+            playerInstance = Instantiate(player, new Vector3(columns - 1, rows - 1, -1f) * tileSize, Quaternion.identity);
+            playerInstance.GetComponent<Player>().coordinate = new Coordinate(columns - 1, rows - 1);
+            playerInstance.transform.SetParent(myMap[columns - 1, rows - 1].transform);
+        }
+        else if (playerNbr == 3)
+        {
+            //playerInstance = Instantiate(player, new Vector3(0f, 0f, -1f) * tileSize + finalShift, Quaternion.identity);
+            playerInstance = Instantiate(player, new Vector3(0f, 0f, -1f) * tileSize, Quaternion.identity);
+            playerInstance.GetComponent<Player>().coordinate = new Coordinate(0, 0);
+            playerInstance.transform.SetParent(myMap[0, 0].transform);
+        }
+        else
+        {
+            //playerInstance = Instantiate(player, new Vector3(columns-1, 0f, -1f) * tileSize + finalShift, Quaternion.identity);
+            playerInstance = Instantiate(player, new Vector3(columns - 1, 0f, -1f) * tileSize, Quaternion.identity);
+            playerInstance.GetComponent<Player>().coordinate = new Coordinate(columns - 1, 0);
+            playerInstance.transform.SetParent(myMap[columns - 1, 0].transform);
+        }
+
+        allPlayers[playerNbr-1] = playerInstance;
+        var myPlayer = playerInstance.GetComponent<Player>();
+        myPlayer.playerNbr = playerNbr;
+        myPlayer.setPlayerSprite();
+                
+    }
+
+    //Terraforming
+
+    Coordinate slideCoordinate(Coordinate myCoord, int slideDir)
+    {
+        var newCoord = new Coordinate(myCoord.getX(), myCoord.getY());
+
+        switch (slideDir)
+        {
+            case (int)slideDirection.leftToRight:
+                newCoord.setCoordinate(newCoord.getX() + 1, newCoord.getY());
+                break;
+            case (int)slideDirection.botToTop:
+                newCoord.setCoordinate(newCoord.getX(), newCoord.getY() + 1);
+                break;
+            case (int)slideDirection.rightToLeft:
+                newCoord.setCoordinate(newCoord.getX() - 1, newCoord.getY());
+                break;
+            case (int)slideDirection.topToBot:
+                newCoord.setCoordinate(newCoord.getX(), newCoord.getY() - 1);
+                break;
+            default:
+                break;
+        }
+
+        return newCoord;
+    }
+
+    void DestroyTile(GameObject myTile) // checks whether or not a player is present on the tile
+    {
+        // TODO NO-UNCHILD
+        for (int i = 0; i < myTile.transform.childCount; i++)
+        {
+            Transform childTrans = myTile.transform.GetChild(i);
+            if (childTrans.gameObject.tag == "Player")
+            {
+                childTrans.parent = null;
+                childTrans.gameObject.GetComponent<Player>().ResetToStartingPosition();
+            }
+        }
+
+        Destroy(myTile);
+    }
+
+    public IEnumerator SlideLine(Coordinate[] myCoords, int mySlideDirection)
+    {
+        Tile tmpTile;
+        GameObject tmpTileObj;
+
+        float animationTime = 3f;
+
+        DestroyTile(PickTileObject(myCoords[myCoords.Length - 1])); // destroys the last movable tile
+
+        var myMovement = new Vector2(0, 0);
+
+        for (int i = myCoords.Length - 2; i >= 0; i--)
+        {
+            tmpTile = PickTileComponent(myCoords[i]);
+            tmpTileObj = PickTileObject(myCoords[i]);
+            myMovement[0] = PickTileObject(myCoords[i+1]).transform.position.x - tmpTileObj.transform.position.x;
+            myMovement[1] = PickTileObject(myCoords[i + 1]).transform.position.y - tmpTileObj.transform.position.y;
+            StartCoroutine(tmpTile.MoveToPosition(myMovement, animationTime));
+            tmpTile.setCoordinates(myCoords[i + 1].getX(), myCoords[i + 1].getY());
+
+            myMap[myCoords[i + 1].getX(), myCoords[i + 1].getY()] = tmpTileObj;
+            myMapTiles[myCoords[i + 1].getX(), myCoords[i + 1].getY()] = tmpTile;
+
+        }
+
+        float waitingTime = 0;
+
+        while (waitingTime < animationTime + 0.5f)
+        {
+            waitingTime += Time.deltaTime;
+            if (waitingTime > animationTime)
+                turnManager.isSliding = false;
+            yield return null;
+        }
+
+        yield return null;
+
+    }
+
+    public IEnumerator RotateTiles(Coordinate[] selectedCoords, int rotationDirection) // 1 clockwise, -1 counterclockwise
+    {
+        selectedCoords = KeepMovableTiles(selectedCoords);
+
+        if (rotationDirection == -1)
+        {
+            selectedCoords = GeneralMethods.ReverseArray(selectedCoords);
+        }
+
+        Tile tmpTile;
+        var tmpTileMatrix = new Tile[selectedCoords.Length];
+        GameObject tmpTileObj;
+        var tmpTileObjMatrix = new GameObject[selectedCoords.Length];
+
+        float animationTime = 3f;
+        var myMovement = new Vector2(0, 0);
+
+        for (int i = 0; i < selectedCoords.Length; i++)
+        {
+            tmpTile = PickTileComponent(selectedCoords[i]);
+            tmpTileObj = PickTileObject(selectedCoords[i]);
+
+            myMovement[0] = PickTileObject(selectedCoords[(i + 1) % (selectedCoords.Length)]).transform.position.x - tmpTileObj.transform.position.x;
+            myMovement[1] = PickTileObject(selectedCoords[(i + 1) % (selectedCoords.Length)]).transform.position.y - tmpTileObj.transform.position.y;
+
+            StartCoroutine(tmpTile.MoveToPosition(myMovement, animationTime));
+            tmpTile.setCoordinates(selectedCoords[(i + 1) % (selectedCoords.Length)].getX(), selectedCoords[(i + 1) % (selectedCoords.Length)].getY());
+
+            tmpTileMatrix[i] = tmpTile;
+            tmpTileObjMatrix[i] = tmpTileObj;
+
+        }
+
+        for (int i = 0; i < selectedCoords.Length; i++)
+        {
+            myMap[selectedCoords[(i + 1) % (selectedCoords.Length)].getX(), selectedCoords[(i + 1) % (selectedCoords.Length)].getY()] = tmpTileObjMatrix[i];
+            myMapTiles[selectedCoords[(i + 1) % (selectedCoords.Length)].getX(), selectedCoords[(i + 1) % (selectedCoords.Length)].getY()] = tmpTileMatrix[i];
+        }
+
+        float waitingTime = 0;
+
+        while (waitingTime < animationTime + 0.5f)
+        {
+            waitingTime += Time.deltaTime;
+            if (waitingTime > animationTime)
+                turnManager.isRotating = false;
+            yield return null;
+        }
+
+        yield return null;
+
+    }
+
+    //Tiles managing utilities
+
+    public GameObject PickTileObject(Coordinate myCoord)
+    {
+        return myMap[myCoord.getX(), myCoord.getY()];
+    }
+
+    bool checkTileRange(int tileIdx)  // checks wether or not the tile respects the given boundaries
+    {
+        
+        if (0 <= tileIdx && tileIdx < 4)
+        {
+            if (nbrOfTiles[0] < curvesCount.maximum)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        else if (4 <= tileIdx && tileIdx < 6)
+        {
+            if (nbrOfTiles[1] < straightCount.maximum)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        else
+        {
+            if (nbrOfTiles[2] < tCount.maximum)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 
-    public void CreateInsertArrows()
+    public void ResetEffectiveConnections()
     {
-        allInsertArrows = new GameObject[2*columns + 2*rows];
-        int indx = 0;
-        GameObject arrowInstance;
+        for (int i = 0; i < columns; i++)
+        {
+            for (int j = 0; j < rows; j++)
+            {
+                myMapTiles[i, j].resetEffectiveConnectionMap();
+            }
+        }
+    }
 
-        for (int i = 0; i < columns; i++) // bot arrows
+    public void ResetEffectiveConnections(Coordinate topLeft, Coordinate botRight) // works only in a squared area defined by the 2 coordinates included
+    {
+        for (int i = topLeft.getX(); i <= botRight.getX(); i++)
         {
-            arrowInstance = Instantiate(insertArrow, new Vector3((i * tileSize), -tileSize, 0f), Quaternion.identity);
-            arrowInstance.transform.Rotate(Vector3.forward * 90);
-            arrowInstance.GetComponent<InsertArrow>().setPointedCoords(i, i, 0, columns-1);
-            arrowInstance.transform.SetParent(transform);
-            allInsertArrows[i] = arrowInstance;
-            indx++;
+            for (int j = botRight.getY(); j <= topLeft.getY(); j++)
+            {
+                myMapTiles[i, j].resetEffectiveConnectionMap();
+            }
         }
-        for (int i = 0; i < rows; i++) // right arrows
+    }
+
+    public void updateTilesConnection()
+    {
+        ResetEffectiveConnections();
+
+        for (int i = 0; i < columns; i++)
         {
-            arrowInstance = Instantiate(insertArrow, new Vector3(columns * tileSize, (i * tileSize), 0f), Quaternion.identity);
-            arrowInstance.transform.Rotate(Vector3.forward * 180);
-            arrowInstance.GetComponent<InsertArrow>().setPointedCoords(columns-1, 0, i, i);
-            arrowInstance.transform.SetParent(transform);
-            allInsertArrows[i+columns] = arrowInstance;
-            indx++;
-        }
-        for (int i = 0; i < columns; i++) // top arrows
-        {
-            arrowInstance = Instantiate(insertArrow, new Vector3((columns-1) * tileSize - ((i * tileSize)), rows * tileSize , 0f), Quaternion.identity);
-            arrowInstance.transform.Rotate(Vector3.forward * -90);
-            arrowInstance.GetComponent<InsertArrow>().setPointedCoords(columns - 1 - i, columns - 1 - i, rows-1, 0);
-            arrowInstance.transform.SetParent(transform);
-            allInsertArrows[i+(columns + rows)] = arrowInstance;
-            indx++;
-        }
-        for (int i = 0; i < rows; i++) // left arrows
-        {
-            arrowInstance = Instantiate(insertArrow, new Vector3(-tileSize, (rows-1) * tileSize - ((i * tileSize) ), 0f), Quaternion.identity);
-            arrowInstance.GetComponent<InsertArrow>().setPointedCoords(0, columns-1,rows-1- i, rows-1-i);
-            arrowInstance.transform.SetParent(transform);
-            allInsertArrows[i+ (2*columns + rows)] = arrowInstance;
-            indx++;
+            for (int j = 0; j < rows; j++)
+            {
+                Tile questa = myMap[i, j].GetComponent<Tile>();
+
+                if (i - 1 > 0)
+                {
+                    questa.CheckConnections(myMap[i - 1, j].GetComponent<Tile>(), 3);
+                }
+                
+                if (j - 1 > 0)
+                {
+                    questa.CheckConnections(myMap[i, j - 1].GetComponent<Tile>(), 2);
+                }
+                
+                if (j + 1 < rows)
+                {
+                    questa.CheckConnections(myMap[i, j + 1].GetComponent<Tile>(), 0);
+                }
+                
+                if (i + 1 < columns)
+                {
+                    questa.CheckConnections(myMap[i + 1, j].GetComponent<Tile>(), 1);
+                }
+                
+            }
         }
 
     }
+
+    public void updateTilesConnection(Coordinate topLeft, Coordinate botRight)
+    {
+        ResetEffectiveConnections(topLeft, botRight);
+
+        for (int i = topLeft.getX(); i <= botRight.getX(); i++)
+        {
+            for (int j = botRight.getY(); j <= topLeft.getY(); j++)
+            {
+                Tile questa = myMap[i, j].GetComponent<Tile>();
+
+                if (i - 1 > 0)
+                {
+                    questa.CheckConnections(myMap[i - 1, j].GetComponent<Tile>(), 3);
+                }
+
+                if (j - 1 > 0)
+                {
+                    questa.CheckConnections(myMap[i, j - 1].GetComponent<Tile>(), 2);
+                }
+
+                if (j + 1 < rows)
+                {
+                    questa.CheckConnections(myMap[i, j + 1].GetComponent<Tile>(), 0);
+                }
+
+                if (i + 1 < columns)
+                {
+                    questa.CheckConnections(myMap[i + 1, j].GetComponent<Tile>(), 1);
+                }
+
+            }
+        }
+    }
+
+    public Tile PickTileComponent(Coordinate myCoord)
+    {
+        return myMapTiles[myCoord.getX(), myCoord.getY()];
+    }
+
+    public Coordinate[] KeepMovableTiles(Coordinate[] myCoords)
+    {
+        List<Coordinate> movableCoordsList = new List<Coordinate>();
+        for (int i = 0; i < myCoords.Length; i++)
+        {
+            if (PickTileComponent(myCoords[i]).canBeMoved)
+                movableCoordsList.Add(myCoords[i]);
+        }
+
+        return movableCoordsList.ToArray();
+    }
+
+    // Others
 
     public GameObject[] getAllInstancedArrows()
     {
         return allInsertArrows;
     }
+
+    // Unity Specific methods
 
     void Awake ()
     {
