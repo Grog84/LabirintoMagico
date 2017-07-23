@@ -415,7 +415,7 @@ public class MapManager : MonoBehaviour {
         }
 
         // Scramble the tiles inside the array
-        tilesArray = GeneralMethods.mArray(tilesArray);
+        tilesArray = GeneralMethods.ReshuffleArray(tilesArray);
 
         // Places the tiles
         tmpIdx = 0;
