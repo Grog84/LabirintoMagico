@@ -8,7 +8,35 @@ public class Trap : MonoBehaviour {
     private SpriteRenderer myRenderer;
     private Sprite mySprite;
     private Texture2D myTexture;
+    private Coordinate myCoord;
     bool isActive;
+
+    public void SetCoordiantes(Coordinate coord)
+    {
+        myCoord = coord;
+    }
+
+    public Coordinate GetCoordiantes()
+    {
+        return myCoord;
+    }
+
+    void SetInvisible()
+    {
+        myRenderer.color = Color.clear;
+    }
+
+    public void Activate()
+    {
+        isActive = true;
+        transform.parent.gameObject.GetComponent<Tile>().SetIsTrapped(true);
+        SetInvisible();  // could become a coroutine
+    }
+
+    public void Trigger(Player thisPlayer)
+    {
+        thisPlayer.ResetToStartingPosition();
+    }
 
     public void SetPlayerDropping(int player)
     {

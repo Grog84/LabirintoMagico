@@ -29,6 +29,8 @@ public class TurnManager : MonoBehaviour
     private Animator[] buttonsAnimator;
     private Vector2 panelParkingPosition, panelActivePosition, arrowsRelativePosition;
     private Vector3 rotationArrowsParkingPosition, rotationArrowsActivePosition;
+    private List<Trap> visibleTraps = new List<Trap>();
+    private bool trapHasTriggered = false;
 
     enum myButtons
     {
@@ -127,6 +129,7 @@ public class TurnManager : MonoBehaviour
         portraitSelection.transform.position = portraits[playerPlaying - 1].transform.position;
         ResetCardsButtonRotation();
         AssignCardsToButtons();
+        ActivateTraps();
 
         // StartCoroutine(MoveCamera(players[playerPlayingIdx]));  
 
@@ -275,11 +278,45 @@ public class TurnManager : MonoBehaviour
         int card1_type = activeCards[0].getTileType();
         int card2_type = activeCards[1].getTileType();
 
-        cardsButtonComponent[0].SetTileType(card1_type);
-        cardsButtonComponent[1].SetTileType(card2_type);
+        if (activeCards[0].GetTrappedStatus())
+            cardsButtonComponent[0].SetTileType(card1_type, true);
+        else
+            cardsButtonComponent[0].SetTileType(card1_type, false);
+
+        if (activeCards[1].GetTrappedStatus())
+            cardsButtonComponent[1].SetTileType(card1_type, true);
+        else
+            cardsButtonComponent[1].SetTileType(card1_type, false);
     }
 
-    // // Terraforming
+    // Traps
+
+    public void SetTrapHasTriggered(bool status)
+    {
+        trapHasTriggered = status;
+    }
+
+    public void AddToVisibleTrapList(Trap trap)
+    {
+        visibleTraps.Add(trap);
+    }
+
+    public void ActivateTraps()
+    {
+        for (int i = 0; i < visibleTraps.Count; i++)
+        {
+            Trap thisTrap = visibleTraps[i];
+            bool isOverlappedToPlayer = false;
+            foreach (Player player in playerComponent)
+            {
+                isOverlappedToPlayer = isOverlappedToPlayer || (player.GetCoordinates().myEqual(thisTrap.GetCoordiantes()));
+            }
+
+            if (!isOverlappedToPlayer)
+                thisTrap.Activate();
+
+        }
+    }
 
     // Player Movement
     IEnumerator ActivateMovementPhase()
@@ -292,11 +329,12 @@ public class TurnManager : MonoBehaviour
 
         yield return null;
 
-        while (!Input.GetKeyDown(KeyCode.Space))
+        while (!Input.GetKeyDown(KeyCode.Space) && !trapHasTriggered)
         {
             yield return null;
         }
 
+        SetTrapHasTriggered(false);
         p.SwitchOffTiles();
         cursorIsActive = true;
         ActivatePlayer(0);
@@ -304,6 +342,8 @@ public class TurnManager : MonoBehaviour
 
         yield return null;
     }
+
+    // // Terraforming
 
     // Tile Slide
     IEnumerator InsertTile(int cardNbr, GameObject arrow, int slideDirection)
@@ -316,6 +356,7 @@ public class TurnManager : MonoBehaviour
 
         Tile lastTile = mapManager.PickTileComponent(lineCoordinates[lineCoordinates.Length - 1]);
         int newCardType = lastTile.type;
+        bool trapStatus = lastTile.GetIsTrapped();
         if (lastTile.GetPlayerChild() != -1)
         {
             int playerIdx = GeneralMethods.FindElementIdx(playerOrder, lastTile.GetPlayerChild());
@@ -346,7 +387,10 @@ public class TurnManager : MonoBehaviour
 
         tileType = activatedCard.GetTileType();
 
-        mapManager.InstantiateTileLive(tileType, lineCoordinates[0]);
+        if (activatedCard.GetTrappedStatus())
+            mapManager.InstantiateTileLive(tileType, lineCoordinates[0], true);
+        else
+            mapManager.InstantiateTileLive(tileType, lineCoordinates[0]);  // default is false
 
         if (repositionPlayer)
         {
@@ -357,9 +401,9 @@ public class TurnManager : MonoBehaviour
         activeCards = activePortrait.GetComponentsInChildren<Card>();
 
         if (cardNbr == 1)
-            activeCards[0].AssignType(newCardType);
+            activeCards[0].AssignType(newCardType, trapStatus);
         else
-            activeCards[1].AssignType(newCardType);
+            activeCards[1].AssignType(newCardType, trapStatus);
 
         arrow.GetComponent<Animator>().SetBool("isActive", false);
         arrows.transform.localPosition = new Vector3(0f, -100f, 0f);

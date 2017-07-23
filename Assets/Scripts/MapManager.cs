@@ -490,14 +490,18 @@ public class MapManager : MonoBehaviour {
         tileInstance.transform.SetParent(transform);
 
         Tile myTileComponent = tileInstance.GetComponent<Tile>();
-        if (isTrapped)
-            myTileComponent.SetTrap(turnManager.GetActivePlayer());
 
         myTileComponent.SetSprite(tileType);
         // TODO modificare type per diventare come quello non speciale
         myTileComponent.canBeMoved = canBeMoved;
         myTileComponent.myCoord = coordinate;
         myTileComponent.SetPossibleConnections(tileType);
+
+        if (isTrapped)
+        {
+            myTileComponent.SetTrap(turnManager.GetActivePlayer());
+            turnManager.AddToVisibleTrapList(myTileComponent.GetTrap());
+        }
 
         myMap[coordinate.getX(), coordinate.getY()] = tileInstance;
         myMapTiles[coordinate.getX(), coordinate.getY()] = tileInstance.GetComponent<Tile>();
@@ -577,16 +581,16 @@ public class MapManager : MonoBehaviour {
 
     void DestroyTile(GameObject myTile) // checks whether or not a player is present on the tile
     {
-        // TODO NO-UNCHILD
-        for (int i = 0; i < myTile.transform.childCount; i++)
-        {
-            Transform childTrans = myTile.transform.GetChild(i);
-            if (childTrans.gameObject.tag == "Player")
-            {
-                childTrans.parent = null;
-                childTrans.gameObject.GetComponent<Player>().TeleportOffScreen();
-            }
-        }
+        // Should be obsolete, the turn manager is taking care of this part now
+        //for (int i = 0; i < myTile.transform.childCount; i++)
+        //{
+        //    Transform childTrans = myTile.transform.GetChild(i);
+        //    if (childTrans.gameObject.tag == "Player")
+        //    {
+        //        childTrans.parent = null;
+        //        childTrans.gameObject.GetComponent<Player>().TeleportOffScreen();
+        //    }
+        //}
 
         Destroy(myTile);
     }
@@ -598,7 +602,7 @@ public class MapManager : MonoBehaviour {
 
         float animationTime = 3f;
 
-        DestroyTile(PickTileObject(myCoords[myCoords.Length - 1])); // destroys the last movable tile
+        DestroyTile(PickTileObject(myCoords[myCoords.Length - 1])); // destroys the last movable tile, could become a coroutine
 
         var myMovement = new Vector2(0, 0);
 
@@ -867,6 +871,14 @@ public class Coordinate
     public int x, y;
 
     float tileSize = 5f;
+
+    public bool myEqual(Coordinate other)
+    {
+        if ((other.getX() == x) && (other.getY() == y))
+            return true;
+        else
+            return false;           
+    }
 
     public Coordinate(int x, int y)
     {

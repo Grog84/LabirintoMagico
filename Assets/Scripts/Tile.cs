@@ -15,9 +15,9 @@ public class Tile : MonoBehaviour {
     public bool[] possibleConnections, effectiveConnections;
 
     private BoxCollider2D myCollider;
-    private GameObject myTrap;
-    private Trap myTrapComponent;
-    private bool isTrapped;
+    public GameObject myTrap;
+    public Trap myTrapComponent;
+    public bool isTrapped;
     private int childPlayer;
 
     enum tileTypes // B - bottom, R - right, T - top, L - left, V - vertical, H - horizontal
@@ -285,15 +285,29 @@ public class Tile : MonoBehaviour {
 
     // Trap
 
+    public bool GetIsTrapped()
+    {
+        return isTrapped;
+    }
+
+    public void SetIsTrapped(bool status)
+    {
+        isTrapped = status;
+    }
+
     public void SetTrap(int playerNbr)
     {
         myTrap = Instantiate(trap, transform);
         myTrapComponent = myTrap.GetComponent<Trap>();
         myTrapComponent.SetPlayerDropping(playerNbr);
-        isTrapped = true;
+        myTrapComponent.SetCoordiantes(myCoord);
+        // isTrapped = true; true whena active?
     }
 
-
+    public Trap GetTrap()
+    {
+        return myTrapComponent;
+    }
 
     // Unity Specific methods
 

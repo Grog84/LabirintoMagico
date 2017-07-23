@@ -14,11 +14,13 @@ public class CardButton : MonoBehaviour
     public int tileType, rotation;
     private Sprite mySprite;
     private int[] curveTypesInClockwiseRotation = new int[4] { 0 , 1, 3, 2 };
+    private bool isTrapped;
 
-    public void SetTileType(int type)
+    public void SetTileType(int type, bool isTrapped = false)
     {
         Texture2D myTexture = null;
         tileType = type;
+        this.isTrapped = isTrapped;
         rotation = 0;
 
         switch (tileType)
@@ -133,6 +135,11 @@ public class CardButton : MonoBehaviour
     public void ResetCardRotation()
     {
         myImage.transform.rotation = new Quaternion(0, 0 ,0, 0);
+    }
+
+    public bool GetTrappedStatus()
+    {
+        return isTrapped;
     }
 
     // Use this for initialization

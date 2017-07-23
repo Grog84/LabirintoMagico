@@ -14,9 +14,16 @@ public class Player : MonoBehaviour
     BoxCollider2D myCollider;
     private bool moving = false;
     public Coordinate coordinate;
-    public GameObject mapManager;
+    public GameObject mapManager, turnManager;
     public MapManager mapManagerComponent;
     public List<Tile> toBright;
+
+    // Accessing Variable
+
+    public Coordinate GetCoordinates()
+    {
+        return coordinate;
+    }
 
     // Animation
 
@@ -123,15 +130,6 @@ public class Player : MonoBehaviour
         coordinate = myTile.GetCoordinatesCopy();
     }
 
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.gameObject.tag == "Tile")
-        {
-            Tile myTile = collision.gameObject.GetComponent<Tile>();
-            UpdatePlayerPosition(myTile);
-        }
-    }
-
     public void ResetToStartingPosition()
     {
         Vector3 cornerTransform;
@@ -172,6 +170,15 @@ public class Player : MonoBehaviour
         transform.position = new Vector3(-100, 0, -5);
     }
 
+    public void CheckForTraps(Tile tile)
+    {
+        if (tile.GetIsTrapped())
+        {
+            tile.myTrapComponent.Trigger(this);
+            turnManager.GetComponent<TurnManager>().SetTrapHasTriggered(true);
+        }
+    }
+
     // Movement Coroutines
 
     public IEnumerator MoveRight()
@@ -185,20 +192,27 @@ public class Player : MonoBehaviour
             float elapsedTime = 0;
             float animTime = 0.2f;
 
+            GameObject destinationTile = mapManagerComponent.myMap[coordinate.getX() + 1, coordinate.getY()];
+            Vector3 destination = destinationTile.GetComponent<Transform>().position;
+            destination.z--;
+
             while (elapsedTime < animTime)
             {
-                GameObject destinationTile = mapManagerComponent.myMap[coordinate.getX() + 1, coordinate.getY()];
-                Vector3 destination = destinationTile.GetComponent<Transform>().position;
-                destination.z--;
                 transform.position = Vector3.Lerp(transform.position, destination, elapsedTime / animTime);
 
                 elapsedTime += Time.deltaTime;
                 yield return null;
             }
 
+            Tile destinationTileComponent = destinationTile.GetComponent<Tile>();
+            UpdatePlayerPosition(destinationTileComponent);
+
+            CheckForTraps(destinationTileComponent);
+
+            yield return null;
 
             //myPlayer.transform.position = tiledMap[playerGridY, playerGridX].RightTile.transform.position;
-            coordinate.setCoordinate(coordinate.getX() + 1, coordinate.getY());
+            //coordinate.setCoordinate(coordinate.getX() + 1, coordinate.getY());
         }
 
         //yield return new WaitForSeconds(0.1f);
@@ -213,23 +227,29 @@ public class Player : MonoBehaviour
 
         if (mapManagerComponent.myMap[coordinate.getX(), coordinate.getY()].GetComponent<Tile>().effectiveConnections[0] == true)
         {
+
         float elapsedTime = 0;
         float animTime = 0.2f;
 
+        GameObject destinationTile = mapManagerComponent.myMap[coordinate.getX(), coordinate.getY() + 1];
+        Vector3 destination = destinationTile.GetComponent<Transform>().position;
+        destination.z--;
+
         while (elapsedTime < animTime)
         {
-                GameObject destinationTile = mapManagerComponent.myMap[coordinate.getX(), coordinate.getY() + 1];
-                Vector3 destination = destinationTile.GetComponent<Transform>().position;
-                destination.z--;
-                transform.position = Vector3.Lerp(transform.position, destination, elapsedTime / animTime);
+            transform.position = Vector3.Lerp(transform.position, destination, elapsedTime / animTime);
 
-                elapsedTime += Time.deltaTime;
-                yield return null;
+            elapsedTime += Time.deltaTime;
+            yield return null;
         }
 
+            Tile destinationTileComponent = destinationTile.GetComponent<Tile>();
+            UpdatePlayerPosition(destinationTileComponent);
 
-        //myPlayer.transform.position = tiledMap[playerGridY, playerGridX].RightTile.transform.position;
-        coordinate.setCoordinate(coordinate.getX(), coordinate.getY() + 1);
+            CheckForTraps(destinationTileComponent);
+
+            //myPlayer.transform.position = tiledMap[playerGridY, playerGridX].RightTile.transform.position;
+            //coordinate.setCoordinate(coordinate.getX(), coordinate.getY() + 1);
         }
 
         //yield return new WaitForSeconds(0.1f);
@@ -248,20 +268,25 @@ public class Player : MonoBehaviour
             float elapsedTime = 0;
             float animTime = 0.2f;
 
+            GameObject destinationTile = mapManagerComponent.myMap[coordinate.getX(), coordinate.getY() - 1];
+            Vector3 destination = destinationTile.GetComponent<Transform>().position;
+            destination.z--;
+
             while (elapsedTime < animTime)
             {
-                GameObject destinationTile = mapManagerComponent.myMap[coordinate.getX(), coordinate.getY() - 1];
-                Vector3 destination = destinationTile.GetComponent<Transform>().position;
-                destination.z--;
                 transform.position = Vector3.Lerp(transform.position, destination, elapsedTime / animTime);
 
                 elapsedTime += Time.deltaTime;
                 yield return null;
             }
 
+            Tile destinationTileComponent = destinationTile.GetComponent<Tile>();
+            UpdatePlayerPosition(destinationTileComponent);
+
+            CheckForTraps(destinationTileComponent);
 
             //myPlayer.transform.position = tiledMap[playerGridY, playerGridX].RightTile.transform.position;
-            coordinate.setCoordinate(coordinate.getX(), coordinate.getY() - 1);
+            //coordinate.setCoordinate(coordinate.getX(), coordinate.getY() - 1);
         }
 
         //yield return new WaitForSeconds(0.1f);
@@ -279,20 +304,25 @@ public class Player : MonoBehaviour
             float elapsedTime = 0;
             float animTime = 0.2f;
 
+            GameObject destinationTile = mapManagerComponent.myMap[coordinate.getX() - 1, coordinate.getY()];
+            Vector3 destination = destinationTile.GetComponent<Transform>().position;
+            destination.z--;
+
             while (elapsedTime < animTime)
             {
-                GameObject destinationTile = mapManagerComponent.myMap[coordinate.getX() - 1, coordinate.getY()];
-                Vector3 destination = destinationTile.GetComponent<Transform>().position;
-                destination.z--;
                 transform.position = Vector3.Lerp(transform.position, destination, elapsedTime / animTime);
 
                 elapsedTime += Time.deltaTime;
                 yield return null;
             }
 
+            Tile destinationTileComponent = destinationTile.GetComponent<Tile>();
+            UpdatePlayerPosition(destinationTileComponent);
 
-        //myPlayer.transform.position = tiledMap[playerGridY, playerGridX].RightTile.transform.position;
-        coordinate.setCoordinate(coordinate.getX() - 1, coordinate.getY());
+            CheckForTraps(destinationTileComponent);
+
+            //myPlayer.transform.position = tiledMap[playerGridY, playerGridX].RightTile.transform.position;
+            //coordinate.setCoordinate(coordinate.getX() - 1, coordinate.getY());
         }
 
         //yield return new WaitForSeconds(0.1f);
@@ -304,10 +334,10 @@ public class Player : MonoBehaviour
 
     void Awake()
     {
-
         myRenderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
         myCollider = GetComponent<BoxCollider2D>();
         mapManager = GameObject.FindGameObjectWithTag("MapManager");
+        turnManager = GameObject.FindGameObjectWithTag("TurnManager");
         toBright = new List<Tile>();
         mapManagerComponent = mapManager.GetComponent<MapManager>();
     }
@@ -335,6 +365,22 @@ public class Player : MonoBehaviour
         }
     }
 
+    // deprecated
+    private void OnTriggerEnter2D(Collider2D collision)  // This does not work since no physics is involved...
+    {
+        if (collision.gameObject.tag == "Tile")
+        {
+            Tile myTile = collision.gameObject.GetComponent<Tile>();
+            UpdatePlayerPosition(myTile);
+
+            if (myTile.GetIsTrapped())
+            {
+                myTile.myTrapComponent.Trigger(this);
+                turnManager.GetComponent<TurnManager>().SetTrapHasTriggered(true);
+            }
+
+        }
+    }
 }
 
 

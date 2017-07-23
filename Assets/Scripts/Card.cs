@@ -25,9 +25,10 @@ public class Card : MonoBehaviour {
         return tileType;
     }
 
-    public void AssignType(int type)
+    public void AssignType(int type, bool trapStatus=false)
     {
         tileType = type;
+        isTrapped = trapStatus;
         Texture2D myTexture = null;
 
         switch (tileType)
@@ -73,6 +74,12 @@ public class Card : MonoBehaviour {
         mySprite = Sprite.Create(myTexture, new Rect(0, 0, myTexture.width, myTexture.height), new Vector2(0.5f, 0.5f));
         myImage.sprite = mySprite;
     }
+
+    public bool GetTrappedStatus()
+    {
+        return isTrapped;
+    }
+
 
     void AssignStartingRandomType()
     {
