@@ -9,11 +9,16 @@ public class Tile : MonoBehaviour {
     public SpriteRenderer myRenderer;
     public Texture2D myTexture;
     public Coordinate myCoord;
+    public GameObject trap;
 
     public bool canBeMoved = true;
     public bool[] possibleConnections, effectiveConnections;
 
     private BoxCollider2D myCollider;
+    private GameObject myTrap;
+    private Trap myTrapComponent;
+    private bool isTrapped;
+    private int childPlayer;
 
     enum tileTypes // B - bottom, R - right, T - top, L - left, V - vertical, H - horizontal
     {
@@ -95,6 +100,18 @@ public class Tile : MonoBehaviour {
         mySprite = Sprite.Create(myTexture, new Rect(0, 0, myTexture.width, myTexture.height), new Vector2(0.5f, 0.5f));
         myRenderer.sprite = mySprite;
         myCollider.size = new Vector2(myTexture.width/100f, myTexture.height/100f);
+    }
+
+    // Player Child
+
+    public void SetPlayerChild(int player)
+    {
+        childPlayer = player;
+    }
+
+    public int GetPlayerChild()
+    {
+        return childPlayer;
     }
 
     // Tiles connectivity
@@ -266,6 +283,18 @@ public class Tile : MonoBehaviour {
         effectiveConnections = new bool[4] { false, false, false, false };
     }
 
+    // Trap
+
+    public void SetTrap(int playerNbr)
+    {
+        myTrap = Instantiate(trap, transform);
+        myTrapComponent = myTrap.GetComponent<Trap>();
+        myTrapComponent.SetPlayerDropping(playerNbr);
+        isTrapped = true;
+    }
+
+
+
     // Unity Specific methods
 
     void Awake () {
@@ -273,6 +302,7 @@ public class Tile : MonoBehaviour {
         myCollider = GetComponent<BoxCollider2D>();
         possibleConnections = new bool[4];
         effectiveConnections = new bool[4];
+        childPlayer = -1;
         //Debug.Log(possibleConnections.Length);
     }
 	

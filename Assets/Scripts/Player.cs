@@ -140,29 +140,36 @@ public class Player : MonoBehaviour
         {
 
             case 1:
-                cornerTransform = mapManagerComponent.myMap[0, mapManagerComponent.rows - 1].transform.position;
-                transform.position = new Vector3(cornerTransform.x, cornerTransform.y, -1);
-                transform.SetParent(mapManagerComponent.myMap[0, mapManagerComponent.rows - 1].transform);
-                
+                TeleportAtCoordinates(new Coordinate(0, mapManagerComponent.rows - 1));
                 break;
             case 2:
-                cornerTransform = mapManagerComponent.myMap[mapManagerComponent.columns - 1, mapManagerComponent.rows - 1].transform.position;
-                transform.position = new Vector3(cornerTransform.x, cornerTransform.y, -1);
-                transform.SetParent(mapManagerComponent.myMap[mapManagerComponent.columns - 1, mapManagerComponent.rows - 1].transform);
+                TeleportAtCoordinates(new Coordinate(mapManagerComponent.columns - 1, mapManagerComponent.rows - 1));
                 break;
             case 3:
-                cornerTransform = mapManagerComponent.myMap[0, 0].transform.position;
-                transform.position = new Vector3(cornerTransform.x, cornerTransform.y, -1);
-                transform.SetParent(mapManagerComponent.myMap[0, 0].transform);
+                TeleportAtCoordinates(new Coordinate(0, 0));
                 break;
             case 4:
-                cornerTransform = mapManagerComponent.myMap[mapManagerComponent.columns - 1, 0].transform.position;
-                transform.position = new Vector3(cornerTransform.x, cornerTransform.y, -1);
-                transform.SetParent(mapManagerComponent.myMap[mapManagerComponent.columns - 1, 0].transform);
+                TeleportAtCoordinates(new Coordinate(mapManagerComponent.columns - 1, 0));
                 break;
             default:
                 break;
         }
+    }
+
+    public void TeleportAtCoordinates(Coordinate coord)
+    {
+        GameObject targetTile;
+
+        targetTile = mapManagerComponent.PickTileObject(coord);
+        transform.position = new Vector3(targetTile.transform.position.x, targetTile.transform.position.y, -5);
+        transform.SetParent(targetTile.transform);
+        targetTile.GetComponent<Tile>().SetPlayerChild(playerNbr);
+
+    }
+
+    public void TeleportOffScreen()
+    {
+        transform.position = new Vector3(-100, 0, -5);
     }
 
     // Movement Coroutines

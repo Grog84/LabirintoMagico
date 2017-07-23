@@ -13,6 +13,12 @@ public class Card : MonoBehaviour {
     public int tileType;
     private Image myImage;
     private Sprite mySprite;
+    private bool isTrapped;
+
+    public void SetIsTrapped(bool isTrapped)
+    {
+        this.isTrapped = isTrapped;
+    }
 
     public int getTileType()
     {
@@ -68,17 +74,18 @@ public class Card : MonoBehaviour {
         myImage.sprite = mySprite;
     }
 
-    void AssignRandomType()
+    void AssignStartingRandomType()
     {
         int randType = Random.Range(0, 11);
         AssignType(randType);
+        isTrapped = true;
     }
 
     // Use this for initialization
     void Start () {
 
         myImage = GetComponent<Image>();
-        AssignRandomType();
+        AssignStartingRandomType();
 
     }
 	

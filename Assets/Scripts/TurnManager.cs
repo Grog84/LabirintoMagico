@@ -23,6 +23,7 @@ public class TurnManager : MonoBehaviour
     private Card[] activeCards;
     private CardButton[] cardsButtonComponent;
     private Player[] playerComponent;
+    private Player activePlayer;
     private RectTransform[] buttonsTransform, panelsTransform;
     private RectTransform cursorTransform;
     private Animator[] buttonsAnimator;
@@ -121,6 +122,7 @@ public class TurnManager : MonoBehaviour
         playerPlayingIdx ++;
         playerPlayingIdx %= 4;
         playerPlaying = playerOrder[playerPlayingIdx];
+        activePlayer = playerComponent[playerPlayingIdx];
 
         portraitSelection.transform.position = portraits[playerPlaying - 1].transform.position;
         ResetCardsButtonRotation();
@@ -160,9 +162,17 @@ public class TurnManager : MonoBehaviour
     {
         for (int i = 0; i < 4; i++)
         {
-            playerComponent[i].gameObject.transform.SetParent(mapManager.PickTileObject(playerComponent[i].coordinate).transform);
+            GameObject playerTile = mapManager.PickTileObject(playerComponent[i].coordinate);
+            playerComponent[i].gameObject.transform.SetParent(playerTile.transform);
+            playerTile.GetComponent<Tile>().SetPlayerChild(playerComponent[i].playerNbr);
+
             //playerComponent[i].gameObject.transform.localPosition = new Vector3 (0, 0, -1);
         }
+    }
+
+    public int GetActivePlayer()
+    {
+        return playerPlaying;
     }
 
     // // UI
@@ -298,11 +308,23 @@ public class TurnManager : MonoBehaviour
     // Tile Slide
     IEnumerator InsertTile(int cardNbr, GameObject arrow, int slideDirection)
     {
+        Player fallingPlayer = null;
+        bool repositionPlayer = false;
         isSliding = true;
         Coordinate[] lineCoordinates = arrow.GetComponent<InsertArrow>().getPointedCoords();
         lineCoordinates = mapManager.KeepMovableTiles(lineCoordinates);
 
-        int newCardType = mapManager.PickTileComponent(lineCoordinates[lineCoordinates.Length-1]).type;
+        Tile lastTile = mapManager.PickTileComponent(lineCoordinates[lineCoordinates.Length - 1]);
+        int newCardType = lastTile.type;
+        if (lastTile.GetPlayerChild() != -1)
+        {
+            int playerIdx = GeneralMethods.FindElementIdx(playerOrder, lastTile.GetPlayerChild());
+            fallingPlayer = playerComponent[playerIdx];
+            fallingPlayer.transform.parent = null;
+            fallingPlayer.TeleportOffScreen();
+            repositionPlayer = true;
+        }
+
         StartCoroutine(mapManager.SlideLine(lineCoordinates, slideDirection));
 
         int tileType = 0;
@@ -325,6 +347,11 @@ public class TurnManager : MonoBehaviour
         tileType = activatedCard.GetTileType();
 
         mapManager.InstantiateTileLive(tileType, lineCoordinates[0]);
+
+        if (repositionPlayer)
+        {
+            fallingPlayer.TeleportAtCoordinates(lineCoordinates[0]);
+        }
 
         GameObject activePortrait = portraits[playerPlayingIdx];
         activeCards = activePortrait.GetComponentsInChildren<Card>();

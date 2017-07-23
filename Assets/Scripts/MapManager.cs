@@ -484,12 +484,15 @@ public class MapManager : MonoBehaviour {
 
     }
 
-    public void InstantiateTileLive(int tileType, Coordinate coordinate, bool canBeMoved = true)
+    public void InstantiateTileLive(int tileType, Coordinate coordinate, bool isTrapped = false, bool canBeMoved = true)
     {
         GameObject tileInstance = Instantiate(tile, coordinate.getVect3() + transform.position, Quaternion.identity);
         tileInstance.transform.SetParent(transform);
 
         Tile myTileComponent = tileInstance.GetComponent<Tile>();
+        if (isTrapped)
+            myTileComponent.SetTrap(turnManager.GetActivePlayer());
+
         myTileComponent.SetSprite(tileType);
         // TODO modificare type per diventare come quello non speciale
         myTileComponent.canBeMoved = canBeMoved;
@@ -511,6 +514,7 @@ public class MapManager : MonoBehaviour {
             playerInstance = Instantiate(player, new Vector3(0f, rows - 1, -1f) * tileSize, Quaternion.identity);
             playerInstance.GetComponent<Player>().coordinate = new Coordinate (0, rows - 1);
             playerInstance.transform.SetParent(myMap[0, rows-1].transform);
+            myMapTiles[0, rows - 1].SetPlayerChild(1);
         }
         else if (playerNbr == 2)
         {
@@ -518,6 +522,7 @@ public class MapManager : MonoBehaviour {
             playerInstance = Instantiate(player, new Vector3(columns - 1, rows - 1, -1f) * tileSize, Quaternion.identity);
             playerInstance.GetComponent<Player>().coordinate = new Coordinate(columns - 1, rows - 1);
             playerInstance.transform.SetParent(myMap[columns - 1, rows - 1].transform);
+            myMapTiles[columns - 1, rows - 1].SetPlayerChild(2);
         }
         else if (playerNbr == 3)
         {
@@ -525,6 +530,7 @@ public class MapManager : MonoBehaviour {
             playerInstance = Instantiate(player, new Vector3(0f, 0f, -1f) * tileSize, Quaternion.identity);
             playerInstance.GetComponent<Player>().coordinate = new Coordinate(0, 0);
             playerInstance.transform.SetParent(myMap[0, 0].transform);
+            myMapTiles[0, 0].SetPlayerChild(3);
         }
         else
         {
@@ -532,6 +538,7 @@ public class MapManager : MonoBehaviour {
             playerInstance = Instantiate(player, new Vector3(columns - 1, 0f, -1f) * tileSize, Quaternion.identity);
             playerInstance.GetComponent<Player>().coordinate = new Coordinate(columns - 1, 0);
             playerInstance.transform.SetParent(myMap[columns - 1, 0].transform);
+            myMapTiles[columns - 1, 0].SetPlayerChild(4);
         }
 
         allPlayers[playerNbr-1] = playerInstance;
@@ -577,7 +584,7 @@ public class MapManager : MonoBehaviour {
             if (childTrans.gameObject.tag == "Player")
             {
                 childTrans.parent = null;
-                childTrans.gameObject.GetComponent<Player>().ResetToStartingPosition();
+                childTrans.gameObject.GetComponent<Player>().TeleportOffScreen();
             }
         }
 
