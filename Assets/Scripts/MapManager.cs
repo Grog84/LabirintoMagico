@@ -21,7 +21,7 @@ public class MapManager : MonoBehaviour {
 
     public int columns = 0;
     public int rows = 0;
-    public float tileSize = 5f;
+    public float tileSize = 13.65f;
     public Count curvesCount = new Count(4, 8);
     public Count straightCount = new Count(4, 8);
     public Count tCount = new Count(4, 8);
@@ -514,7 +514,6 @@ public class MapManager : MonoBehaviour {
 
         if (playerNbr == 1)
         {
-            //playerInstance = Instantiate(player, new Vector3(0f, rows-1, -1f) * tileSize + finalShift, Quaternion.identity);
             playerInstance = Instantiate(player, new Vector3(0f, rows - 1, -1f) * tileSize, Quaternion.identity);
             playerInstance.GetComponent<Player>().coordinate = new Coordinate (0, rows - 1);
             playerInstance.transform.SetParent(myMap[0, rows-1].transform);
@@ -522,7 +521,6 @@ public class MapManager : MonoBehaviour {
         }
         else if (playerNbr == 2)
         {
-            //playerInstance = Instantiate(player, new Vector3(columns-1, rows-1, -1f) * tileSize + finalShift, Quaternion.identity);
             playerInstance = Instantiate(player, new Vector3(columns - 1, rows - 1, -1f) * tileSize, Quaternion.identity);
             playerInstance.GetComponent<Player>().coordinate = new Coordinate(columns - 1, rows - 1);
             playerInstance.transform.SetParent(myMap[columns - 1, rows - 1].transform);
@@ -530,7 +528,6 @@ public class MapManager : MonoBehaviour {
         }
         else if (playerNbr == 3)
         {
-            //playerInstance = Instantiate(player, new Vector3(0f, 0f, -1f) * tileSize + finalShift, Quaternion.identity);
             playerInstance = Instantiate(player, new Vector3(0f, 0f, -1f) * tileSize, Quaternion.identity);
             playerInstance.GetComponent<Player>().coordinate = new Coordinate(0, 0);
             playerInstance.transform.SetParent(myMap[0, 0].transform);
@@ -538,7 +535,6 @@ public class MapManager : MonoBehaviour {
         }
         else
         {
-            //playerInstance = Instantiate(player, new Vector3(columns-1, 0f, -1f) * tileSize + finalShift, Quaternion.identity);
             playerInstance = Instantiate(player, new Vector3(columns - 1, 0f, -1f) * tileSize, Quaternion.identity);
             playerInstance.GetComponent<Player>().coordinate = new Coordinate(columns - 1, 0);
             playerInstance.transform.SetParent(myMap[columns - 1, 0].transform);
@@ -870,7 +866,7 @@ public class Coordinate
 {
     public int x, y;
 
-    float tileSize = 5f;
+    float tileSize = 13.65f;
 
     public bool myEqual(Coordinate other)
     {
@@ -890,7 +886,6 @@ public class Coordinate
     {
         return x;
     }
-
 
     public int getY()
     {
@@ -917,6 +912,6 @@ public class Coordinate
 
     public Vector3 getVect3()
     {
-        return new Vector3((float)x, (float)y, 0f) * tileSize;
+        return new Vector3((float)x, (float)y, 0.0001f * (float)y) * tileSize;
     }
 }

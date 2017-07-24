@@ -31,6 +31,8 @@ public class TurnManager : MonoBehaviour
     private Vector3 rotationArrowsParkingPosition, rotationArrowsActivePosition;
     private List<Trap> visibleTraps = new List<Trap>();
     private bool trapHasTriggered = false;
+    private bool canBeActivated = true;
+    private bool canBeRotated = true;
 
     enum myButtons
     {
@@ -98,8 +100,8 @@ public class TurnManager : MonoBehaviour
         //  here we should get also the component defining the plaer movement
         for (int i = 0; i < playerOrder.Length; i++)
         {
-            players[playerOrder[i]-1] = tmpPlayers[i];
-            playerComponent[playerOrder[i]-1] = tmpPlayers[i].GetComponent<Player>();
+            players[playerOrder[i] - 1] = tmpPlayers[i];
+            playerComponent[playerOrder[i] - 1] = tmpPlayers[i].GetComponent<Player>();
         }
     }
 
@@ -121,7 +123,7 @@ public class TurnManager : MonoBehaviour
         ActivatePlayer(0);
         ResetButtons();
 
-        playerPlayingIdx ++;
+        playerPlayingIdx++;
         playerPlayingIdx %= 4;
         playerPlaying = playerOrder[playerPlayingIdx];
         activePlayer = playerComponent[playerPlayingIdx];
@@ -423,9 +425,12 @@ public class TurnManager : MonoBehaviour
 
         yield return null;
 
-        while (!Input.GetKeyDown(KeyCode.B) && !Input.GetKeyDown(KeyCode.Space))
+        bool firstClick = false;
+        float firstClickWaitingTime = 0.5f;
+
+        while (!Input.GetKeyDown(KeyCode.B) && !Input.GetKeyDown(KeyCode.Space) && !Input.GetButtonDown("Fire1joy") && !Input.GetButtonDown("Fire2joy"))
         {
-            if (Input.GetKeyDown(KeyCode.D) || Input.GetAxis("HorizontalJoy") == 1)
+            if ((Input.GetKey(KeyCode.D) || Input.GetAxis("HorizontalJoy") == 1))
             {
                 if (currentSelection >= 26 && currentSelection <= 39)
                 {
@@ -433,6 +438,7 @@ public class TurnManager : MonoBehaviour
                     yield return null;
                     currentSelection--;
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", true);
+                    yield return null;
                 }
                 else if (currentSelection >= 0 && currentSelection <= 12)
                 {
@@ -440,6 +446,7 @@ public class TurnManager : MonoBehaviour
                     yield return null;
                     currentSelection++;
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", true);
+                    yield return null;
                 }
                 else if (currentSelection == 51)
                 {
@@ -447,17 +454,25 @@ public class TurnManager : MonoBehaviour
                     yield return null;
                     currentSelection = 0;
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", true);
+                    yield return null;
+                }
+                if (!firstClick)
+                {
+                    yield return new WaitForSeconds(firstClickWaitingTime);
+                    firstClick = true;
                 }
             }
 
-            else if (Input.GetKeyDown(KeyCode.A) || Input.GetAxis("HorizontalJoy") == -1)
+            else if ((Input.GetKey(KeyCode.A) || Input.GetAxis("HorizontalJoy") == -1))
             {
+                //canBeActivated = false;
                 if (currentSelection >= 1 && currentSelection <= 13)
                 {
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", false);
                     yield return null;
                     currentSelection--;
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", true);
+                    yield return null;
                 }
                 else if (currentSelection >= 25 && currentSelection <= 38)
                 {
@@ -465,6 +480,7 @@ public class TurnManager : MonoBehaviour
                     yield return null;
                     currentSelection++;
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", true);
+                    yield return null;
                 }
                 else if (currentSelection == 0)
                 {
@@ -472,17 +488,26 @@ public class TurnManager : MonoBehaviour
                     yield return null;
                     currentSelection = 51;
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", true);
+                    yield return null;
+                }
+                if (!firstClick)
+                {
+                    Debug.Log("passa");
+                    yield return new WaitForSeconds(firstClickWaitingTime);
+                    firstClick = true;
                 }
             }
 
-            else if (Input.GetKeyDown(KeyCode.W))
+            else if ((Input.GetKey(KeyCode.W) || Input.GetAxis("VerticalJoy") == -1))
             {
+                //canBeActivated = false;
                 if (currentSelection >= 12 && currentSelection <= 25)
                 {
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", false);
                     yield return null;
                     currentSelection++;
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", true);
+                    yield return null;
                 }
                 else if (currentSelection >= 39 && currentSelection <= 51)
                 {
@@ -490,6 +515,7 @@ public class TurnManager : MonoBehaviour
                     yield return null;
                     currentSelection--;
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", true);
+                    yield return null;
                 }
                 else if (currentSelection == 0)
                 {
@@ -497,17 +523,26 @@ public class TurnManager : MonoBehaviour
                     yield return null;
                     currentSelection = 51;
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", true);
+                    yield return null;
+                }
+                if (!firstClick)
+                {
+                    Debug.Log("passa");
+                    yield return new WaitForSeconds(firstClickWaitingTime);
+                    firstClick = true;
                 }
             }
 
-            else if (Input.GetKeyDown(KeyCode.S))
+            else if ((Input.GetKey(KeyCode.S) || Input.GetAxis("VerticalJoy") == 1))
             {
+                //canBeActivated = false;
                 if (currentSelection >= 13 && currentSelection <= 26)
                 {
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", false);
                     yield return null;
                     currentSelection--;
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", true);
+                    yield return null;
                 }
                 else if (currentSelection >= 38 && currentSelection <= 50)
                 {
@@ -515,6 +550,7 @@ public class TurnManager : MonoBehaviour
                     yield return null;
                     currentSelection++;
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", true);
+                    yield return null;
                 }
                 else if (currentSelection == 51)
                 {
@@ -522,24 +558,38 @@ public class TurnManager : MonoBehaviour
                     yield return null;
                     currentSelection = 0;
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", true);
+                    yield return null;
                 }
+                if (!firstClick)
+                {
+                    Debug.Log("passa");
+                    yield return new WaitForSeconds(firstClickWaitingTime);
+                    firstClick = true;
+                }
+
             }
+
+            else if ((Mathf.Abs(Input.GetAxis("VerticalJoy")) != 1 && Mathf.Abs(Input.GetAxis("HorizontalJoy")) != 1))
+            {
+                firstClick = false;
+            }
+
 
 
             yield return null;
         }
 
-        if (Input.GetKeyDown(KeyCode.B))
+        if (Input.GetKeyDown(KeyCode.B) || Input.GetButtonDown("Fire2joy"))
         {
             allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", false);
-            StartCoroutine(ActivateCardRotation(cardNbr)); 
+            StartCoroutine(ActivateCardRotation(cardNbr));
         }
         else
         {
             int mySlideDirection = 0;
             if (currentSelection >= 0 && currentSelection <= 12)
                 mySlideDirection = (int)slideDirection.botToTop;
-            else if(currentSelection >= 13 && currentSelection <= 25)
+            else if (currentSelection >= 13 && currentSelection <= 25)
                 mySlideDirection = (int)slideDirection.rightToLeft;
             else if (currentSelection >= 26 && currentSelection <= 38)
                 mySlideDirection = (int)slideDirection.topToBot;
@@ -571,17 +621,23 @@ public class TurnManager : MonoBehaviour
 
         yield return null;
 
-        while (!Input.GetKeyDown(KeyCode.B) && !Input.GetKeyDown(KeyCode.Space))
+        while (!Input.GetKeyDown(KeyCode.B) && !Input.GetKeyDown(KeyCode.Space) && !Input.GetButtonDown("Fire1joy") && !Input.GetButtonDown("Fire2joy"))
         {
-            if (Input.GetKeyDown(KeyCode.D))
+            if ((Input.GetKeyDown(KeyCode.D) || Input.GetAxis("RotationJoy") > 0) && canBeRotated)
+            {
+                canBeRotated = false;
                 activatedCard.RotateTile(-1);
-            else if (Input.GetKeyDown(KeyCode.A))
+            }
+            else if ((Input.GetKeyDown(KeyCode.A) || Input.GetAxis("RotationJoy") < 0) && canBeRotated)
+            {
+                canBeRotated = false;
                 activatedCard.RotateTile(1);
+            }
 
             yield return null;
         }
 
-        if (Input.GetKeyDown(KeyCode.B))
+        if (Input.GetKeyDown(KeyCode.B) || Input.GetButtonDown("Fire2joy"))
         {
             arrows.GetComponent<RectTransform>().anchoredPosition += panelParkingPosition;
             ActivateCardSelection();
@@ -601,19 +657,19 @@ public class TurnManager : MonoBehaviour
 
         cursorArrows.transform.localPosition = rotationArrowsActivePosition;
 
-        while (!Input.GetKeyDown(KeyCode.A) && !Input.GetKeyDown(KeyCode.D))
+        while (!Input.GetKeyDown(KeyCode.A) && !Input.GetKeyDown(KeyCode.D) && Input.GetAxis("RotationJoy") == 0)
         {
             yield return null;
         }
 
         Coordinate[] selectedCoords = rotationCursor.GetComponent<CursorMoving>().getSelectedCoords();
 
-        if (Input.GetKeyDown(KeyCode.A))
+        if (Input.GetKeyDown(KeyCode.A) || Input.GetAxis("RotationJoy") < 0)
         {
             isRotating = true;
             StartCoroutine(mapManager.RotateTiles(selectedCoords, 1));
         }
-        else
+        else if ((Input.GetKeyDown(KeyCode.D) || Input.GetAxis("RotationJoy") > 0))
         {
             isRotating = true;
             StartCoroutine(mapManager.RotateTiles(selectedCoords, -1));
@@ -643,12 +699,12 @@ public class TurnManager : MonoBehaviour
 
         yield return null;
 
-        while (!Input.GetKeyDown(KeyCode.B) && !Input.GetKeyDown(KeyCode.Space))
+        while (!Input.GetKeyDown(KeyCode.B) && !Input.GetKeyDown(KeyCode.Space) && !Input.GetButtonDown("Fire1joy") && !Input.GetButtonDown("Fire2joy"))
         {
             yield return null;
         }
 
-        if (Input.GetKeyDown(KeyCode.B))
+        if (Input.GetKeyDown(KeyCode.B) || Input.GetButtonDown("Fire2joy"))
         {
             rotationCursor.GetComponent<CursorMoving>().CursorDeactivate();
             rotationCursor.GetComponent<CursorMoving>().SetAtPosition(rotationArrowsParkingPosition);
@@ -700,14 +756,40 @@ public class TurnManager : MonoBehaviour
 
     }
 
+    IEnumerator reactivateCursor()
+    {
+        canBeActivated = true;
+        yield return null;
+    }
+
+    IEnumerator reactivateRotation()
+    {
+        canBeRotated = true;
+        yield return null;
+    }
+
+
     void Update()
     {
-        if (cursorIsActive)
+        if ((Mathf.Abs(Input.GetAxis("HorizontalJoy")) != 1))
         {
-            if (Input.GetKeyDown(KeyCode.D) || Input.GetKeyDown(KeyCode.A))
-                MoveCursor();
+            StartCoroutine(reactivateCursor());
+        }
 
-            if (selectionDepth<=2 && Input.GetKeyDown(KeyCode.Space))
+        if ((Input.GetAxis("RotationJoy")) == 0)
+        {
+            StartCoroutine(reactivateRotation());
+        }
+
+        if (cursorIsActive && canBeActivated)
+        {
+            if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A) || Input.GetAxis("HorizontalJoy") != 0)
+            {
+                canBeActivated = false;
+                MoveCursor();
+            }
+
+            if (selectionDepth <= 2 && (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Fire1joy")))
             {
                 if (canMove && cursorTransform.position == buttonsTransform[0].position) // Walk
                 {

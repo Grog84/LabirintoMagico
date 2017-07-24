@@ -34,70 +34,70 @@ public class Tile : MonoBehaviour {
         switch (type)
         {
             case (int)tileTypes.Curve_BR:
-                myTexture = (Texture2D)Resources.Load("TileProva/curva");
+                myTexture = (Texture2D)Resources.Load("Tiles/curva");
                 break;
             case (int)tileTypes.Curve_LB:
-                myTexture = (Texture2D)Resources.Load("TileProva/curva2");
+                myTexture = (Texture2D)Resources.Load("Tiles/curva2");
                 break;
             case (int)tileTypes.Curve_RT:
-                myTexture = (Texture2D)Resources.Load("TileProva/curva3");
+                myTexture = (Texture2D)Resources.Load("Tiles/curva3");
                 break;
             case (int)tileTypes.Curve_TL:
-                myTexture = (Texture2D)Resources.Load("TileProva/curva4");
+                myTexture = (Texture2D)Resources.Load("Tiles/curva4");
                 break;
             case (int)tileTypes.Straight_V:
-                myTexture = (Texture2D)Resources.Load("TileProva/Straight");
+                myTexture = (Texture2D)Resources.Load("Tiles/Straight");
                 break;
             case (int)tileTypes.Straight_H:
-                myTexture = (Texture2D)Resources.Load("TileProva/Straight2");
+                myTexture = (Texture2D)Resources.Load("Tiles/Straight2");
                 break;
             case (int)tileTypes.T_B:
-                myTexture = (Texture2D)Resources.Load("TileProva/t");
+                myTexture = (Texture2D)Resources.Load("Tiles/t");
                 break;
             case (int)tileTypes.T_L:
-                myTexture = (Texture2D)Resources.Load("TileProva/t2");
+                myTexture = (Texture2D)Resources.Load("Tiles/t2");
                 break;
             case (int)tileTypes.T_T:
-                myTexture = (Texture2D)Resources.Load("TileProva/t3");
+                myTexture = (Texture2D)Resources.Load("Tiles/t3");
                 break;
             case (int)tileTypes.T_R:
-                myTexture = (Texture2D)Resources.Load("TileProva/t4");
+                myTexture = (Texture2D)Resources.Load("Tiles/t4");
                 break;
             case (int)tileTypes.Cross:
-                myTexture = (Texture2D)Resources.Load("TileProva/cross");
+                myTexture = (Texture2D)Resources.Load("Tiles/cross");
                 break;
             case (int)tileTypes.Curve_BR_alt:
-                myTexture = (Texture2D)Resources.Load("TileProva/curva_alt");
+                myTexture = (Texture2D)Resources.Load("Tiles/curva_alt");
                 break;
             case (int)tileTypes.Curve_LB_alt:
-                myTexture = (Texture2D)Resources.Load("TileProva/curva2_alt");
+                myTexture = (Texture2D)Resources.Load("Tiles/curva2_alt");
                 break;
             case (int)tileTypes.Curve_RT_alt:
-                myTexture = (Texture2D)Resources.Load("TileProva/curva3_alt");
+                myTexture = (Texture2D)Resources.Load("Tiles/curva3_alt");
                 break;
             case (int)tileTypes.Curve_TL_alt:
-                myTexture = (Texture2D)Resources.Load("TileProva/curva4_alt");
+                myTexture = (Texture2D)Resources.Load("Tiles/curva4_alt");
                 break;
             case (int)tileTypes.T_B_alt:
-                myTexture = (Texture2D)Resources.Load("TileProva/t_alt");
+                myTexture = (Texture2D)Resources.Load("Tiles/t_alt");
                 break;
             case (int)tileTypes.T_L_alt:
-                myTexture = (Texture2D)Resources.Load("TileProva/t2_alt");
+                myTexture = (Texture2D)Resources.Load("Tiles/t2_alt");
                 break;
             case (int)tileTypes.T_T_alt:
-                myTexture = (Texture2D)Resources.Load("TileProva/t3_alt");
+                myTexture = (Texture2D)Resources.Load("Tiles/t3_alt");
                 break;
             case (int)tileTypes.T_R_alt:
-                myTexture = (Texture2D)Resources.Load("TileProva/t4_alt");
+                myTexture = (Texture2D)Resources.Load("Tiles/t4_alt");
                 break;
             case (int)tileTypes.Goal:
-                myTexture = (Texture2D)Resources.Load("TileProva/goal");
+                myTexture = (Texture2D)Resources.Load("Tiles/goal");
                 break;
             default:
                 break;
         }
 
-        mySprite = Sprite.Create(myTexture, new Rect(0, 0, myTexture.width, myTexture.height), new Vector2(0.5f, 0.5f));
+        mySprite = Sprite.Create(myTexture, new Rect(0, 0, myTexture.width, myTexture.height), new Vector2(0.5f, 0.66f));
         myRenderer.sprite = mySprite;
         myCollider.size = new Vector2(myTexture.width/100f, myTexture.height/100f);
     }
@@ -251,7 +251,7 @@ public class Tile : MonoBehaviour {
 
         float elapsedTime = 0;
 
-        Vector3 destination = new Vector3(transform.position.x + movement[0], transform.position.y + movement[1]);
+        Vector3 destination = new Vector3(transform.position.x + movement[0], transform.position.y + movement[1], transform.position.z);
 
         while (elapsedTime < animTime)
         {

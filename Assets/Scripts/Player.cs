@@ -49,7 +49,7 @@ public class Player : MonoBehaviour
 
         mySprite = Sprite.Create(myTexture, new Rect(0, 0, myTexture.width, myTexture.height), new Vector2(0.5f, 0.5f));
         myRenderer.sprite = mySprite;
-        myCollider.size = new Vector2(myTexture.width, myTexture.height);
+        myCollider.size = new Vector2(myTexture.width/100f, myTexture.height/100f);
 
     }
 
