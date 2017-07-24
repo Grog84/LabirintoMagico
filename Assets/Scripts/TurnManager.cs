@@ -131,6 +131,9 @@ public class TurnManager : MonoBehaviour
         AssignCardsToButtons();
         ActivateTraps();
 
+        selectedButton = 0;
+        cursorTransform.position = buttonsTransform[selectedButton].position;
+
         // StartCoroutine(MoveCamera(players[playerPlayingIdx]));  
 
     }
@@ -176,6 +179,25 @@ public class TurnManager : MonoBehaviour
     public int GetActivePlayer()
     {
         return playerPlaying;
+    }
+
+    void AssignCardsToButtons()
+    {
+        GameObject activePortrait = portraits[playerPlayingIdx];
+        activeCards = activePortrait.GetComponentsInChildren<Card>();
+
+        int card1_type = activeCards[0].getTileType();
+        int card2_type = activeCards[1].getTileType();
+
+        if (activeCards[0].GetTrappedStatus())
+            cardsButtonComponent[0].SetTileType(card1_type, true);
+        else
+            cardsButtonComponent[0].SetTileType(card1_type, false);
+
+        if (activeCards[1].GetTrappedStatus())
+            cardsButtonComponent[1].SetTileType(card2_type, true);
+        else
+            cardsButtonComponent[1].SetTileType(card2_type, false);
     }
 
     // // UI
@@ -268,25 +290,6 @@ public class TurnManager : MonoBehaviour
     {
         cardsButtonComponent[0].ResetCardRotation();
         cardsButtonComponent[1].ResetCardRotation();
-    }
-
-    void AssignCardsToButtons()
-    {
-        GameObject activePortrait = portraits[playerPlayingIdx];
-        activeCards = activePortrait.GetComponentsInChildren<Card>();
-
-        int card1_type = activeCards[0].getTileType();
-        int card2_type = activeCards[1].getTileType();
-
-        if (activeCards[0].GetTrappedStatus())
-            cardsButtonComponent[0].SetTileType(card1_type, true);
-        else
-            cardsButtonComponent[0].SetTileType(card1_type, false);
-
-        if (activeCards[1].GetTrappedStatus())
-            cardsButtonComponent[1].SetTileType(card1_type, true);
-        else
-            cardsButtonComponent[1].SetTileType(card1_type, false);
     }
 
     // Traps
