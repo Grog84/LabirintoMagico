@@ -14,7 +14,7 @@ public class MenuManager : MonoBehaviour {
 	void Update () {
 		if (Input.GetButtonDown("Fire1joy"))
         {
-            SceneManager.LoadScene("_Scenes/scenaprova");
+            SceneManager.LoadScene("_Scenes/loading");
         }
 	}
 }
