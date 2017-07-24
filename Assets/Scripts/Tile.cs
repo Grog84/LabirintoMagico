@@ -30,68 +30,87 @@ public class Tile : MonoBehaviour {
 
     public void SetSprite(int type)
     {
-        this.type = type;
         switch (type)
         {
             case (int)tileTypes.Curve_BR:
                 myTexture = (Texture2D)Resources.Load("Tiles/curva");
+                this.type = type;
                 break;
             case (int)tileTypes.Curve_LB:
                 myTexture = (Texture2D)Resources.Load("Tiles/curva2");
+                this.type = type;
                 break;
             case (int)tileTypes.Curve_RT:
                 myTexture = (Texture2D)Resources.Load("Tiles/curva3");
+                this.type = type;
                 break;
             case (int)tileTypes.Curve_TL:
                 myTexture = (Texture2D)Resources.Load("Tiles/curva4");
+                this.type = type;
                 break;
             case (int)tileTypes.Straight_V:
                 myTexture = (Texture2D)Resources.Load("Tiles/Straight");
+                this.type = type;
                 break;
             case (int)tileTypes.Straight_H:
                 myTexture = (Texture2D)Resources.Load("Tiles/Straight2");
+                this.type = type;
                 break;
             case (int)tileTypes.T_B:
                 myTexture = (Texture2D)Resources.Load("Tiles/t");
+                this.type = type;
                 break;
             case (int)tileTypes.T_L:
                 myTexture = (Texture2D)Resources.Load("Tiles/t2");
+                this.type = type;
                 break;
             case (int)tileTypes.T_T:
                 myTexture = (Texture2D)Resources.Load("Tiles/t3");
+                this.type = type;
                 break;
             case (int)tileTypes.T_R:
                 myTexture = (Texture2D)Resources.Load("Tiles/t4");
+                this.type = type;
                 break;
             case (int)tileTypes.Cross:
                 myTexture = (Texture2D)Resources.Load("Tiles/cross");
+                this.type = type;
                 break;
             case (int)tileTypes.Curve_BR_alt:
                 myTexture = (Texture2D)Resources.Load("Tiles/curva_alt");
+                this.type = (int)tileTypes.Curve_BR;
                 break;
             case (int)tileTypes.Curve_LB_alt:
                 myTexture = (Texture2D)Resources.Load("Tiles/curva2_alt");
+                this.type = (int)tileTypes.Curve_LB;
                 break;
             case (int)tileTypes.Curve_RT_alt:
                 myTexture = (Texture2D)Resources.Load("Tiles/curva3_alt");
+                this.type = (int)tileTypes.Curve_RT;
                 break;
             case (int)tileTypes.Curve_TL_alt:
                 myTexture = (Texture2D)Resources.Load("Tiles/curva4_alt");
+                this.type = (int)tileTypes.Curve_TL;
                 break;
             case (int)tileTypes.T_B_alt:
                 myTexture = (Texture2D)Resources.Load("Tiles/t_alt");
+                this.type = (int)tileTypes.T_B;
                 break;
             case (int)tileTypes.T_L_alt:
                 myTexture = (Texture2D)Resources.Load("Tiles/t2_alt");
+                this.type = (int)tileTypes.T_L;
                 break;
             case (int)tileTypes.T_T_alt:
                 myTexture = (Texture2D)Resources.Load("Tiles/t3_alt");
+                this.type = (int)tileTypes.T_T;
                 break;
             case (int)tileTypes.T_R_alt:
                 myTexture = (Texture2D)Resources.Load("Tiles/t4_alt");
+                this.type = (int)tileTypes.T_R;
                 break;
             case (int)tileTypes.Goal:
                 myTexture = (Texture2D)Resources.Load("Tiles/goal");
+                this.type = (int)tileTypes.Cross;
                 break;
             default:
                 break;

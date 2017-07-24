@@ -314,13 +314,34 @@ public class TurnManager : MonoBehaviour
             bool isOverlappedToPlayer = false;
             foreach (Player player in playerComponent)
             {
-                isOverlappedToPlayer = isOverlappedToPlayer || (player.GetCoordinates().myEqual(thisTrap.GetCoordiantes()));
+                isOverlappedToPlayer = isOverlappedToPlayer || (player.GetCoordinates().isEqual(thisTrap.GetCoordiantes()));
             }
 
             if (!isOverlappedToPlayer)
                 thisTrap.Activate();
 
         }
+    }
+
+    // Diamond
+
+    private bool ChecksForDiamond(Player player)
+    {
+        if (player.coordinate.isEqual(mapManager.GetDiamondCoords()))
+            return true;
+        else
+            return false;
+
+    }
+
+    private void CollectDiamond(Player player)
+    {
+        player.SetHasDiamond(true);
+        mapManager.myDiamondInstance.transform.parent = player.transform;
+        Vector3 collectedPosition = new Vector3(0, 0, 100);
+        
+        mapManager.myDiamondInstance.transform.localPosition = collectedPosition;
+        mapManager.diamondCoords = player.coordinate;
     }
 
     // Player Movement
@@ -344,6 +365,11 @@ public class TurnManager : MonoBehaviour
         cursorIsActive = true;
         ActivatePlayer(0);
         makePlayersChild();
+
+        if (ChecksForDiamond(p))
+        {
+            CollectDiamond(p);
+        }
 
         yield return null;
     }

@@ -17,6 +17,8 @@ public class Player : MonoBehaviour
     public GameObject mapManager, turnManager;
     public MapManager mapManagerComponent;
     public List<Tile> toBright;
+    private bool hasDiamond = false;
+    private Coordinate startingPoint;
 
     // Accessing Variable
 
@@ -132,22 +134,25 @@ public class Player : MonoBehaviour
 
     public void ResetToStartingPosition()
     {
-        Vector3 cornerTransform;
+        TeleportAtCoordinates(startingPoint);
+    }
 
+    public void SetStartingPoint()
+    {
         switch (playerNbr)
         {
 
             case 1:
-                TeleportAtCoordinates(new Coordinate(0, mapManagerComponent.rows - 1));
+                startingPoint = new Coordinate(0, mapManagerComponent.rows - 1);
                 break;
             case 2:
-                TeleportAtCoordinates(new Coordinate(mapManagerComponent.columns - 1, mapManagerComponent.rows - 1));
+                startingPoint = new Coordinate(mapManagerComponent.columns - 1, mapManagerComponent.rows - 1);
                 break;
             case 3:
-                TeleportAtCoordinates(new Coordinate(0, 0));
+                startingPoint = new Coordinate(0, 0);
                 break;
             case 4:
-                TeleportAtCoordinates(new Coordinate(mapManagerComponent.columns - 1, 0));
+                startingPoint = new Coordinate(mapManagerComponent.columns - 1, 0);
                 break;
             default:
                 break;
@@ -177,6 +182,13 @@ public class Player : MonoBehaviour
             tile.myTrapComponent.Trigger(this);
             turnManager.GetComponent<TurnManager>().SetTrapHasTriggered(true);
         }
+    }
+
+    // Dismond
+
+    public void SetHasDiamond(bool hasDiamond)
+    {
+        this.hasDiamond = hasDiamond;
     }
 
     // Movement Coroutines

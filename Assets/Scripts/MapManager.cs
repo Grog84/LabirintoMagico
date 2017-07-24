@@ -26,8 +26,9 @@ public class MapManager : MonoBehaviour {
     public Count straightCount = new Count(4, 8);
     public Count tCount = new Count(4, 8);
     public Count crossCount = new Count(4, 8);
-    public GameObject tile, player, insertArrow;
+    public GameObject tile, player, insertArrow, diamond;
     public TurnManager turnManager;
+    
 
     // pubic to make it accessible from the turnmanager
     public GameObject[] allPlayers;
@@ -39,7 +40,8 @@ public class MapManager : MonoBehaviour {
     private List<Vector3> gridPositions = new List<Vector3>();
     private Vector3 finalShift;
     private GameObject[] allInsertArrows;
-
+    public GameObject myDiamondInstance;
+    public Coordinate diamondCoords;
 
     enum tileTypes // B - bottom, R - right, T - top, L - left, V - vertical, H - horizontal
     {
@@ -296,6 +298,7 @@ public class MapManager : MonoBehaviour {
                 else if (myCoordinate.isEqual(centralX, centralY))
                 {
                     InstantiateTile((int)tileTypes.Goal, myCoordinate, false);
+                    InstantiateDiamond(myCoordinate);
                 }
                 else if (myCoordinate.isEqual(centralX, centralY+1))
                 {
@@ -508,6 +511,21 @@ public class MapManager : MonoBehaviour {
 
     }
 
+    void InstantiateDiamond(Coordinate coordinate)
+    {
+        Vector3 diamondPosition = coordinate.getVect3();
+        diamondPosition.z = -10;
+        myDiamondInstance = Instantiate(diamond, diamondPosition, Quaternion.identity);
+        myDiamondInstance.transform.SetParent(myMap[coordinate.getX(), coordinate.getY()].transform);
+
+        diamondCoords = new Coordinate(coordinate.getX(), coordinate.getY());
+
+        Texture2D myTexture = (Texture2D)Resources.Load("TileProva/diamond");
+        Sprite mySprite = Sprite.Create(myTexture, new Rect(0, 0, myTexture.width, myTexture.height), new Vector2(0.5f, 0.66f));
+        myDiamondInstance.GetComponent<SpriteRenderer>().sprite = mySprite;
+
+    }
+
     void InstantiatePlayer(int playerNbr)
     {
         GameObject playerInstance;
@@ -545,7 +563,9 @@ public class MapManager : MonoBehaviour {
         var myPlayer = playerInstance.GetComponent<Player>();
         myPlayer.playerNbr = playerNbr;
         myPlayer.setPlayerSprite();
-                
+        myPlayer.SetStartingPoint();
+
+
     }
 
     //Terraforming
@@ -840,6 +860,11 @@ public class MapManager : MonoBehaviour {
 
     // Others
 
+    public Coordinate GetDiamondCoords()
+    {
+        return diamondCoords;
+    }
+
     public GameObject[] getAllInstancedArrows()
     {
         return allInsertArrows;
@@ -867,14 +892,6 @@ public class Coordinate
     public int x, y;
 
     float tileSize = 13.65f;
-
-    public bool myEqual(Coordinate other)
-    {
-        if ((other.getX() == x) && (other.getY() == y))
-            return true;
-        else
-            return false;           
-    }
 
     public Coordinate(int x, int y)
     {
@@ -908,6 +925,14 @@ public class Coordinate
         {
             return false;
         }
+    }
+
+    public bool isEqual(Coordinate other)
+    {
+        if ((other.getX() == x) && (other.getY() == y))
+            return true;
+        else
+            return false;           
     }
 
     public Vector3 getVect3()
