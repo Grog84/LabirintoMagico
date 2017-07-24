@@ -4,33 +4,47 @@ using UnityEngine;
 
 public class CameraMovement : MonoBehaviour {
 
-    public float zoomOutSizeLimit, zoomInSizeLimit, zoomCurrentSize, zoomingSpeed, movingSpeed;
+    public float zoomOutSizeLimit, zoomInSizeLimit, zoomingSpeed, movingSpeed;
     public float maxXDisplacement, maxYDisplacement;
 
     private float[] xLimits, yLimits;
     private Camera thisCamera;
+    private bool isFollowingPlayer;
+    private GameObject followedPlayer;
+
+    private void StartFollowingPlayer(GameObject player)
+    {
+        followedPlayer = player;
+        isFollowingPlayer = true;
+    }
+
+    private void StopFollowingPlayer()
+    {
+        followedPlayer = null;
+        isFollowingPlayer = false;
+    }
 
     private void MoveCamera()
     {
-        if ((Input.GetKeyDown(KeyCode.RightArrow)))
+        if ((Input.GetKey(KeyCode.RightArrow)))
         {
             float newPosX = transform.position.x + movingSpeed * Time.deltaTime;
             newPosX = Mathf.Clamp(newPosX, xLimits[0], xLimits[1]);
             transform.position = new Vector3(newPosX, transform.position.y, transform.position.z);
         }
-        if ((Input.GetKeyDown(KeyCode.LeftArrow)))
+        if ((Input.GetKey(KeyCode.LeftArrow)))
         {
             float newPosX = transform.position.x - movingSpeed * Time.deltaTime;
             newPosX = Mathf.Clamp(newPosX, xLimits[0], xLimits[1]);
             transform.position = new Vector3(newPosX, transform.position.y, transform.position.z);
         }
-        if ((Input.GetKeyDown(KeyCode.UpArrow)))
+        if ((Input.GetKey(KeyCode.UpArrow)))
         {
             float newPosY = transform.position.y + movingSpeed * Time.deltaTime;
             newPosY = Mathf.Clamp(newPosY, yLimits[0], yLimits[1]);
             transform.position = new Vector3(transform.position.x, newPosY, transform.position.z);
         }
-        if ((Input.GetKeyDown(KeyCode.DownArrow)))
+        if ((Input.GetKey(KeyCode.DownArrow)))
         {
             float newPosY = transform.position.y - movingSpeed * Time.deltaTime;
             newPosY = Mathf.Clamp(newPosY, yLimits[0], yLimits[1]);
@@ -40,37 +54,37 @@ public class CameraMovement : MonoBehaviour {
 
     private void ZoomCamera()
     {
-        if ((Input.GetKeyDown(KeyCode.U)))
+        if ((Input.GetKey(KeyCode.U)))
         {
             float newSize = thisCamera.orthographicSize + zoomingSpeed * Time.deltaTime;
             newSize = Mathf.Clamp(newSize, zoomInSizeLimit, zoomOutSizeLimit);
             thisCamera.orthographicSize = newSize;
         }
-        if ((Input.GetKeyDown(KeyCode.I)))
+        if ((Input.GetKey(KeyCode.I)))
         {
             float newSize = thisCamera.orthographicSize - zoomingSpeed * Time.deltaTime;
             newSize = Mathf.Clamp(newSize, zoomInSizeLimit, zoomOutSizeLimit);
             thisCamera.orthographicSize = newSize;
         }
+
+        UpdatePositionLimits();
     }
 
-    private void FollowPlayer(GameObject player)
+    private void FollowPlayer()
     {
-        float cameraX = Mathf.Clamp(player.transform.position.x, xLimits[0], xLimits[1]);
-        float cameraY = Mathf.Clamp(player.transform.position.y, yLimits[0], yLimits[1]);
+        float cameraX = Mathf.Clamp(followedPlayer.transform.position.x, xLimits[0], xLimits[1]);
+        float cameraY = Mathf.Clamp(followedPlayer.transform.position.y, yLimits[0], yLimits[1]);
         var cameraPosition = new Vector3(cameraX, cameraY, transform.position.z);
     }
 
     private void UpdatePositionLimits()
     {
-        float xLim = (maxXDisplacement * (zoomOutSizeLimit - zoomCurrentSize)) / (zoomOutSizeLimit - zoomInSizeLimit);
+        float xLim = (maxXDisplacement * (zoomOutSizeLimit - thisCamera.orthographicSize)) / (zoomOutSizeLimit - zoomInSizeLimit);
         xLimits = new float[2] { -xLim, xLim };
 
-        float yLim = (maxYDisplacement * (zoomOutSizeLimit - zoomCurrentSize)) / (zoomOutSizeLimit - zoomInSizeLimit);
+        float yLim = (maxYDisplacement * (zoomOutSizeLimit - thisCamera.orthographicSize)) / (zoomOutSizeLimit - zoomInSizeLimit);
         yLimits = new float[2] { -yLim, yLim };
     }
-
-
 
     // Use this for initialization
     void Start () {
@@ -83,12 +97,18 @@ public class CameraMovement : MonoBehaviour {
 
         thisCamera = GetComponent<Camera>();
 
+        isFollowingPlayer = false;
+
     }
 	
 	// Update is called once per frame
 	void Update () {
 
-        MoveCamera();
+        if (isFollowingPlayer)
+            FollowPlayer();
+        else
+            MoveCamera();
+
         ZoomCamera();
 
     }
