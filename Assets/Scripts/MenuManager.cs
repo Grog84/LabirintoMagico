@@ -12,7 +12,7 @@ public class MenuManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (Input.GetButtonDown("Fire1joy"))
+		if (Input.GetButtonDown("Fire1joy") || Input.GetKeyDown(KeyCode.Space))
         {
             SceneManager.LoadScene("_Scenes/loading");
         }

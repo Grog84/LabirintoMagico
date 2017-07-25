@@ -10,13 +10,12 @@ public class Loading : MonoBehaviour {
     IEnumerator loading ()
     {
         loadText.GetComponent<Text>().text = "LOADING";
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.5f);
         loadText.GetComponent<Text>().text = "LOADING.";
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.5f);
         loadText.GetComponent<Text>().text = "LOADING..";
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(0.5f);
         loadText.GetComponent<Text>().text = "LOADING...";
-        yield return new WaitForSeconds(1);
     }
 
     // Use this for initialization
