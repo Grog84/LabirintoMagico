@@ -130,8 +130,11 @@ public class Player : MonoBehaviour
 
     public void UpdatePlayerPosition()
     {
-        Tile myTile = transform.parent.GetComponent<Tile>();
-        coordinate = myTile.GetCoordinatesCopy();
+        if (!isStasisActive)
+        {
+            Tile myTile = transform.parent.GetComponent<Tile>();
+            coordinate = myTile.GetCoordinatesCopy();
+        }
     }
 
     public void ResetToStartingPosition()
@@ -234,9 +237,12 @@ public class Player : MonoBehaviour
 
     public void UnchildFromTile()
     {
-        GameObject parentTile = transform.parent.gameObject;
-        parentTile.GetComponent<Tile>().SetPlayerChild(-1);
-        transform.parent = null;
+        if(!isStasisActive)
+        {
+            GameObject parentTile = transform.parent.gameObject;
+            parentTile.GetComponent<Tile>().SetPlayerChild(-1);
+            transform.parent = null;
+        }
     }
 
     // Diamond
@@ -272,6 +278,7 @@ public class Player : MonoBehaviour
     public void DeactivateStasis()
     {
         turnsBeforeStasisCounter = 0;
+        coordinate.getCoordsFromPosition(transform.position, mapManager.GetComponent<MapManager>().columns, mapManager.GetComponent<MapManager>().rows);
         canActivateStasis = false;
         isStasisActive = false;
     }
@@ -280,6 +287,11 @@ public class Player : MonoBehaviour
     {
         if(hasDiamond)
         {
+
+            if (isStasisActive)
+            {
+                DeactivateStasis();
+            }
             if (turnsBeforeStasisCounter != 0)
             {
                 turnsBeforeStasisCounter--;
@@ -289,6 +301,11 @@ public class Player : MonoBehaviour
                 canActivateStasis = true;
             }
         }
+    }
+
+    public bool GetCanActivateStasis()
+    {
+        return canActivateStasis;
     }
 
     // Movement Coroutines

@@ -955,4 +955,13 @@ public class Coordinate
     {
         return new Vector3((float)x, (float)y, 0.0001f * (float)y) * tileSize;
     }
+
+    public void getCoordsFromPosition(Vector3 position, int columns, int rows)
+    {
+        float[] x_bin = GeneralMethods.CreateBins(tileSize, columns * tileSize / 2f, columns + 1);
+        float[] y_bin = GeneralMethods.CreateBins(tileSize, rows * tileSize / 2f, rows + 1);
+
+        x = GeneralMethods.FindValInBins(x_bin, position.x);
+        y = GeneralMethods.FindValInBins(y_bin, position.y);
+    }
 }

@@ -46,4 +46,31 @@ static class GeneralMethods
 
     }
 
+    static public float[] CreateBins(float binDimension, float initialValue, int numberOfBins)
+    {
+        var bins = new float[numberOfBins];
+        bins[0] = 0 + initialValue;
+        for (int i = 1; i < numberOfBins; i++)
+        {
+            bins[i] = bins[i - 1] + binDimension + initialValue;
+        }
+        return bins;
+
+    }
+
+    static public int FindValInBins(float[] bins, float val)
+    {
+        int indx = -1;
+        for (int i = 1; i < bins.Length; i++)
+        {
+            if (val >= bins[i - 1] && val < bins[i])
+            {
+                indx = i - 1;
+            }
+
+        }
+
+        return indx;
+    }
+
 }

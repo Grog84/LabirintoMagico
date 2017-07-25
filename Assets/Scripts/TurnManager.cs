@@ -161,7 +161,7 @@ public class TurnManager : MonoBehaviour
         canTerraform = true;
         buttonsAnimator[1].SetBool("isActive", true);
 
-        if (activePlayer.hasDiamond)
+        if (activePlayer.GetCanActivateStasis())
         {
             canUseCrystal = true;
             buttonsAnimator[2].SetBool("isActive", true);
