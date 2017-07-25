@@ -12,13 +12,14 @@ public class Player : MonoBehaviour
     Texture2D myTexture;
     Sprite mySprite;
     BoxCollider2D myCollider;
-    private bool moving = false;
+    public bool moving = false;
     public Coordinate coordinate;
     public GameObject mapManager, turnManager;
     public MapManager mapManagerComponent;
     public List<Tile> toBright;
     public bool hasDiamond = false;
     private Coordinate startingPoint;
+    private bool checkingCombat = false;
 
     // Accessing Variable
 
@@ -133,6 +134,7 @@ public class Player : MonoBehaviour
 
     public void ResetToStartingPosition()
     {
+        transform.parent = null;
         TeleportAtCoordinates(startingPoint);
     }
 
@@ -192,6 +194,42 @@ public class Player : MonoBehaviour
             return false;
     }
 
+    public void CheckForOtherPlayer(Tile tile)
+    {
+        int other = tile.GetPlayerChild();
+        if (other != -1)
+        {
+            checkingCombat = true;
+            StartCoroutine(AttackPlayerOnTile(tile));
+        }
+    }
+ 
+    public IEnumerator AttackPlayerOnTile(Tile tile)
+    {
+        Player otherPlayer = tile.gameObject.transform.GetComponentInChildren<Player>();
+        turnManager.GetComponent<TurnManager>().DropDiamond(otherPlayer);
+        otherPlayer.ResetToStartingPosition();
+
+        float elapsedTime = 0;
+        float animTime = 1f;
+
+        Vector3 destination = tile.GetComponent<Transform>().position;
+        destination.z--;
+
+        while (elapsedTime < animTime)
+        {
+            transform.position = Vector3.Lerp(transform.position, destination, elapsedTime / animTime);
+
+            elapsedTime += Time.deltaTime;
+            yield return null;
+        }
+
+        turnManager.GetComponent<TurnManager>().CollectDiamond(this);
+        turnManager.GetComponent<TurnManager>().SetAttackHasHappened(true);
+        checkingCombat = false;
+        yield return null;
+    }
+
     public void UnchildFromTile()
     {
         GameObject parentTile = transform.parent.gameObject;
@@ -228,17 +266,28 @@ public class Player : MonoBehaviour
             Vector3 destination = destinationTile.GetComponent<Transform>().position;
             destination.z--;
 
-            while (elapsedTime < animTime)
-            {
-                transform.position = Vector3.Lerp(transform.position, destination, elapsedTime / animTime);
+            Tile destinationTileComponent = destinationTile.GetComponent<Tile>();
+            CheckForOtherPlayer(destinationTileComponent);
 
-                elapsedTime += Time.deltaTime;
-                yield return null;
+            if (!checkingCombat)
+            {
+                while (elapsedTime < animTime)
+                {
+                    transform.position = Vector3.Lerp(transform.position, destination, elapsedTime / animTime);
+
+                    elapsedTime += Time.deltaTime;
+                    yield return null;
+                }
+            }
+            else
+            {
+                while (checkingCombat)
+                {
+                    yield return null;
+                }
             }
 
-            Tile destinationTileComponent = destinationTile.GetComponent<Tile>();
             UpdatePlayerPosition(destinationTileComponent);
-
             CheckForTraps(destinationTileComponent);
 
             yield return null;
@@ -260,25 +309,38 @@ public class Player : MonoBehaviour
         if (mapManagerComponent.myMap[coordinate.getX(), coordinate.getY()].GetComponent<Tile>().effectiveConnections[0] == true)
         {
 
-        float elapsedTime = 0;
-        float animTime = 0.2f;
+            float elapsedTime = 0;
+            float animTime = 0.2f;
 
-        GameObject destinationTile = mapManagerComponent.myMap[coordinate.getX(), coordinate.getY() + 1];
-        Vector3 destination = destinationTile.GetComponent<Transform>().position;
-        destination.z--;
-
-        while (elapsedTime < animTime)
-        {
-            transform.position = Vector3.Lerp(transform.position, destination, elapsedTime / animTime);
-
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
+            GameObject destinationTile = mapManagerComponent.myMap[coordinate.getX(), coordinate.getY() + 1];
+            Vector3 destination = destinationTile.GetComponent<Transform>().position;
+            destination.z--;
 
             Tile destinationTileComponent = destinationTile.GetComponent<Tile>();
-            UpdatePlayerPosition(destinationTileComponent);
+            CheckForOtherPlayer(destinationTileComponent);
 
+            if (!checkingCombat)
+            {
+                while (elapsedTime < animTime)
+                {
+                    transform.position = Vector3.Lerp(transform.position, destination, elapsedTime / animTime);
+
+                    elapsedTime += Time.deltaTime;
+                    yield return null;
+                }
+            }
+            else
+            {
+                while (checkingCombat)
+                {
+                    yield return null;
+                }
+            }
+
+            UpdatePlayerPosition(destinationTileComponent);
             CheckForTraps(destinationTileComponent);
+
+            yield return null;
 
             //myPlayer.transform.position = tiledMap[playerGridY, playerGridX].RightTile.transform.position;
             //coordinate.setCoordinate(coordinate.getX(), coordinate.getY() + 1);
@@ -304,18 +366,31 @@ public class Player : MonoBehaviour
             Vector3 destination = destinationTile.GetComponent<Transform>().position;
             destination.z--;
 
-            while (elapsedTime < animTime)
-            {
-                transform.position = Vector3.Lerp(transform.position, destination, elapsedTime / animTime);
+            Tile destinationTileComponent = destinationTile.GetComponent<Tile>();
+            CheckForOtherPlayer(destinationTileComponent);
 
-                elapsedTime += Time.deltaTime;
-                yield return null;
+            if (!checkingCombat)
+            {
+                while (elapsedTime < animTime)
+                {
+                    transform.position = Vector3.Lerp(transform.position, destination, elapsedTime / animTime);
+
+                    elapsedTime += Time.deltaTime;
+                    yield return null;
+                }
+            }
+            else
+            {
+                while (checkingCombat)
+                {
+                    yield return null;
+                }
             }
 
-            Tile destinationTileComponent = destinationTile.GetComponent<Tile>();
             UpdatePlayerPosition(destinationTileComponent);
-
             CheckForTraps(destinationTileComponent);
+
+            yield return null;
 
             //myPlayer.transform.position = tiledMap[playerGridY, playerGridX].RightTile.transform.position;
             //coordinate.setCoordinate(coordinate.getX(), coordinate.getY() - 1);
@@ -340,18 +415,31 @@ public class Player : MonoBehaviour
             Vector3 destination = destinationTile.GetComponent<Transform>().position;
             destination.z--;
 
-            while (elapsedTime < animTime)
-            {
-                transform.position = Vector3.Lerp(transform.position, destination, elapsedTime / animTime);
+            Tile destinationTileComponent = destinationTile.GetComponent<Tile>();
+            CheckForOtherPlayer(destinationTileComponent);
 
-                elapsedTime += Time.deltaTime;
-                yield return null;
+            if (!checkingCombat)
+            {
+                while (elapsedTime < animTime)
+                {
+                    transform.position = Vector3.Lerp(transform.position, destination, elapsedTime / animTime);
+
+                    elapsedTime += Time.deltaTime;
+                    yield return null;
+                }
+            }
+            else
+            {
+                while (checkingCombat)
+                {
+                    yield return null;
+                }
             }
 
-            Tile destinationTileComponent = destinationTile.GetComponent<Tile>();
             UpdatePlayerPosition(destinationTileComponent);
-
             CheckForTraps(destinationTileComponent);
+
+            yield return null;
 
             //myPlayer.transform.position = tiledMap[playerGridY, playerGridX].RightTile.transform.position;
             //coordinate.setCoordinate(coordinate.getX() - 1, coordinate.getY());

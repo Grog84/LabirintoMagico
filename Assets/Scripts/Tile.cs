@@ -19,6 +19,7 @@ public class Tile : MonoBehaviour {
     public Trap myTrapComponent;
     public bool isTrapped, hasDiamond;
     public int childPlayer;
+    private Player childPlayerComponent;
 
     enum tileTypes // B - bottom, R - right, T - top, L - left, V - vertical, H - horizontal
     {

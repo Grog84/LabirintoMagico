@@ -32,7 +32,7 @@ public class TurnManager : MonoBehaviour
     private Vector2 panelParkingPosition, panelActivePosition, arrowsRelativePosition;
     private Vector3 rotationArrowsParkingPosition, rotationArrowsActivePosition;
     private List<Trap> visibleTraps = new List<Trap>();
-    private bool trapHasTriggered = false, diamondOnTable = true;
+    private bool trapHasTriggered = false, diamondOnTable = true, attackHasHappened = false;
     private bool canBeActivated = true;
     private bool canBeRotated = true;
 
@@ -207,6 +207,11 @@ public class TurnManager : MonoBehaviour
             cardsButtonComponent[1].SetTileType(card2_type, false);
     }
 
+    public void SetAttackHasHappened(bool status)
+    {
+        attackHasHappened = status;
+    }
+
     IEnumerator BackToMenu()
     {
         yield return new WaitForSeconds(5f);
@@ -364,8 +369,9 @@ public class TurnManager : MonoBehaviour
 
     }
 
-    private void CollectDiamond(Player player)
+    public void CollectDiamond(Player player)
     {
+        diamondOnTable = false;
         player.SetHasDiamond(true);
         mapManager.myDiamondInstance.transform.parent = player.transform;
         Vector3 collectedPosition = new Vector3(0, 0, 100);
@@ -374,7 +380,7 @@ public class TurnManager : MonoBehaviour
         mapManager.diamondCoords = player.coordinate;
     }
 
-    private void DropDiamond(Player player)
+    public void DropDiamond(Player player)
     {
         mapManager.myDiamondInstance.transform.parent = null;
         mapManager.myDiamondInstance.transform.position = new Vector3(mapManager.myDiamondInstance.transform.position.x,
@@ -412,7 +418,7 @@ public class TurnManager : MonoBehaviour
 
         yield return null;
 
-        while (!Input.GetKeyDown(KeyCode.Space) && !trapHasTriggered)
+        while (!Input.GetKeyDown(KeyCode.Space) && !trapHasTriggered && !attackHasHappened)
         {
             yield return null;
         }
@@ -426,7 +432,7 @@ public class TurnManager : MonoBehaviour
         if (ChecksForDiamond(p))
         {
             CollectDiamond(p);
-            diamondOnTable = false;
+            
         }
 
         if (p.CheckForVictory())
@@ -628,7 +634,6 @@ public class TurnManager : MonoBehaviour
                 }
                 if (!firstClick)
                 {
-                    Debug.Log("passa");
                     yield return new WaitForSeconds(firstClickWaitingTime);
                     firstClick = true;
                 }
@@ -663,7 +668,6 @@ public class TurnManager : MonoBehaviour
                 }
                 if (!firstClick)
                 {
-                    Debug.Log("passa");
                     yield return new WaitForSeconds(firstClickWaitingTime);
                     firstClick = true;
                 }
