@@ -18,7 +18,7 @@ public class Tile : MonoBehaviour {
     public GameObject myTrap;
     public Trap myTrapComponent;
     public bool isTrapped, hasDiamond;
-    private int childPlayer;
+    public int childPlayer;
 
     enum tileTypes // B - bottom, R - right, T - top, L - left, V - vertical, H - horizontal
     {
@@ -224,42 +224,45 @@ public class Tile : MonoBehaviour {
     {
         if (other != null)
         {
+            if (other.GetPlayerChild() == -1 || (other.transform.GetComponentInChildren<Player>().GetHasDiamond()))
+            {
                 switch (lato)
                 {
                     case 0:
                         if (possibleConnections[lato] && other.possibleConnections[2])
                         {
                             effectiveConnections[lato] = true;
-                            other.effectiveConnections[2] = true;
+                            //other.effectiveConnections[2] = true;
                         }
                         break;
                     case 1:
                         if (possibleConnections[lato] && other.possibleConnections[3])
                         {
                             effectiveConnections[lato] = true;
-                            other.effectiveConnections[3] = true;
+                            //other.effectiveConnections[3] = true;
                         }
                         break;
                     case 2:
                         if (possibleConnections[lato] && other.possibleConnections[0])
                         {
                             effectiveConnections[lato] = true;
-                            other.effectiveConnections[0] = true;
+                            //other.effectiveConnections[0] = true;
                         }
                         break;
                     case 3:
                         if (possibleConnections[lato] && other.possibleConnections[1])
                         {
                             effectiveConnections[lato] = true;
-                            other.effectiveConnections[1] = true;
+                            //other.effectiveConnections[1] = true;
                         }
                         break;
                     default:
                         break;
 
                 }
-            
+            }
         }
+        
     }
 
     // Position update

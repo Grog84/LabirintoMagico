@@ -17,7 +17,7 @@ public class Player : MonoBehaviour
     public GameObject mapManager, turnManager;
     public MapManager mapManagerComponent;
     public List<Tile> toBright;
-    private bool hasDiamond = false;
+    public bool hasDiamond = false;
     private Coordinate startingPoint;
 
     // Accessing Variable
@@ -59,7 +59,6 @@ public class Player : MonoBehaviour
 
     public void BrightPossibleTiles()
     {
-        //Debug.Log("passaaa");
         Tile nextToAdd;
         Tile currentPosition = mapManagerComponent.myMap[coordinate.getX(), coordinate.getY()].GetComponent<Tile>();
 
@@ -181,15 +180,23 @@ public class Player : MonoBehaviour
         {
             tile.myTrapComponent.Trigger(this);
             turnManager.GetComponent<TurnManager>().SetTrapHasTriggered(true);
+            turnManager.GetComponent<TurnManager>().ResetDiamondToStartingPosition();
         }
     }
 
     public bool CheckForVictory()
     {
-        if (coordinate.isEqual(startingPoint))
+        if (hasDiamond && coordinate.isEqual(startingPoint))
             return true;
         else
             return false;
+    }
+
+    public void UnchildFromTile()
+    {
+        GameObject parentTile = transform.parent.gameObject;
+        parentTile.GetComponent<Tile>().SetPlayerChild(-1);
+        transform.parent = null;
     }
 
     // Diamond

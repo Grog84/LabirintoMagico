@@ -124,6 +124,7 @@ public class TurnManager : MonoBehaviour
     {
         ActivatePlayer(0);
         ResetButtons();
+        mapManager.updateTilesConnection();
 
         playerPlayingIdx++;
         playerPlayingIdx %= 4;
@@ -213,7 +214,6 @@ public class TurnManager : MonoBehaviour
         yield return null;
     }
         
-
     public void EndGame(Player player)
     {
         playerWinsText[player.playerNbr - 1].GetComponent<RectTransform>().position = new Vector2(0, 0);
@@ -301,6 +301,7 @@ public class TurnManager : MonoBehaviour
     void EndTerraform()
     {
         mapManager.updateTilesConnection();
+
         UpdatePlayersPosition();
         canTerraform = false;
         terraformingButton.GetComponent<Animator>().SetBool("isActive", false);
@@ -387,11 +388,24 @@ public class TurnManager : MonoBehaviour
         mapManager.diamondCoords = tile.GetComponent<Tile>().getCoordinates();
     }
 
+    public void ResetDiamondToStartingPosition()
+    {
+        mapManager.myDiamondInstance.transform.parent = null;
+        Coordinate centralCoords = new Coordinate(mapManager.columns / 2, mapManager.rows / 2);
+        GameObject centralTile = mapManager.PickTileObject(centralCoords);
+        Vector3 position = centralTile.transform.position;
+        position.z = -10;
+        mapManager.myDiamondInstance.transform.position = position;
+        mapManager.diamondCoords = centralCoords;
+    }
+
     // Player Movement
+
     IEnumerator ActivateMovementPhase()
     {
         Player p = playerComponent[playerPlayingIdx];
-        p.transform.parent = null;
+        p.UnchildFromTile();
+        mapManager.updateTilesConnection();
         p.BrightPossibleTiles();
         ActivatePlayer(playerComponent[playerPlayingIdx].playerNbr);
         buttonsAnimator[0].SetBool("isActive", false);
@@ -738,6 +752,7 @@ public class TurnManager : MonoBehaviour
     }
 
     // Tile Rotation
+
     IEnumerator ActivateRotationCursorSelection()
     {
         yield return null;

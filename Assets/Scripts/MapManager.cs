@@ -782,12 +782,12 @@ public class MapManager : MonoBehaviour {
             {
                 Tile questa = myMap[i, j].GetComponent<Tile>();
 
-                if (i - 1 > 0)
+                if (i - 1 >= 0)
                 {
                     questa.CheckConnections(myMap[i - 1, j].GetComponent<Tile>(), 3);
                 }
                 
-                if (j - 1 > 0)
+                if (j - 1 >= 0)
                 {
                     questa.CheckConnections(myMap[i, j - 1].GetComponent<Tile>(), 2);
                 }
