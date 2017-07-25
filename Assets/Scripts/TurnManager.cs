@@ -123,13 +123,16 @@ public class TurnManager : MonoBehaviour
     public void PassTurn()
     {
         ActivatePlayer(0);
-        ResetButtons();
         mapManager.updateTilesConnection();
 
         playerPlayingIdx++;
         playerPlayingIdx %= 4;
         playerPlaying = playerOrder[playerPlayingIdx];
         activePlayer = playerComponent[playerPlayingIdx];
+
+        activePlayer.CheckDiamondStatusTimer();
+
+        ResetButtons();
 
         portraitSelection.transform.position = portraits[playerPlaying - 1].transform.position;
         ResetCardsButtonRotation();
@@ -157,7 +160,17 @@ public class TurnManager : MonoBehaviour
         buttonsAnimator[0].SetBool("isActive", true);
         canTerraform = true;
         buttonsAnimator[1].SetBool("isActive", true);
-        canUseCrystal = false;
+
+        if (activePlayer.hasDiamond)
+        {
+            canUseCrystal = true;
+            buttonsAnimator[2].SetBool("isActive", true);
+        }
+        else
+        {
+            canUseCrystal = false;
+            buttonsAnimator[2].SetBool("isActive", false);
+        }
 
     }
 
@@ -403,6 +416,13 @@ public class TurnManager : MonoBehaviour
         position.z = -10;
         mapManager.myDiamondInstance.transform.position = position;
         mapManager.diamondCoords = centralCoords;
+    }
+
+    public void ActivateDiamondStasis()
+    {
+        mapManager.myDiamondInstance.transform.GetComponentInParent<Player>().ActivateStasis();
+        canUseCrystal = false;
+        buttonsAnimator[2].SetBool("isActive", false);
     }
 
     // Player Movement
@@ -907,6 +927,10 @@ public class TurnManager : MonoBehaviour
                 else if (canTerraform && cursorTransform.position == buttonsTransform[1].position) // Terraform
                 {
                     ActivateTerraformPanel();
+                }
+                else if (canUseCrystal && cursorTransform.position == buttonsTransform[2].position) // Crystal
+                {
+                    ActivateDiamondStasis();
                 }
                 else if (cursorTransform.position == buttonsTransform[3].position) // Pass
                 {

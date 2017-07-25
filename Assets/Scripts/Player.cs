@@ -20,6 +20,8 @@ public class Player : MonoBehaviour
     public bool hasDiamond = false;
     private Coordinate startingPoint;
     private bool checkingCombat = false;
+    private bool isStasisActive = false, canActivateStasis = false;
+    private int turnsBeforeStasisCounter = 0, turnsBeforeStasisIsActive = 2;
 
     // Accessing Variable
 
@@ -247,6 +249,46 @@ public class Player : MonoBehaviour
     public bool GetHasDiamond()
     {
         return hasDiamond;
+    }
+
+    public bool GetStasisStatus()
+    {
+        return isStasisActive;
+    }
+
+    public void SetStasisStatus(bool status)
+    {
+        isStasisActive = status;
+    }
+
+    public void ActivateStasis()
+    {
+        UnchildFromTile();
+        turnsBeforeStasisCounter = turnsBeforeStasisIsActive;
+        canActivateStasis = false;
+        isStasisActive = true;
+    }
+
+    public void DeactivateStasis()
+    {
+        turnsBeforeStasisCounter = 0;
+        canActivateStasis = false;
+        isStasisActive = false;
+    }
+
+    public void CheckDiamondStatusTimer()
+    {
+        if(hasDiamond)
+        {
+            if (turnsBeforeStasisCounter != 0)
+            {
+                turnsBeforeStasisCounter--;
+            }
+            else
+            {
+                canActivateStasis = true;
+            }
+        }
     }
 
     // Movement Coroutines
