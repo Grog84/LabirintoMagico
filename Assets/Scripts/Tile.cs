@@ -17,7 +17,7 @@ public class Tile : MonoBehaviour {
     private BoxCollider2D myCollider;
     public GameObject myTrap;
     public Trap myTrapComponent;
-    public bool isTrapped;
+    public bool isTrapped, hasDiamond;
     private int childPlayer;
 
     enum tileTypes // B - bottom, R - right, T - top, L - left, V - vertical, H - horizontal
@@ -302,6 +302,12 @@ public class Tile : MonoBehaviour {
         effectiveConnections = new bool[4] { false, false, false, false };
     }
 
+    public void UpdateZOrder()
+    {
+        Vector3 position = new Vector3(transform.position.x, transform.position.y, 0.0001f * transform.position.y);
+        transform.position = position;
+    }
+
     // Trap
 
     public bool GetIsTrapped()
@@ -336,6 +342,7 @@ public class Tile : MonoBehaviour {
         possibleConnections = new bool[4];
         effectiveConnections = new bool[4];
         childPlayer = -1;
+        hasDiamond = false;
         //Debug.Log(possibleConnections.Length);
     }
 	

@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class TurnManager : MonoBehaviour
 {
@@ -10,6 +11,7 @@ public class TurnManager : MonoBehaviour
         rotateTileButton, slideTilesButton, terraformBackButton, card1Button, card2Button, cardsBackButton, rotationCursor;
     public GameObject[] portraits;
     public GameObject[] panels;
+    public GameObject[] playerWinsText;
     public GameObject arrows, cursorArrows; // one is children of the other, thst's why there is no need for an array
     public Camera camera;
     public MapManager mapManager;
@@ -30,7 +32,7 @@ public class TurnManager : MonoBehaviour
     private Vector2 panelParkingPosition, panelActivePosition, arrowsRelativePosition;
     private Vector3 rotationArrowsParkingPosition, rotationArrowsActivePosition;
     private List<Trap> visibleTraps = new List<Trap>();
-    private bool trapHasTriggered = false;
+    private bool trapHasTriggered = false, diamondOnTable = true;
     private bool canBeActivated = true;
     private bool canBeRotated = true;
 
@@ -163,6 +165,8 @@ public class TurnManager : MonoBehaviour
         foreach (Player player in playerComponent)
         {
             player.UpdatePlayerPosition();
+            if (player.GetHasDiamond())
+                UpdateDiamondPosition(player);
         }
     }
 
@@ -200,6 +204,20 @@ public class TurnManager : MonoBehaviour
             cardsButtonComponent[1].SetTileType(card2_type, true);
         else
             cardsButtonComponent[1].SetTileType(card2_type, false);
+    }
+
+    IEnumerator BackToMenu()
+    {
+        yield return new WaitForSeconds(5f);
+        SceneManager.LoadScene("_Scenes/menu");
+        yield return null;
+    }
+        
+
+    public void EndGame(Player player)
+    {
+        playerWinsText[player.playerNbr - 1].GetComponent<RectTransform>().position = new Vector2(0, 0);
+        StartCoroutine(BackToMenu());
     }
 
     // // UI
@@ -286,6 +304,7 @@ public class TurnManager : MonoBehaviour
         UpdatePlayersPosition();
         canTerraform = false;
         terraformingButton.GetComponent<Animator>().SetBool("isActive", false);
+        mapManager.UpdateTilesZOrder();
     }
 
     void ResetCardsButtonRotation()
@@ -325,9 +344,19 @@ public class TurnManager : MonoBehaviour
 
     // Diamond
 
+    private void UpdateDiamondPosition(Player player)
+    {
+        mapManager.diamondCoords = player.coordinate;
+    }
+
+    private void UpdateDiamondPosition(Tile tile)
+    {
+        mapManager.diamondCoords = tile.GetCoordinatesCopy();
+    }
+
     private bool ChecksForDiamond(Player player)
     {
-        if (player.coordinate.isEqual(mapManager.GetDiamondCoords()))
+        if (player.coordinate.isEqual(mapManager.GetDiamondCoords()) && diamondOnTable)
             return true;
         else
             return false;
@@ -342,6 +371,20 @@ public class TurnManager : MonoBehaviour
         
         mapManager.myDiamondInstance.transform.localPosition = collectedPosition;
         mapManager.diamondCoords = player.coordinate;
+    }
+
+    private void DropDiamond(Player player)
+    {
+        mapManager.myDiamondInstance.transform.parent = null;
+        mapManager.myDiamondInstance.transform.position = new Vector3(mapManager.myDiamondInstance.transform.position.x,
+                                                                      mapManager.myDiamondInstance.transform.position.y,
+                                                                      -10);
+    }
+
+    private void ConnectToTile(GameObject tile)
+    {
+        mapManager.myDiamondInstance.transform.SetParent(tile.transform);
+        mapManager.diamondCoords = tile.GetComponent<Tile>().getCoordinates();
     }
 
     // Player Movement
@@ -369,6 +412,17 @@ public class TurnManager : MonoBehaviour
         if (ChecksForDiamond(p))
         {
             CollectDiamond(p);
+            diamondOnTable = false;
+        }
+
+        if (p.CheckForVictory())
+        {
+            EndGame(p);
+        }
+
+        if (p.GetHasDiamond())
+        {
+            UpdateDiamondPosition(p);
         }
 
         yield return null;
@@ -393,6 +447,8 @@ public class TurnManager : MonoBehaviour
             int playerIdx = GeneralMethods.FindElementIdx(playerOrder, lastTile.GetPlayerChild());
             fallingPlayer = playerComponent[playerIdx];
             fallingPlayer.transform.parent = null;
+            DropDiamond(fallingPlayer);
+            diamondOnTable = true;
             fallingPlayer.TeleportOffScreen();
             repositionPlayer = true;
         }
@@ -404,6 +460,11 @@ public class TurnManager : MonoBehaviour
         while (isSliding)
         {
             yield return null;
+        }
+
+        if (fallingPlayer != null)
+        {
+            ConnectToTile(mapManager.PickTileObject(mapManager.diamondCoords));
         }
 
         CardButton activatedCard = null;
@@ -769,7 +830,7 @@ public class TurnManager : MonoBehaviour
         panelActivePosition = new Vector2(0, 50);
         arrowsRelativePosition = new Vector2(25, 0);
 
-        rotationArrowsParkingPosition = new Vector3(-500f, 0, 0);
+        rotationArrowsParkingPosition = new Vector3(-1000f, 0, 0);
         rotationArrowsActivePosition = new Vector3(5, -1, 0f);
 
         // Assigns the position of ll the ui elements o the corresponding arrays

@@ -172,7 +172,7 @@ public class Player : MonoBehaviour
 
     public void TeleportOffScreen()
     {
-        transform.position = new Vector3(-100, 0, -5);
+        transform.position = new Vector3(-1000, 0, -5);
     }
 
     public void CheckForTraps(Tile tile)
@@ -184,11 +184,24 @@ public class Player : MonoBehaviour
         }
     }
 
-    // Dismond
+    public bool CheckForVictory()
+    {
+        if (coordinate.isEqual(startingPoint))
+            return true;
+        else
+            return false;
+    }
+
+    // Diamond
 
     public void SetHasDiamond(bool hasDiamond)
     {
         this.hasDiamond = hasDiamond;
+    }
+
+    public bool GetHasDiamond()
+    {
+        return hasDiamond;
     }
 
     // Movement Coroutines

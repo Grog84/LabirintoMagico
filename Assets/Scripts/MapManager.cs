@@ -472,7 +472,7 @@ public class MapManager : MonoBehaviour {
 
     void InstantiateTile(int tileType, Coordinate coordinate, bool canBeMoved = true)
     {
-        GameObject tileInstance = Instantiate(tile, coordinate.getVect3(), Quaternion.identity);
+        GameObject tileInstance = Instantiate(tile, coordinate.getVect3WithZ(), Quaternion.identity);
         tileInstance.transform.SetParent(transform);
 
         Tile myTileComponent = tileInstance.GetComponent<Tile>();
@@ -858,6 +858,17 @@ public class MapManager : MonoBehaviour {
         return movableCoordsList.ToArray();
     }
 
+    public void UpdateTilesZOrder()
+    {
+        for (int i = 0; i < columns; i++)
+        {
+            for (int j = 0; j < rows; j++)
+            {
+                myMapTiles[i, j].UpdateZOrder();
+            }
+        }
+    }
+
     // Others
 
     public Coordinate GetDiamondCoords()
@@ -936,6 +947,11 @@ public class Coordinate
     }
 
     public Vector3 getVect3()
+    {
+        return new Vector3((float)x, (float)y, 0f) * tileSize;
+    }
+
+    public Vector3 getVect3WithZ()
     {
         return new Vector3((float)x, (float)y, 0.0001f * (float)y) * tileSize;
     }
