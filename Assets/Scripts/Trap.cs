@@ -9,7 +9,7 @@ public class Trap : MonoBehaviour {
     private Sprite mySprite;
     private Texture2D myTexture;
     private Coordinate myCoord;
-    bool isActive;
+    public bool isActive;
 
     public void SetCoordiantes(Coordinate coord)
     {
@@ -26,6 +26,11 @@ public class Trap : MonoBehaviour {
         myRenderer.color = Color.clear;
     }
 
+    void SetVisible()
+    {
+        myRenderer.color = Color.white;
+    }
+
     public void Activate()
     {
         isActive = true;
@@ -35,7 +40,9 @@ public class Trap : MonoBehaviour {
 
     public void Trigger(Player thisPlayer)
     {
+        isActive = false;
         thisPlayer.ResetToStartingPosition();
+        SetVisible();
     }
 
     public void SetPlayerDropping(int player)
@@ -66,6 +73,11 @@ public class Trap : MonoBehaviour {
 
         mySprite = Sprite.Create(myTexture, new Rect(0, 0, myTexture.width, myTexture.height), new Vector2(0.5f, 0.5f));
         myRenderer.sprite = mySprite;
+    }
+
+    public bool GetIsActive()
+    {
+        return isActive;
     }
 
 	// Use this for initialization

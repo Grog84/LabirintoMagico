@@ -21,7 +21,7 @@ public class Player : MonoBehaviour
     private Coordinate startingPoint;
     private bool checkingCombat = false;
     private bool isStasisActive = false, canActivateStasis = false;
-    private int turnsBeforeStasisCounter = 0, turnsBeforeStasisIsActive = 2;
+    private int turnsBeforeStasisCounter = 0, turnsBeforeStasisIsActive = 3;
 
     // Accessing Variable
 
@@ -56,6 +56,30 @@ public class Player : MonoBehaviour
         myRenderer.sprite = mySprite;
         myCollider.size = new Vector2(myTexture.width/100f, myTexture.height/100f);
 
+    }
+
+    // Initial Assignements
+
+    public void SetStartingPoint()
+    {
+        switch (playerNbr)
+        {
+
+            case 1:
+                startingPoint = new Coordinate(0, mapManagerComponent.rows - 1);
+                break;
+            case 2:
+                startingPoint = new Coordinate(mapManagerComponent.columns - 1, mapManagerComponent.rows - 1);
+                break;
+            case 3:
+                startingPoint = new Coordinate(0, 0);
+                break;
+            case 4:
+                startingPoint = new Coordinate(mapManagerComponent.columns - 1, 0);
+                break;
+            default:
+                break;
+        }
     }
 
     // Walking Path
@@ -139,36 +163,15 @@ public class Player : MonoBehaviour
 
     public void ResetToStartingPosition()
     {
-        transform.parent = null;
         TeleportAtCoordinates(startingPoint);
-    }
-
-    public void SetStartingPoint()
-    {
-        switch (playerNbr)
-        {
-
-            case 1:
-                startingPoint = new Coordinate(0, mapManagerComponent.rows - 1);
-                break;
-            case 2:
-                startingPoint = new Coordinate(mapManagerComponent.columns - 1, mapManagerComponent.rows - 1);
-                break;
-            case 3:
-                startingPoint = new Coordinate(0, 0);
-                break;
-            case 4:
-                startingPoint = new Coordinate(mapManagerComponent.columns - 1, 0);
-                break;
-            default:
-                break;
-        }
     }
 
     public void TeleportAtCoordinates(Coordinate coord)
     {
         GameObject targetTile;
 
+        transform.parent = null;
+        this.coordinate = coord;
         targetTile = mapManagerComponent.PickTileObject(coord);
         transform.position = new Vector3(targetTile.transform.position.x, targetTile.transform.position.y, -5);
         transform.SetParent(targetTile.transform);
@@ -183,11 +186,14 @@ public class Player : MonoBehaviour
 
     public void CheckForTraps(Tile tile)
     {
-        if (tile.GetIsTrapped())
+        if (tile.GetIsTrapped() && tile.GetTrap().GetIsActive())
         {
+            if (hasDiamond)
+            {
+                turnManager.GetComponent<TurnManager>().DropDiamond(this);
+            }
             tile.myTrapComponent.Trigger(this);
             turnManager.GetComponent<TurnManager>().SetTrapHasTriggered(true);
-            turnManager.GetComponent<TurnManager>().ResetDiamondToStartingPosition();
         }
     }
 
@@ -277,8 +283,10 @@ public class Player : MonoBehaviour
 
     public void DeactivateStasis()
     {
-        turnsBeforeStasisCounter = 0;
+        turnsBeforeStasisCounter = turnsBeforeStasisIsActive;
         coordinate.getCoordsFromPosition(transform.position, mapManager.GetComponent<MapManager>().columns, mapManager.GetComponent<MapManager>().rows);
+        GameObject playerTile = mapManagerComponent.PickTileObject(coordinate);
+        transform.SetParent(playerTile.transform);
         canActivateStasis = false;
         isStasisActive = false;
     }
@@ -292,13 +300,16 @@ public class Player : MonoBehaviour
             {
                 DeactivateStasis();
             }
-            if (turnsBeforeStasisCounter != 0)
-            {
-                turnsBeforeStasisCounter--;
-            }
             else
             {
-                canActivateStasis = true;
+                if (turnsBeforeStasisCounter != 0)
+                {
+                    turnsBeforeStasisCounter--;
+                }
+                else
+                {
+                    canActivateStasis = true;
+                }
             }
         }
     }
@@ -519,6 +530,7 @@ public class Player : MonoBehaviour
         turnManager = GameObject.FindGameObjectWithTag("TurnManager");
         toBright = new List<Tile>();
         mapManagerComponent = mapManager.GetComponent<MapManager>();
+        SetStartingPoint();
     }
 
     void Update()
