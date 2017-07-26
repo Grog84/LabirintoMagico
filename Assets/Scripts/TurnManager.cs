@@ -32,7 +32,7 @@ public class TurnManager : MonoBehaviour
     private Animator[] buttonsAnimator;
     private Vector2 panelParkingPosition, panelActivePosition, arrowsRelativePosition;
     private Vector3 rotationArrowsParkingPosition, rotationArrowsActivePosition;
-    private List<Trap> visibleTraps = new List<Trap>();
+    private List<Trap> trapsToActivate = new List<Trap>();
     private bool trapHasTriggered = false, diamondOnTable = true, attackHasHappened = false;
     private bool canBeActivated = true;
     private bool canBeRotated = true;
@@ -340,16 +340,16 @@ public class TurnManager : MonoBehaviour
         trapHasTriggered = status;
     }
 
-    public void AddToVisibleTrapList(Trap trap)
+    public void AddToActivateTrapList(Trap trap)
     {
-        visibleTraps.Add(trap);
+        trapsToActivate.Add(trap);
     }
 
     public void ActivateTraps()
     {
-        for (int i = 0; i < visibleTraps.Count; i++)
+        for (int i = 0; i < trapsToActivate.Count; i++)
         {
-            Trap thisTrap = visibleTraps[i];
+            Trap thisTrap = trapsToActivate[i];
             bool isOverlappedToPlayer = false;
             foreach (Player player in playerComponent)
             {
@@ -357,8 +357,10 @@ public class TurnManager : MonoBehaviour
             }
 
             if (!isOverlappedToPlayer)
+            {
                 thisTrap.Activate();
-
+                trapsToActivate.RemoveAt(i);
+            }
         }
     }
 
@@ -396,6 +398,7 @@ public class TurnManager : MonoBehaviour
 
     public void DropDiamond(Player player)
     {
+        player.hasDiamond = false;
         mapManager.myDiamondInstance.transform.parent = null;
         mapManager.myDiamondInstance.transform.position = new Vector3(mapManager.myDiamondInstance.transform.position.x,
                                                                       mapManager.myDiamondInstance.transform.position.y,

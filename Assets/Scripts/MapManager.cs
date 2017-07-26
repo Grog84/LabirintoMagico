@@ -505,7 +505,7 @@ public class MapManager : MonoBehaviour {
         if (isTrapped)
         {
             myTileComponent.SetTrap(turnManager.GetActivePlayer());
-            turnManager.AddToVisibleTrapList(myTileComponent.GetTrap());
+            turnManager.AddToActivateTrapList(myTileComponent.GetTrap());
         }
 
         myMap[coordinate.getX(), coordinate.getY()] = tileInstance;
