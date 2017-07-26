@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using System;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
@@ -190,7 +191,7 @@ public class TurnManager : MonoBehaviour
         {
             GameObject playerTile = mapManager.PickTileObject(playerComponent[i].coordinate);
             playerComponent[i].gameObject.transform.SetParent(playerTile.transform);
-            playerTile.GetComponent<Tile>().SetPlayerChild(playerComponent[i].playerNbr);
+            playerTile.GetComponent<Tile>().SetPlayerChild(playerComponent[i]);
 
             //playerComponent[i].gameObject.transform.localPosition = new Vector3 (0, 0, -1);
         }
@@ -429,41 +430,59 @@ public class TurnManager : MonoBehaviour
 
     IEnumerator ActivateMovementPhase()
     {
+        Debug.Log("Movement Activated");
         Player p = playerComponent[playerPlayingIdx];
-        p.UnchildFromTile();
+        Coordinate movementStartingPosition = p.GetCoordinatesCopy();
         mapManager.updateTilesConnection();
+        Debug.Log("Updated Tiles Connection");
         p.BrightPossibleTiles();
+        Debug.Log("Brighten up tiles");
+
+        //p.UnchildFromTile();
         ActivatePlayer(playerComponent[playerPlayingIdx].playerNbr);
-        buttonsAnimator[0].SetBool("isActive", false);
 
         yield return null;
 
-        while (!Input.GetKeyDown(KeyCode.Space) && !trapHasTriggered && !attackHasHappened)
+        while (!Input.GetKeyDown(KeyCode.Space) && !Input.GetKeyDown(KeyCode.B) &&  !trapHasTriggered && !attackHasHappened)
         {
             yield return null;
         }
 
-        SetTrapHasTriggered(false);
+
+        if (Input.GetKeyDown(KeyCode.Space) || trapHasTriggered || attackHasHappened)
+        {
+            canMove = false;
+            buttonsAnimator[0].SetBool("isActive", false);
+
+            if (trapHasTriggered)
+                SetTrapHasTriggered(false);
+
+            if (ChecksForDiamond(p))
+            {
+                CollectDiamond(p);
+            }
+
+            if (p.CheckForVictory())
+            {
+                EndGame(p);
+            }
+
+            if (p.GetHasDiamond())
+            {
+                UpdateDiamondPosition(p);
+            }
+        }
+        else
+        {
+            p.UnchildFromTile();
+            p.TeleportAtCoordinates(movementStartingPosition);
+            ActivateBasePanel();
+        }
+
         p.SwitchOffTiles();
         cursorIsActive = true;
         ActivatePlayer(0);
         makePlayersChild();
-
-        if (ChecksForDiamond(p))
-        {
-            CollectDiamond(p);
-            
-        }
-
-        if (p.CheckForVictory())
-        {
-            EndGame(p);
-        }
-
-        if (p.GetHasDiamond())
-        {
-            UpdateDiamondPosition(p);
-        }
 
         yield return null;
     }
@@ -473,18 +492,33 @@ public class TurnManager : MonoBehaviour
     // Tile Slide
     IEnumerator InsertTile(int cardNbr, GameObject arrow, int slideDirection)
     {
+        isSliding = true;
+
         Player fallingPlayer = null;
         bool repositionPlayer = false;
-        isSliding = true;
+
         Coordinate[] lineCoordinates = arrow.GetComponent<InsertArrow>().getPointedCoords();
         lineCoordinates = mapManager.KeepMovableTiles(lineCoordinates);
+
+        int[] playerIdxInCoords = GetPlayersInCoordinatesIDX(lineCoordinates); // checks if players are found in the group of slided tiles
+        if (playerIdxInCoords.Length > 1) // more than one player is on the slided tiles
+        {
+            Array.Sort(playerIdxInCoords);
+            for (int i = 1; i < playerIdxInCoords.Length; i++) 
+            {
+                if (playerIdxInCoords[i] - playerIdxInCoords[i - 1] == 1) // players are at one tile of distance
+                {
+
+                }
+            }
+        }
 
         Tile lastTile = mapManager.PickTileComponent(lineCoordinates[lineCoordinates.Length - 1]);
         int newCardType = lastTile.type;
         bool trapStatus = lastTile.GetIsTrapped();
-        if (lastTile.GetPlayerChild() != -1)
+        if (lastTile.GetPlayerChildNbr() != -1)
         {
-            int playerIdx = GeneralMethods.FindElementIdx(playerOrder, lastTile.GetPlayerChild());
+            int playerIdx = GeneralMethods.FindElementIdx(playerOrder, lastTile.GetPlayerChildNbr());
             fallingPlayer = playerComponent[playerIdx];
             fallingPlayer.transform.parent = null;
             DropDiamond(fallingPlayer);
@@ -847,6 +881,44 @@ public class TurnManager : MonoBehaviour
         yield return null;
     }
 
+    IEnumerator reactivateCursor()
+    {
+        canBeActivated = true;
+        yield return null;
+    }
+
+    IEnumerator reactivateRotation()
+    {
+        canBeRotated = true;
+        yield return null;
+    }
+
+    // General Methods
+
+    private Player[] GetPlayersInCoordinates(Coordinate[] coords)
+    {
+        List<Player> playersInCoords = new List<Player>();
+        foreach (var player in playerComponent)
+        {
+            if (player.FindInCoords(coords) != -1)
+                playersInCoords.Add(player);
+        }
+
+        return playersInCoords.ToArray();
+    }
+
+    private int[] GetPlayersInCoordinatesIDX(Coordinate[] coords)
+    {
+        List<int> playersInCoords = new List<int>();
+        for (int i = 0; i < playerComponent.Length; i++)
+        {
+            if (playerComponent[i].FindInCoords(coords) != -1)
+                playersInCoords.Add(i);
+        }
+
+        return playersInCoords.ToArray();
+    }
+
     // Unity Specific methods
 
     void Awake()
@@ -882,18 +954,6 @@ public class TurnManager : MonoBehaviour
 
     }
 
-    IEnumerator reactivateCursor()
-    {
-        canBeActivated = true;
-        yield return null;
-    }
-
-    IEnumerator reactivateRotation()
-    {
-        canBeRotated = true;
-        yield return null;
-    }
-
 
     void Update()
     {
@@ -920,7 +980,6 @@ public class TurnManager : MonoBehaviour
                 if (canMove && cursorTransform.position == buttonsTransform[0].position) // Walk
                 {
                     cursorIsActive = false;
-                    canMove = false;
                     StartCoroutine(ActivateMovementPhase());
 
                 }

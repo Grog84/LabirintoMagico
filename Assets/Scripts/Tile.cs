@@ -18,7 +18,7 @@ public class Tile : MonoBehaviour {
     public GameObject myTrap;
     public Trap myTrapComponent;
     public bool isTrapped, hasDiamond;
-    public int childPlayer;
+    public int childPlayerNbr;
     private Player childPlayerComponent;
 
     enum tileTypes // B - bottom, R - right, T - top, L - left, V - vertical, H - horizontal
@@ -124,14 +124,25 @@ public class Tile : MonoBehaviour {
 
     // Player Child
 
-    public void SetPlayerChild(int player)
+    public void SetPlayerChild(Player player)
     {
-        childPlayer = player;
+        if (player.transform.parent != null)
+            player.transform.parent = null;
+
+        childPlayerNbr = player.playerNbr;
+        childPlayerComponent = player;
+        player.transform.SetParent(transform);
     }
 
-    public int GetPlayerChild()
+    public void SetPlayerChild()
     {
-        return childPlayer;
+        childPlayerNbr = -1;
+        childPlayerComponent = null;
+    }
+
+    public int GetPlayerChildNbr()
+    {
+        return childPlayerNbr;
     }
 
     // Tiles connectivity
@@ -225,7 +236,7 @@ public class Tile : MonoBehaviour {
     {
         if (other != null)
         {
-            if (other.GetPlayerChild() == -1 || (other.transform.GetComponentInChildren<Player>().GetHasDiamond()))
+            if (other.GetPlayerChildNbr() == -1 || (other.transform.GetComponentInChildren<Player>().GetHasDiamond()))
             {
                 switch (lato)
                 {
@@ -345,7 +356,7 @@ public class Tile : MonoBehaviour {
         myCollider = GetComponent<BoxCollider2D>();
         possibleConnections = new bool[4];
         effectiveConnections = new bool[4];
-        childPlayer = -1;
+        childPlayerNbr = -1;
         hasDiamond = false;
         //Debug.Log(possibleConnections.Length);
     }

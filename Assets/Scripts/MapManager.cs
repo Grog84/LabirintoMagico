@@ -459,12 +459,13 @@ public class MapManager : MonoBehaviour {
         }
 
         CreatePlayers();
+
         //updateTilesConnection();
         CreateInsertArrows();
 
         transform.position = finalShift;
 
-        updateTilesConnection();
+        //updateTilesConnection();
 
     }
 
@@ -481,7 +482,8 @@ public class MapManager : MonoBehaviour {
         myTileComponent.canBeMoved = canBeMoved;
         myTileComponent.myCoord = coordinate;
         myTileComponent.SetPossibleConnections(tileType);
-        
+        myTileComponent.SetPlayerChild();
+
         myMap[coordinate.getX(), coordinate.getY()] = tileInstance;
         myMapTiles[coordinate.getX(), coordinate.getY()] = tileInstance.GetComponent<Tile>();
 
@@ -535,28 +537,28 @@ public class MapManager : MonoBehaviour {
             playerInstance = Instantiate(player, new Vector3(0f, rows - 1, -1f) * tileSize, Quaternion.identity);
             playerInstance.GetComponent<Player>().coordinate = new Coordinate (0, rows - 1);
             playerInstance.transform.SetParent(myMap[0, rows-1].transform);
-            myMapTiles[0, rows - 1].SetPlayerChild(1);
+            myMapTiles[0, rows - 1].SetPlayerChild(playerInstance.GetComponent<Player>());
         }
         else if (playerNbr == 2)
         {
             playerInstance = Instantiate(player, new Vector3(columns - 1, rows - 1, -1f) * tileSize, Quaternion.identity);
             playerInstance.GetComponent<Player>().coordinate = new Coordinate(columns - 1, rows - 1);
             playerInstance.transform.SetParent(myMap[columns - 1, rows - 1].transform);
-            myMapTiles[columns - 1, rows - 1].SetPlayerChild(2);
+            myMapTiles[columns - 1, rows - 1].SetPlayerChild(playerInstance.GetComponent<Player>());
         }
         else if (playerNbr == 3)
         {
             playerInstance = Instantiate(player, new Vector3(0f, 0f, -1f) * tileSize, Quaternion.identity);
             playerInstance.GetComponent<Player>().coordinate = new Coordinate(0, 0);
             playerInstance.transform.SetParent(myMap[0, 0].transform);
-            myMapTiles[0, 0].SetPlayerChild(3);
+            myMapTiles[0, 0].SetPlayerChild(playerInstance.GetComponent<Player>());
         }
         else
         {
             playerInstance = Instantiate(player, new Vector3(columns - 1, 0f, -1f) * tileSize, Quaternion.identity);
             playerInstance.GetComponent<Player>().coordinate = new Coordinate(columns - 1, 0);
             playerInstance.transform.SetParent(myMap[columns - 1, 0].transform);
-            myMapTiles[columns - 1, 0].SetPlayerChild(4);
+            myMapTiles[columns - 1, 0].SetPlayerChild(playerInstance.GetComponent<Player>());
         }
 
         allPlayers[playerNbr-1] = playerInstance;
@@ -564,7 +566,6 @@ public class MapManager : MonoBehaviour {
         myPlayer.playerNbr = playerNbr;
         myPlayer.setPlayerSprite();
         myPlayer.SetStartingPoint();
-
 
     }
 
@@ -958,8 +959,8 @@ public class Coordinate
 
     public void getCoordsFromPosition(Vector3 position, int columns, int rows)
     {
-        float[] x_bin = GeneralMethods.CreateBins(tileSize, columns * tileSize / 2f, columns + 1);
-        float[] y_bin = GeneralMethods.CreateBins(tileSize, rows * tileSize / 2f, rows + 1);
+        float[] x_bin = GeneralMethods.CreateBins(tileSize, -columns * tileSize / 2f, columns + 1);
+        float[] y_bin = GeneralMethods.CreateBins(tileSize, -rows * tileSize / 2f, rows + 1);
 
         x = GeneralMethods.FindValInBins(x_bin, position.x);
         y = GeneralMethods.FindValInBins(y_bin, position.y);

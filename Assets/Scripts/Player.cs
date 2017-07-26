@@ -30,6 +30,11 @@ public class Player : MonoBehaviour
         return coordinate;
     }
 
+    public Coordinate GetCoordinatesCopy()
+    {
+        return new Coordinate(coordinate.getX(), coordinate.getY());
+    }
+
     // Animation
 
     public void setPlayerSprite()
@@ -123,9 +128,11 @@ public class Player : MonoBehaviour
 
     // Player position update
 
-    public void UpdatePlayerPosition(Tile myTile)
+    public void UpdatePlayerPosition(Tile myTile)  // ULTIMA MODIFICA
     {
+        UnchildFromTile();
         coordinate = myTile.GetCoordinatesCopy();
+        ChildTile(myTile);
     }
 
     public void UpdatePlayerPosition()
@@ -171,8 +178,9 @@ public class Player : MonoBehaviour
 
         targetTile = mapManagerComponent.PickTileObject(coord);
         transform.position = new Vector3(targetTile.transform.position.x, targetTile.transform.position.y, -5);
-        transform.SetParent(targetTile.transform);
-        targetTile.GetComponent<Tile>().SetPlayerChild(playerNbr);
+        UpdatePlayerPosition(targetTile.GetComponent<Tile>());
+
+        //targetTile.GetComponent<Tile>().SetPlayerChild(this);
 
     }
 
@@ -201,7 +209,7 @@ public class Player : MonoBehaviour
 
     public void CheckForOtherPlayer(Tile tile)
     {
-        int other = tile.GetPlayerChild();
+        int other = tile.GetPlayerChildNbr();
         if (other != -1)
         {
             checkingCombat = true;
@@ -237,12 +245,17 @@ public class Player : MonoBehaviour
 
     public void UnchildFromTile()
     {
-        if(!isStasisActive)
+        if(!isStasisActive && transform.parent != null)
         {
             GameObject parentTile = transform.parent.gameObject;
-            parentTile.GetComponent<Tile>().SetPlayerChild(-1);
+            parentTile.GetComponent<Tile>().SetPlayerChild();
             transform.parent = null;
         }
+    }
+
+    public void ChildTile(Tile tile)
+    {
+        tile.SetPlayerChild(this);
     }
 
     // Diamond
@@ -277,8 +290,10 @@ public class Player : MonoBehaviour
 
     public void DeactivateStasis()
     {
-        turnsBeforeStasisCounter = 0;
+        turnsBeforeStasisCounter = turnsBeforeStasisIsActive;
         coordinate.getCoordsFromPosition(transform.position, mapManager.GetComponent<MapManager>().columns, mapManager.GetComponent<MapManager>().rows);
+        GameObject myTile = mapManagerComponent.PickTileObject(coordinate);
+        transform.SetParent(myTile.transform);
         canActivateStasis = false;
         isStasisActive = false;
     }
@@ -507,6 +522,22 @@ public class Player : MonoBehaviour
         //yield return new WaitForSeconds(0.1f);
 
         moving = false;
+    }
+
+    // General Methods
+
+    public int FindInCoords(Coordinate[] coords)
+    {
+        int idx = -1;
+        for (int i = 0; i < coords.Length; i++)
+        {
+            if (coordinate.isEqual(coords[i]))
+            {
+                idx = i;
+                break;
+            }
+        }
+        return idx;
     }
 
     // Unity Specific methods

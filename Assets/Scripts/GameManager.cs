@@ -17,6 +17,8 @@ public class GameManager : MonoBehaviour {
         mapManagerComponent = mapManager.GetComponent<MapManager>();
         mapManagerComponent.MapSetup();
 
+        Debug.Log("Map Created");
+
         turnManagerComponent.setInsertArrows(mapManagerComponent.getAllInstancedArrows());
         turnManagerComponent.ArrangePlayersInTurnOrder();
         turnManagerComponent.ActivatePlayer(0);
