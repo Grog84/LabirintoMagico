@@ -184,9 +184,9 @@ public class TurnManager : MonoBehaviour
 
     void ActivateBasePanel()  // MODIFICARE CON PASSAGGIO A BOTTONI
     {
-        selectionDepth = 0;
-        selectedButton = 0;
-        cursorIsActive = true;
+        selectionDepth = (int)panelSelection.basePanel;
+
+
     }
 
     void ActivateTerraformPanel()
