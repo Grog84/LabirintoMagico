@@ -8,8 +8,7 @@ using UnityEngine.SceneManagement;
 public class TurnManager : MonoBehaviour
 {
 
-    public GameObject walkButton, terraformingButton, crystalButton, passButton, cursor, portraitSelection,
-        rotateTileButton, slideTilesButton, terraformBackButton, card1Button, card2Button, cardsBackButton, rotationCursor;
+    public GameObject xButton, aButton, bButton, rotationCursor;
     public GameObject[] portraits;
     public GameObject[] panels;
     public GameObject[] playerWinsText;
@@ -24,11 +23,8 @@ public class TurnManager : MonoBehaviour
     private bool canMove, canTerraform, canUseCrystal, cursorIsActive;
     private GameObject[] players, tmpPlayers, allInsertArrows;
     private Card[] activeCards;
-    private CardButton[] cardsButtonComponent;
     private Player[] playerComponent;
     private Player activePlayer;
-    private RectTransform[] buttonsTransform, panelsTransform;
-    private RectTransform cursorTransform;
     private Animator[] buttonsAnimator;
     private Vector2 panelParkingPosition, panelActivePosition, arrowsRelativePosition;
     private Vector3 rotationArrowsParkingPosition, rotationArrowsActivePosition;
@@ -47,50 +43,18 @@ public class TurnManager : MonoBehaviour
         leftToRight, botToTop, rightToLeft, topToBot
     };
 
+    enum panelSelection
+    {
+        basePanel, walkPanel, terraformPanel, slidePanel, rotatePanel
+    };
+
     // Initialization Methods - variables assignments of the automatically generated objects
-
-    public void AssignPanelsPosition()
-    {
-        panelsTransform[0] = panels[0].GetComponent<RectTransform>();
-        panelsTransform[1] = panels[1].GetComponent<RectTransform>();
-        panelsTransform[2] = panels[2].GetComponent<RectTransform>();
-    }
-
-    public void AssignButtonsPosition()
-    {
-        // First Panel Buttons
-        buttonsTransform[0] = walkButton.GetComponent<RectTransform>();
-        buttonsPosition[0] = buttonsTransform[0].position;
-        buttonsTransform[1] = terraformingButton.GetComponent<RectTransform>();
-        buttonsPosition[1] = buttonsTransform[1].position;
-        buttonsTransform[2] = crystalButton.GetComponent<RectTransform>();
-        buttonsPosition[2] = buttonsTransform[2].position;
-        buttonsTransform[3] = passButton.GetComponent<RectTransform>();
-        buttonsPosition[3] = buttonsTransform[3].position;
-
-        // Terraform Panel Buttons
-        buttonsTransform[4] = rotateTileButton.GetComponent<RectTransform>();
-        buttonsPosition[4] = buttonsTransform[4].position;
-        buttonsTransform[5] = slideTilesButton.GetComponent<RectTransform>();
-        buttonsPosition[5] = buttonsTransform[5].position;
-        buttonsTransform[6] = terraformBackButton.GetComponent<RectTransform>();
-        buttonsPosition[6] = buttonsTransform[6].position;
-
-        // Cards Panel Buttons
-        buttonsTransform[7] = card1Button.GetComponent<RectTransform>();
-        buttonsPosition[7] = buttonsTransform[7].position;
-        buttonsTransform[8] = card2Button.GetComponent<RectTransform>();
-        buttonsPosition[8] = buttonsTransform[8].position;
-        buttonsTransform[9] = cardsBackButton.GetComponent<RectTransform>();
-        buttonsPosition[9] = buttonsTransform[9].position;
-    }
 
     public void AssignButtonsAnimators()
     {
-        buttonsAnimator[0] = walkButton.GetComponent<Animator>();
-        buttonsAnimator[1] = terraformingButton.GetComponent<Animator>();
-        buttonsAnimator[2] = crystalButton.GetComponent<Animator>();
-        buttonsAnimator[3] = passButton.GetComponent<Animator>();
+        buttonsAnimator[0] = xButton.GetComponent<Animator>();
+        buttonsAnimator[1] = aButton.GetComponent<Animator>();
+        buttonsAnimator[2] = bButton.GetComponent<Animator>();
     }
 
     public void ArrangePlayersInTurnOrder()
@@ -113,12 +77,6 @@ public class TurnManager : MonoBehaviour
         allInsertArrows = inputArrows;
     }
 
-    public void AssignCardButtonComponent()
-    {
-        cardsButtonComponent[0] = card1Button.GetComponent<CardButton>();
-        cardsButtonComponent[1] = card2Button.GetComponent<CardButton>();
-    }
-
     // Turn Management
 
     public void PassTurn()
@@ -134,14 +92,9 @@ public class TurnManager : MonoBehaviour
         activePlayer.CheckDiamondStatusTimer();
 
         ResetButtons();
-
-        portraitSelection.transform.position = portraits[playerPlaying - 1].transform.position;
-        ResetCardsButtonRotation();
-        AssignCardsToButtons();
         ActivateTraps();
 
         selectedButton = 0;
-        cursorTransform.position = buttonsTransform[selectedButton].position;
 
         // StartCoroutine(MoveCamera(players[playerPlayingIdx]));  
 
@@ -155,7 +108,7 @@ public class TurnManager : MonoBehaviour
         }
     }
 
-    void ResetButtons() // add reset of the animation
+    void ResetButtons() // TODO CAMBIARE CON MODIFICHE add reset of the animation
     {
         canMove = true;
         buttonsAnimator[0].SetBool("isActive", true);
@@ -202,25 +155,6 @@ public class TurnManager : MonoBehaviour
         return playerPlaying;
     }
 
-    void AssignCardsToButtons()
-    {
-        GameObject activePortrait = portraits[playerPlayingIdx];
-        activeCards = activePortrait.GetComponentsInChildren<Card>();
-
-        int card1_type = activeCards[0].getTileType();
-        int card2_type = activeCards[1].getTileType();
-
-        if (activeCards[0].GetTrappedStatus())
-            cardsButtonComponent[0].SetTileType(card1_type, true);
-        else
-            cardsButtonComponent[0].SetTileType(card1_type, false);
-
-        if (activeCards[1].GetTrappedStatus())
-            cardsButtonComponent[1].SetTileType(card2_type, true);
-        else
-            cardsButtonComponent[1].SetTileType(card2_type, false);
-    }
-
     public void SetAttackHasHappened(bool status)
     {
         attackHasHappened = status;
@@ -248,14 +182,10 @@ public class TurnManager : MonoBehaviour
 
     // Panel Selection
 
-    void ActivateBasePanel()
+    void ActivateBasePanel()  // MODIFICARE CON PASSAGGIO A BOTTONI
     {
         selectionDepth = 0;
         selectedButton = 0;
-        panelsTransform[0].anchoredPosition = panelActivePosition;
-        panelsTransform[1].anchoredPosition = panelParkingPosition;
-        panelsTransform[2].anchoredPosition = panelParkingPosition;
-        cursorTransform.position = buttonsTransform[selectedButton].position;
         cursorIsActive = true;
     }
 
@@ -263,64 +193,24 @@ public class TurnManager : MonoBehaviour
     {
         selectionDepth = 1;
         selectedButton = 4;
-        panelsTransform[0].anchoredPosition = panelParkingPosition;
-        panelsTransform[1].anchoredPosition = panelActivePosition;
-        panelsTransform[2].anchoredPosition = panelParkingPosition;
-        cursorTransform.position = buttonsTransform[selectedButton].position;
-        cursorIsActive = true;
-    }
 
-    void ActivateCardSelection()
+        cursorIsActive = true;
+    }  // MODIFICARE CON PASSAGGIO A BOTTONI
+
+    void ActivateSlidePanel()
     {
         selectionDepth = 2;
         selectedButton = 7;
-        panelsTransform[0].anchoredPosition = panelParkingPosition;
-        panelsTransform[1].anchoredPosition = panelParkingPosition;
-        panelsTransform[2].anchoredPosition = panelActivePosition;
-        cursorTransform.position = buttonsTransform[selectedButton].position;
+
     }
 
-    // Cursors
-
-    void MoveCursor()
+    void ActivateRotationPanel()
     {
-        if (selectionDepth == 0)
-        {
-            if (Input.GetKeyDown(KeyCode.D) || Input.GetAxis("HorizontalJoy") == 1)
-            {
-                selectedButton = Mathf.Clamp(selectedButton + 1, 0, 3);
-            }
-            if (Input.GetKeyDown(KeyCode.A) || Input.GetAxis("HorizontalJoy") == -1)
-            {
-                selectedButton = Mathf.Clamp(selectedButton - 1, 0, 3);
-            }
-        }
-        else if (selectionDepth == 1)
-        {
-            if (Input.GetKeyDown(KeyCode.D) || Input.GetAxis("HorizontalJoy") == 1)
-            {
-                selectedButton = Mathf.Clamp(selectedButton + 1, 4, 6);
-            }
-            if (Input.GetKeyDown(KeyCode.A) || Input.GetAxis("HorizontalJoy") == -1)
-            {
-                selectedButton = Mathf.Clamp(selectedButton - 1, 4, 6);
-            }
+        selectionDepth = 2;
+        selectedButton = 7;
 
-        }
-        else if (selectionDepth == 2)
-        {
-            if (Input.GetKeyDown(KeyCode.D) || Input.GetAxis("HorizontalJoy") == 1)
-            {
-                selectedButton = Mathf.Clamp(selectedButton + 1, 7, 9);
-            }
-            if (Input.GetKeyDown(KeyCode.A) || Input.GetAxis("HorizontalJoy") == -1)
-            {
-                selectedButton = Mathf.Clamp(selectedButton - 1, 7, 9);
-            }
-
-        }
-        cursorTransform.position = buttonsTransform[selectedButton].position;
     }
+
 
     void EndTerraform()
     {
@@ -328,14 +218,7 @@ public class TurnManager : MonoBehaviour
 
         UpdatePlayersPosition();
         canTerraform = false;
-        terraformingButton.GetComponent<Animator>().SetBool("isActive", false);
         mapManager.UpdateTilesZOrder();
-    }
-
-    void ResetCardsButtonRotation()
-    {
-        cardsButtonComponent[0].ResetCardRotation();
-        cardsButtonComponent[1].ResetCardRotation();
     }
 
     // Traps
@@ -1019,69 +902,98 @@ public class TurnManager : MonoBehaviour
 
     void Update()
     {
-        if ((Mathf.Abs(Input.GetAxis("HorizontalJoy")) != 1))
-        {
-            StartCoroutine(reactivateCursor());
-        }
+        //// Check if needed
+        //if ((Mathf.Abs(Input.GetAxis("HorizontalJoy")) != 1))
+        //{
+        //    StartCoroutine(reactivateCursor());
+        //}
 
-        if ((Input.GetAxis("RotationJoy")) == 0)
-        {
-            StartCoroutine(reactivateRotation());
-        }
+        //// Check if needed
+        //if ((Input.GetAxis("RotationJoy")) == 0)
+        //{
+        //    StartCoroutine(reactivateRotation());
+        //}
 
-        if (cursorIsActive && canBeActivated)
+        //// Check if needed
+        //if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A) || Input.GetAxis("HorizontalJoy") != 0)
+        //{
+        //    canBeActivated = false;
+        //}
+
+        if (selectionDepth == (int)panelSelection.basePanel)
         {
-            if (Input.GetKey(KeyCode.D) || Input.GetKey(KeyCode.A) || Input.GetAxis("HorizontalJoy") != 0)
+            if (Input.GetKeyDown(KeyCode.Z)) // Walk
             {
-                canBeActivated = false;
-                MoveCursor();
+                cursorIsActive = false;
+                StartCoroutine(ActivateMovementPhase());
             }
-
-            if (selectionDepth <= 2 && (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Fire1joy")))
+            else if (Input.GetKeyDown(KeyCode.S)) // Terraform
             {
-                if (canMove && cursorTransform.position == buttonsTransform[0].position) // Walk
-                {
-                    cursorIsActive = false;
-                    StartCoroutine(ActivateMovementPhase());
+                ActivateTerraformPanel();
+            }
+            else if (Input.GetKeyDown(KeyCode.D)) // Nothing
+            {
+                
+            }
+        }
+        else if (selectionDepth == (int)panelSelection.walkPanel)
+        {
+            if (Input.GetKeyDown(KeyCode.Z)) // Confirm Walk
+            {
 
-                }
-                else if (canTerraform && cursorTransform.position == buttonsTransform[1].position) // Terraform
-                {
-                    ActivateTerraformPanel();
-                }
-                else if (canUseCrystal && cursorTransform.position == buttonsTransform[2].position) // Crystal
-                {
-                    ActivateDiamondStasis();
-                }
-                else if (cursorTransform.position == buttonsTransform[3].position) // Pass
-                {
-                    PassTurn();
-                }
-                else if (cursorTransform.position == buttonsTransform[4].position) // Rotate
-                {
-                    cursorIsActive = false;
-                    StartCoroutine(ActivateRotationCursor());
-                }
-                else if (cursorTransform.position == buttonsTransform[5].position) // Slide
-                {
-                    ActivateCardSelection();
-                }
-                else if (cursorTransform.position == buttonsTransform[6].position) // Back to starting Panel
-                {
-                    ActivateBasePanel();
-                }
-                else if (cursorTransform.position == buttonsTransform[7].position) // Card1
-                {
-                    StartCoroutine(ActivateCardRotation(1));
-                }
-                else if (cursorTransform.position == buttonsTransform[8].position) // Card2
-                {
-                    StartCoroutine(ActivateCardRotation(2));
-                }
-                else if (cursorTransform.position == buttonsTransform[9].position) // Back to Terraform Panel
-                {
-                    ActivateTerraformPanel();
-                }
+            }
+            else if (Input.GetKeyDown(KeyCode.S)) // Nothing
+            {
+                
+            }
+            else if (Input.GetKeyDown(KeyCode.D)) // Back to base panel
+            {
+
+            }
+        }
+        else if (selectionDepth == (int)panelSelection.terraformPanel)
+        {
+            if (Input.GetKeyDown(KeyCode.Z)) // Slide
+            {
+
+            }
+            else if (Input.GetKeyDown(KeyCode.S)) // Rotation
+            {
+
+            }
+            else if (Input.GetKeyDown(KeyCode.D)) // Back to base panel
+            {
+
+            }
+        }
+        else if (selectionDepth == (int)panelSelection.slidePanel)
+        {
+            if (Input.GetKeyDown(KeyCode.Z)) // Confirm
+            {
+
+            }
+            else if (Input.GetKeyDown(KeyCode.S)) // Nothing
+            {
+
+            }
+            else if (Input.GetKeyDown(KeyCode.D)) // Back to terraform panel
+            {
+
+            }
+        }
+        else if (selectionDepth == (int)panelSelection.rotatePanel)
+        {
+            if (Input.GetKeyDown(KeyCode.Z)) // rotation counterclockwise
+            {
+
+            }
+            else if (Input.GetKeyDown(KeyCode.S)) // rotation clockwise
+            {
+
+            }
+            else if (Input.GetKeyDown(KeyCode.D)) // Back to terraform panel
+            {
+
             }
         }
     }
