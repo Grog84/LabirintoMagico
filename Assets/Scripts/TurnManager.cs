@@ -33,7 +33,7 @@ public class TurnManager : MonoBehaviour
     private Vector2 panelParkingPosition, panelActivePosition, arrowsRelativePosition;
     private Vector3 rotationArrowsParkingPosition, rotationArrowsActivePosition;
     private List<Trap> trapsToActivate = new List<Trap>();
-    private bool trapHasTriggered = false, diamondOnTable = true, attackHasHappened = false;
+    private bool trapHasTriggered = false, diamondOnTable = true, attackHasHappened = false, resolvingCombat = true;
     private bool canBeActivated = true;
     private bool canBeRotated = true;
 
@@ -224,6 +224,11 @@ public class TurnManager : MonoBehaviour
     public void SetAttackHasHappened(bool status)
     {
         attackHasHappened = status;
+    }
+
+    public void SetResolvingCombat(bool status)
+    {
+        resolvingCombat = status;
     }
 
     IEnumerator BackToMenu()
@@ -433,13 +438,10 @@ public class TurnManager : MonoBehaviour
 
     IEnumerator ActivateMovementPhase()
     {
-        Debug.Log("Movement Activated");
         Player p = playerComponent[playerPlayingIdx];
         Coordinate movementStartingPosition = p.GetCoordinatesCopy();
         mapManager.updateTilesConnection();
-        Debug.Log("Updated Tiles Connection");
         p.BrightPossibleTiles();
-        Debug.Log("Brighten up tiles");
 
         //p.UnchildFromTile();
         ActivatePlayer(playerComponent[playerPlayingIdx].playerNbr);
@@ -498,23 +500,37 @@ public class TurnManager : MonoBehaviour
         isSliding = true;
 
         Player fallingPlayer = null;
+        Player frontPlayer = null, rearPlayer = null;
         bool repositionPlayer = false;
 
         Coordinate[] lineCoordinates = arrow.GetComponent<InsertArrow>().getPointedCoords();
         lineCoordinates = mapManager.KeepMovableTiles(lineCoordinates);
 
+        attackHasHappened = false;
+        resolvingCombat = false;
         int[] playerIdxInCoords = GetPlayersInCoordinatesIDX(lineCoordinates); // checks if players are found in the group of slided tiles
         if (playerIdxInCoords.Length > 1) // more than one player is on the slided tiles
         {
             Array.Sort(playerIdxInCoords);
             for (int i = 1; i < playerIdxInCoords.Length; i++) 
             {
-                if (playerIdxInCoords[i] - playerIdxInCoords[i - 1] == 1) // players are at one tile of distance
+                if (playerIdxInCoords[i] - playerIdxInCoords[i - 1] == 1) // players are positioned one tile away from each other in the slide direction
                 {
-
+                    // checks whether or not the player in the front has the stasis active
+                    frontPlayer = GetPlayerAtCoordinates(lineCoordinates[playerIdxInCoords[i]]);
+                    //frontPlayer = mapManager.PickTileComponent(lineCoordinates[playerIdxInCoords[i]]).GetPlayerChild(); // non funziona dato che è in stasi
+                    if (frontPlayer.GetStasisStatus()) 
+                    {
+                        rearPlayer = mapManager.PickTileComponent(lineCoordinates[playerIdxInCoords[i-1]]).GetPlayerChild();
+                        attackHasHappened = true;
+                        resolvingCombat = true;
+                        StartCoroutine(rearPlayer.AttackPlayerOnTileOnSlide(frontPlayer));
+                    }
                 }
             }
         }
+
+        while (resolvingCombat) { yield return null; }
 
         Tile lastTile = mapManager.PickTileComponent(lineCoordinates[lineCoordinates.Length - 1]);
         int newCardType = lastTile.type;
@@ -573,6 +589,12 @@ public class TurnManager : MonoBehaviour
             activeCards[0].AssignType(newCardType, trapStatus);
         else
             activeCards[1].AssignType(newCardType, trapStatus);
+
+        if (attackHasHappened)
+        {
+            CollectDiamond(rearPlayer);
+            attackHasHappened = false;
+        }
 
         arrow.GetComponent<Animator>().SetBool("isActive", false);
         arrows.transform.localPosition = new Vector3(0f, -100f, 0f);
@@ -898,6 +920,21 @@ public class TurnManager : MonoBehaviour
 
     // General Methods
 
+    private Player GetPlayerAtCoordinates(Coordinate coord)
+    {
+        Player myPlayer = null;
+        foreach (Player player in playerComponent)
+        {
+            if (coord.isEqual(player.coordinate))
+            {
+                myPlayer = player;
+                break;
+            }
+        }
+        return myPlayer;
+
+    }
+    
     private Player[] GetPlayersInCoordinates(Coordinate[] coords)
     {
         List<Player> playersInCoords = new List<Player>();
@@ -912,14 +949,15 @@ public class TurnManager : MonoBehaviour
 
     private int[] GetPlayersInCoordinatesIDX(Coordinate[] coords)
     {
-        List<int> playersInCoords = new List<int>();
+        List<int> playersIdxInCoords = new List<int>();
         for (int i = 0; i < playerComponent.Length; i++)
         {
-            if (playerComponent[i].FindInCoords(coords) != -1)
-                playersInCoords.Add(i);
+            int idx = playerComponent[i].FindInCoords(coords);
+            if (idx != -1)
+                playersIdxInCoords.Add(idx);
         }
 
-        return playersInCoords.ToArray();
+        return playersIdxInCoords.ToArray();
     }
 
     // Unity Specific methods

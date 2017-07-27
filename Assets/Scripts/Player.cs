@@ -249,6 +249,16 @@ public class Player : MonoBehaviour
         yield return null;
     }
 
+    public IEnumerator AttackPlayerOnTileOnSlide(Player otherPlayer)
+    {
+        turnManager.GetComponent<TurnManager>().DropDiamond(otherPlayer);
+        otherPlayer.ResetToStartingPosition();
+
+        turnManager.GetComponent<TurnManager>().SetResolvingCombat(false);
+        checkingCombat = false;
+        yield return null;
+    }
+
     public void UnchildFromTile()
     {
         if(!isStasisActive && transform.parent != null)
@@ -298,13 +308,13 @@ public class Player : MonoBehaviour
     {
         turnsBeforeStasisCounter = turnsBeforeStasisIsActive;
         coordinate.getCoordsFromPosition(transform.position, mapManager.GetComponent<MapManager>().columns, mapManager.GetComponent<MapManager>().rows);
-<<<<<<< HEAD
+
         GameObject myTile = mapManagerComponent.PickTileObject(coordinate);
         transform.SetParent(myTile.transform);
-=======
-        GameObject playerTile = mapManagerComponent.PickTileObject(coordinate);
-        transform.SetParent(playerTile.transform);
->>>>>>> 8889a778fbb8ef03bff9a0656dc7ed256d1c6f08
+//=======
+//        GameObject playerTile = mapManagerComponent.PickTileObject(coordinate);
+//        transform.SetParent(playerTile.transform);
+//>>>>>>> 8889a778fbb8ef03bff9a0656dc7ed256d1c6f08
         canActivateStasis = false;
         isStasisActive = false;
     }

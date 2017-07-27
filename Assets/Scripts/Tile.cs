@@ -145,6 +145,11 @@ public class Tile : MonoBehaviour {
         return childPlayerNbr;
     }
 
+    public Player GetPlayerChild()
+    {
+        return childPlayerComponent;
+    }
+
     // Tiles connectivity
 
     public void SetPossibleConnections(int type)
