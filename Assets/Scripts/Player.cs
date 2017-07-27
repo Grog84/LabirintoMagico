@@ -307,14 +307,11 @@ public class Player : MonoBehaviour
     public void DeactivateStasis()
     {
         turnsBeforeStasisCounter = turnsBeforeStasisIsActive;
-        coordinate.getCoordsFromPosition(transform.position, mapManager.GetComponent<MapManager>().columns, mapManager.GetComponent<MapManager>().rows);
+        coordinate.GetCoordsFromPosition(transform.position, mapManager.GetComponent<MapManager>().columns, mapManager.GetComponent<MapManager>().rows);
 
         GameObject myTile = mapManagerComponent.PickTileObject(coordinate);
         transform.SetParent(myTile.transform);
-//=======
-//        GameObject playerTile = mapManagerComponent.PickTileObject(coordinate);
-//        transform.SetParent(playerTile.transform);
-//>>>>>>> 8889a778fbb8ef03bff9a0656dc7ed256d1c6f08
+
         canActivateStasis = false;
         isStasisActive = false;
     }

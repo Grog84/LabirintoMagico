@@ -7,18 +7,25 @@ public class CameraMovement : MonoBehaviour {
     public float zoomOutSizeLimit, zoomInSizeLimit, zoomingSpeed, movingSpeed;
     public float maxXDisplacement, maxYDisplacement;
 
+    private int mapColumns, mapRows;
     private float[] xLimits, yLimits;
     private Camera thisCamera;
     private bool isFollowingPlayer;
-    private GameObject followedPlayer;
+    private Player followedPlayer;
 
-    private void StartFollowingPlayer(GameObject player)
+    public void SetRowsAndColumns(MapManager mapManager)
+    {
+        mapColumns = mapManager.columns;
+        mapRows = mapManager.rows;
+    }
+
+    public void StartFollowingPlayer(Player player)
     {
         followedPlayer = player;
         isFollowingPlayer = true;
     }
 
-    private void StopFollowingPlayer()
+    public void StopFollowingPlayer()
     {
         followedPlayer = null;
         isFollowingPlayer = false;
@@ -68,13 +75,16 @@ public class CameraMovement : MonoBehaviour {
         }
 
         UpdatePositionLimits();
+        RepositionInsideLimits();
     }
 
     private void FollowPlayer()
     {
-        float cameraX = Mathf.Clamp(followedPlayer.transform.position.x, xLimits[0], xLimits[1]);
-        float cameraY = Mathf.Clamp(followedPlayer.transform.position.y, yLimits[0], yLimits[1]);
+        var playerPosition = followedPlayer.coordinate.GetPositionFromCoords(mapColumns, mapRows);
+        float cameraX = Mathf.Clamp(playerPosition.x, xLimits[0], xLimits[1]);
+        float cameraY = Mathf.Clamp(playerPosition.y, yLimits[0], yLimits[1]);
         var cameraPosition = new Vector3(cameraX, cameraY, transform.position.z);
+        transform.position = cameraPosition;
     }
 
     private void UpdatePositionLimits()
@@ -84,6 +94,13 @@ public class CameraMovement : MonoBehaviour {
 
         float yLim = (maxYDisplacement * (zoomOutSizeLimit - thisCamera.orthographicSize)) / (zoomOutSizeLimit - zoomInSizeLimit);
         yLimits = new float[2] { -yLim, yLim };
+    }
+
+    private void RepositionInsideLimits()
+    {
+        float newPosX = Mathf.Clamp(transform.position.x, xLimits[0], xLimits[1]);
+        float newPosY = Mathf.Clamp(transform.position.y, yLimits[0], yLimits[1]);
+        transform.position = new Vector3(newPosX, newPosY, transform.position.z);
     }
 
     // Use this for initialization

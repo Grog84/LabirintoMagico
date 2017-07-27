@@ -237,11 +237,12 @@ public class Tile : MonoBehaviour {
         }
     }
 
-    public void CheckConnections(Tile other, int lato)
+    public void CheckConnections(Tile other, int lato, int playerPlayingNbr = -1)
     {
         if (other != null)
         {
-            if (other.GetPlayerChildNbr() == -1 || (other.transform.GetComponentInChildren<Player>().GetHasDiamond()))
+
+            if (other.GetPlayerChildNbr() == -1 || other.GetPlayerChildNbr() == playerPlayingNbr || (other.GetPlayerChild().GetHasDiamond()))
             {
                 switch (lato)
                 {

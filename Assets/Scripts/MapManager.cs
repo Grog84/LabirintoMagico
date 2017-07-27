@@ -537,6 +537,7 @@ public class MapManager : MonoBehaviour {
             playerInstance = Instantiate(player, new Vector3(0f, rows - 1, -1f) * tileSize, Quaternion.identity);
             playerInstance.GetComponent<Player>().coordinate = new Coordinate (0, rows - 1);
             playerInstance.transform.SetParent(myMap[0, rows-1].transform);
+            playerInstance.GetComponent<Player>().playerNbr = 1;
             myMapTiles[0, rows - 1].SetPlayerChild(playerInstance.GetComponent<Player>());
         }
         else if (playerNbr == 2)
@@ -544,6 +545,7 @@ public class MapManager : MonoBehaviour {
             playerInstance = Instantiate(player, new Vector3(columns - 1, rows - 1, -1f) * tileSize, Quaternion.identity);
             playerInstance.GetComponent<Player>().coordinate = new Coordinate(columns - 1, rows - 1);
             playerInstance.transform.SetParent(myMap[columns - 1, rows - 1].transform);
+            playerInstance.GetComponent<Player>().playerNbr = 2;
             myMapTiles[columns - 1, rows - 1].SetPlayerChild(playerInstance.GetComponent<Player>());
         }
         else if (playerNbr == 3)
@@ -551,6 +553,7 @@ public class MapManager : MonoBehaviour {
             playerInstance = Instantiate(player, new Vector3(0f, 0f, -1f) * tileSize, Quaternion.identity);
             playerInstance.GetComponent<Player>().coordinate = new Coordinate(0, 0);
             playerInstance.transform.SetParent(myMap[0, 0].transform);
+            playerInstance.GetComponent<Player>().playerNbr = 3;
             myMapTiles[0, 0].SetPlayerChild(playerInstance.GetComponent<Player>());
         }
         else
@@ -558,6 +561,7 @@ public class MapManager : MonoBehaviour {
             playerInstance = Instantiate(player, new Vector3(columns - 1, 0f, -1f) * tileSize, Quaternion.identity);
             playerInstance.GetComponent<Player>().coordinate = new Coordinate(columns - 1, 0);
             playerInstance.transform.SetParent(myMap[columns - 1, 0].transform);
+            playerInstance.GetComponent<Player>().playerNbr = 4;
             myMapTiles[columns - 1, 0].SetPlayerChild(playerInstance.GetComponent<Player>());
         }
 
@@ -773,7 +777,7 @@ public class MapManager : MonoBehaviour {
         }
     }
 
-    public void updateTilesConnection()
+    public void updateTilesConnection(int playerPlayingNbr)
     {
         ResetEffectiveConnections();
 
@@ -785,22 +789,22 @@ public class MapManager : MonoBehaviour {
 
                 if (i - 1 >= 0)
                 {
-                    questa.CheckConnections(myMap[i - 1, j].GetComponent<Tile>(), 3);
+                    questa.CheckConnections(myMap[i - 1, j].GetComponent<Tile>(), 3, playerPlayingNbr);
                 }
                 
                 if (j - 1 >= 0)
                 {
-                    questa.CheckConnections(myMap[i, j - 1].GetComponent<Tile>(), 2);
+                    questa.CheckConnections(myMap[i, j - 1].GetComponent<Tile>(), 2, playerPlayingNbr);
                 }
                 
                 if (j + 1 < rows)
                 {
-                    questa.CheckConnections(myMap[i, j + 1].GetComponent<Tile>(), 0);
+                    questa.CheckConnections(myMap[i, j + 1].GetComponent<Tile>(), 0, playerPlayingNbr);
                 }
                 
                 if (i + 1 < columns)
                 {
-                    questa.CheckConnections(myMap[i + 1, j].GetComponent<Tile>(), 1);
+                    questa.CheckConnections(myMap[i + 1, j].GetComponent<Tile>(), 1, playerPlayingNbr);
                 }
                 
             }
@@ -957,7 +961,17 @@ public class Coordinate
         return new Vector3((float)x, (float)y, 0.0001f * (float)y) * tileSize;
     }
 
-    public void getCoordsFromPosition(Vector3 position, int columns, int rows)
+    public Vector3 GetPositionFromCoords(int columns, int rows)
+    {
+        var relativePosition = getVect3();
+        float xShift = -columns * tileSize / 2f;
+        float yShift = -rows * tileSize / 2f;
+
+        var position = new Vector3(relativePosition.x + xShift, relativePosition.y + yShift, 0f);
+        return position;
+    }
+
+    public void GetCoordsFromPosition(Vector3 position, int columns, int rows)
     {
         float[] x_bin = GeneralMethods.CreateBins(tileSize, -columns * tileSize / 2f, columns + 1);
         float[] y_bin = GeneralMethods.CreateBins(tileSize, -rows * tileSize / 2f, rows + 1);

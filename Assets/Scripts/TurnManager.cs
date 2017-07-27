@@ -124,13 +124,13 @@ public class TurnManager : MonoBehaviour
     public void PassTurn()
     {
         ActivatePlayer(0);
-        mapManager.updateTilesConnection();
 
         playerPlayingIdx++;
         playerPlayingIdx %= 4;
         playerPlaying = playerOrder[playerPlayingIdx];
         activePlayer = playerComponent[playerPlayingIdx];
 
+        mapManager.updateTilesConnection(playerPlaying);
         activePlayer.CheckDiamondStatusTimer();
 
         ResetButtons();
@@ -324,7 +324,7 @@ public class TurnManager : MonoBehaviour
 
     void EndTerraform()
     {
-        mapManager.updateTilesConnection();
+        mapManager.updateTilesConnection(playerPlaying);
 
         UpdatePlayersPosition();
         canTerraform = false;
@@ -439,8 +439,10 @@ public class TurnManager : MonoBehaviour
     IEnumerator ActivateMovementPhase()
     {
         Player p = playerComponent[playerPlayingIdx];
+        CameraStartFollowingPlayer(p);
+
         Coordinate movementStartingPosition = p.GetCoordinatesCopy();
-        mapManager.updateTilesConnection();
+        mapManager.updateTilesConnection(playerPlaying);
         p.BrightPossibleTiles();
 
         //p.UnchildFromTile();
@@ -488,6 +490,8 @@ public class TurnManager : MonoBehaviour
         cursorIsActive = true;
         ActivatePlayer(0);
         makePlayersChild();
+
+        CameraStopFollowingPlayer();
 
         yield return null;
     }
@@ -916,6 +920,23 @@ public class TurnManager : MonoBehaviour
     {
         canBeRotated = true;
         yield return null;
+    }
+
+    // Camera
+
+    private void CameraStartFollowingPlayer(Player player)
+    {
+        camera.GetComponent<CameraMovement>().StartFollowingPlayer(player);
+    }
+
+    private void CameraStopFollowingPlayer()
+    {
+        camera.GetComponent<CameraMovement>().StopFollowingPlayer();
+    }
+
+    public void CameraSetRowsAndColumns()
+    {
+        camera.GetComponent<CameraMovement>().SetRowsAndColumns(mapManager);
     }
 
     // General Methods

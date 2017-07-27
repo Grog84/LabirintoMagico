@@ -21,6 +21,7 @@ public class GameManager : MonoBehaviour {
 
         turnManagerComponent.setInsertArrows(mapManagerComponent.getAllInstancedArrows());
         turnManagerComponent.ArrangePlayersInTurnOrder();
+        turnManagerComponent.CameraSetRowsAndColumns();
         turnManagerComponent.ActivatePlayer(0);
         turnManagerComponent.PassTurn();
     }
