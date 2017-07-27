@@ -964,8 +964,8 @@ public class Coordinate
     public Vector3 GetPositionFromCoords(int columns, int rows)
     {
         var relativePosition = getVect3();
-        float xShift = -columns * tileSize / 2f;
-        float yShift = -rows * tileSize / 2f;
+        float xShift = -(columns-1) * tileSize / 2f;
+        float yShift = -(rows-1) * tileSize / 2f;
 
         var position = new Vector3(relativePosition.x + xShift, relativePosition.y + yShift, 0f);
         return position;

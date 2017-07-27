@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class CameraMovement : MonoBehaviour {
 
@@ -84,6 +85,7 @@ public class CameraMovement : MonoBehaviour {
         float cameraX = Mathf.Clamp(playerPosition.x, xLimits[0], xLimits[1]);
         float cameraY = Mathf.Clamp(playerPosition.y, yLimits[0], yLimits[1]);
         var cameraPosition = new Vector3(cameraX, cameraY, transform.position.z);
+        transform.DOMove(cameraPosition, 1f);
         transform.position = cameraPosition;
     }
 
