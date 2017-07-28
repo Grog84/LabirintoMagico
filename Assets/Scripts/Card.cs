@@ -20,7 +20,7 @@ public class Card : MonoBehaviour {
         this.isTrapped = isTrapped;
     }
 
-    public int getTileType()
+    public int GetTileType()
     {
         return tileType;
     }
@@ -79,7 +79,6 @@ public class Card : MonoBehaviour {
     {
         return isTrapped;
     }
-
 
     void AssignStartingRandomType()
     {

@@ -694,17 +694,17 @@ public class MapManager : MonoBehaviour {
             myMapTiles[selectedCoords[(i + 1) % (selectedCoords.Length)].getX(), selectedCoords[(i + 1) % (selectedCoords.Length)].getY()] = tmpTileMatrix[i];
         }
 
-        float waitingTime = 0;
+        //float waitingTime = 0;
 
-        while (waitingTime < animationTime + 0.5f)
-        {
-            waitingTime += Time.deltaTime;
-            if (waitingTime > animationTime)
-                turnManager.isRotating = false;
-            yield return null;
-        }
+        //while (waitingTime < animationTime + 0.5f)
+        //{
+        //    waitingTime += Time.deltaTime;
+        //    if (waitingTime > animationTime)
+        //        turnManager.isRotating = false;
+        //    yield return null;
+        //}
 
-        yield return null;
+        yield return new WaitForSeconds(animationTime);
 
     }
 
