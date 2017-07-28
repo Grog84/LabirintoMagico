@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 public class TurnManager : MonoBehaviour
 {
 
-    public GameObject xButton, aButton, bButton, rotationCursor;
+    public GameObject xButton, aButton, bButton, diamondButton, rotationCursor;
     public GameObject[] portraits;
     public GameObject[] playerWinsText;
     public Camera camera;
@@ -53,6 +53,7 @@ public class TurnManager : MonoBehaviour
         buttonsAnimator[0] = xButton.GetComponent<Animator>();
         buttonsAnimator[1] = aButton.GetComponent<Animator>();
         buttonsAnimator[2] = bButton.GetComponent<Animator>();
+        buttonsAnimator[3] = diamondButton.GetComponent<Animator>();
     }
 
     public void ArrangePlayersInTurnOrder()
@@ -121,16 +122,16 @@ public class TurnManager : MonoBehaviour
 
         StartCoroutine(ActivatePanel((int)panelSelection.basePanel));
 
-        //if (activePlayer.GetCanActivateStasis())
-        //{
-        //    canUseCrystal = true;
-        //    buttonsAnimator[2].SetBool("isActive", true);
-        //}
-        //else
-        //{
-        //    canUseCrystal = false;
-        //    buttonsAnimator[2].SetBool("isActive", false);
-        //}
+        if (activePlayer.GetCanActivateStasis())
+        {
+            canUseCrystal = true;
+            buttonsAnimator[3].SetBool("isActive", true);
+        }
+        else
+        {
+            canUseCrystal = false;
+            buttonsAnimator[3].SetBool("isActive", false);
+        }
 
     }
 
@@ -362,7 +363,7 @@ public class TurnManager : MonoBehaviour
     {
         mapManager.myDiamondInstance.transform.GetComponentInParent<Player>().ActivateStasis();
         canUseCrystal = false;
-        buttonsAnimator[2].SetBool("isActive", false);
+        buttonsAnimator[3].SetBool("isActive", false);
     }
 
     // Player Movement
@@ -844,7 +845,7 @@ public class TurnManager : MonoBehaviour
     void Awake()
     {
         selectionDepth = 0; // corresponds to the first panel. 1 is the terraform panel. 2 is the card selection
-        int numberOfButtons = 3;
+        int numberOfButtons = 4;
         playerPlayingIdx = -1;
         selectedButton = 0;
         playerOrder = new int[4] { 1, 2, 3, 4 };
@@ -962,6 +963,11 @@ public class TurnManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             PassTurn();
+        }
+
+        if (Input.GetKeyDown(KeyCode.M) && canUseCrystal)
+        {
+            ActivateDiamondStasis();
         }
 
         // cristallo
