@@ -119,6 +119,8 @@ public class TurnManager : MonoBehaviour
         canTerraform = true;
         buttonsAnimator[1].SetBool("canTerraform", true);
 
+        StartCoroutine(ActivatePanel((int)panelSelection.basePanel));
+
         //if (activePlayer.GetCanActivateStasis())
         //{
         //    canUseCrystal = true;
@@ -530,7 +532,7 @@ public class TurnManager : MonoBehaviour
         }
 
         arrow.GetComponent<Animator>().SetBool("isActive", false);
-        EndTerraform();
+        StartCoroutine(EndTerraform());
 
         yield return null;
     }

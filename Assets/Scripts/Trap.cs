@@ -42,6 +42,8 @@ public class Trap : MonoBehaviour {
     {
         isActive = false;
         thisPlayer.ResetToStartingPosition();
+        SetPlayerDropping(0);
+        SetSprite();
         SetVisible();
     }
 
@@ -51,10 +53,18 @@ public class Trap : MonoBehaviour {
         SetSprite();
     }
 
+    public int GetPlayerDropping()
+    {
+        return playerDropping;
+    }
+
     public void SetSprite()
     {
         switch (playerDropping)
         {
+            case 0:
+                myTexture = (Texture2D)Resources.Load("TrapProva/trap");
+                break;
             case 1:
                 myTexture = (Texture2D)Resources.Load("TrapProva/trap_red");
                 break;

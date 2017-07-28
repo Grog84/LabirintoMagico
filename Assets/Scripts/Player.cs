@@ -194,14 +194,24 @@ public class Player : MonoBehaviour
 
     public void CheckForTraps(Tile tile)
     {
-        if (tile.GetIsTrapped() && tile.GetTrap().GetIsActive())
+        if (tile.GetIsTrapped())
         {
-            if (hasDiamond)
+            Trap trap = tile.GetTrap();
+            if (trap.GetIsActive() && trap.GetPlayerDropping() != playerNbr)
             {
-                turnManager.GetComponent<TurnManager>().DropDiamond(this);
+                if (hasDiamond)
+                {
+                    turnManager.GetComponent<TurnManager>().DropDiamond(this);
+                }
+                tile.myTrapComponent.Trigger(this);
+                turnManager.GetComponent<TurnManager>().SetTrapHasTriggered(true);
+                tile.SetPlayerChild();
             }
-            tile.myTrapComponent.Trigger(this);
-            turnManager.GetComponent<TurnManager>().SetTrapHasTriggered(true);
+            else if (!trap.GetIsActive())
+            {
+                trap.SetPlayerDropping(playerNbr);
+                turnManager.GetComponent<TurnManager>().AddToActivateTrapList(trap);
+            }
         }
     }
 
