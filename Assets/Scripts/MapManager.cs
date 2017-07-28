@@ -321,6 +321,25 @@ public class MapManager : MonoBehaviour {
 
     }
 
+    private void PlaceNeutralTraps()
+    {
+        int distanceFromBorder = 2;
+
+        var topLeft = new Coordinate(Random.Range(distanceFromBorder, columns / 2 - 2), Random.Range(rows / 2 + 2, rows - distanceFromBorder));
+        var topRight = new Coordinate(Random.Range(columns / 2 + 2, columns - distanceFromBorder), Random.Range(rows / 2 + 2, rows - distanceFromBorder));
+        var botLeft = new Coordinate(Random.Range(distanceFromBorder, columns / 2 - 2), Random.Range(distanceFromBorder, rows / 2 - 2));
+        var botRight = new Coordinate(Random.Range(columns / 2 + 2, columns - distanceFromBorder), Random.Range(distanceFromBorder, rows / 2 - 2));
+
+        var myCoords = new Coordinate[4] { topLeft, topRight, botLeft, botRight};
+
+        foreach (var coord in myCoords)
+        {
+            Tile tile = PickTileComponent(coord);
+            tile.SetTrap(0);
+        }
+
+    }
+
     public void MapSetup()
     {
         int finalTilesNbr = columns * rows, randomTilesNbr = finalTilesNbr - 21, generatedTilesNbr = 0;
@@ -462,6 +481,7 @@ public class MapManager : MonoBehaviour {
 
         //updateTilesConnection();
         CreateInsertArrows();
+        PlaceNeutralTraps();
 
         transform.position = finalShift;
 
