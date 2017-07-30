@@ -6,7 +6,8 @@ using UnityEngine.Video;
 using UnityEngine.SceneManagement;
 
 public class TutorialMenu : MonoBehaviour {
-    public GameObject camera, videoPlayer, particle, particleInst, fade;
+    public GameObject camera, videoPlayer, particle, particleInst;
+    public FadeManager fade;
     public VideoClip[] tutorials;
     private int selezione = 0;
     float timer;
@@ -15,8 +16,9 @@ public class TutorialMenu : MonoBehaviour {
     public float partLeft, partRight;
     public bool move;
 
-	void Start () {
-		
+	void Start ()
+    {
+        StartCoroutine(fade.FadeIn());
 	}
 	
 	void Update ()
@@ -76,7 +78,7 @@ public class TutorialMenu : MonoBehaviour {
         if ((Input.GetKeyDown(KeyCode.B) || Input.GetButtonDown("Fire2joy")))
         {
             //fade.GetComponent<FadeManager>().fadeIn = false;
-            fade.GetComponent<FadeManager>().fadeOut = true;
+            StartCoroutine(fade.FadeOut("_Scenes/MenuIniziale"));
         }
 
         if (transform.position.y % 7.5 == 0 || transform.position.y % 7.5 == 7.5) move = false;

@@ -11,7 +11,7 @@ public class MenuManager : MonoBehaviour
     public GameObject camera;
     private int selezione = 1;
     private bool moving = false;
-    public SceneFade fading;
+    public FadeManager fading;
 
     IEnumerator Selection()
     {
@@ -19,22 +19,22 @@ public class MenuManager : MonoBehaviour
         {
             case 1:
                 {
-                    StartCoroutine(fading.FadeOut("_Scenes/scenaprova"));
-                    //SceneManager.LoadScene("_Scenes/scenaprova");
+                    StartCoroutine(fading.FadeOut("_Scenes/Connection"));
                     break;
                 }
             case 2:
                 {
-                    SceneManager.LoadScene("_Scenes/Controls");
+                    StartCoroutine(fading.FadeOut("_Scenes/Controls"));
                     break;
                 }
             case 3:
                 {
-                    SceneManager.LoadScene("_Scenes/Tutorial");
+                    StartCoroutine(fading.FadeOut("_Scenes/Tutorial"));
                     break;
                 }
             case 4:
                 {
+                    StartCoroutine(fading.FadeOut("_Scenes/Options"));
                     break;
 
                 }

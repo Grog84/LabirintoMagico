@@ -382,7 +382,7 @@ public class TurnManager : MonoBehaviour
 
         yield return null;
 
-        while (!Input.GetKeyDown(KeyCode.Z) && !Input.GetKeyDown(KeyCode.C) &&  !trapHasTriggered && !attackHasHappened)
+        while ((!Input.GetKeyDown(KeyCode.Z) || Input.GetButtonDown("Fire3joy")) && (!Input.GetKeyDown(KeyCode.C) || Input.GetButtonDown("Fire2joy")) &&  !trapHasTriggered && !attackHasHappened)
         {
             yield return null;
         }
@@ -548,7 +548,7 @@ public class TurnManager : MonoBehaviour
         bool firstClick = false;
         float firstClickWaitingTime = 0.5f;
 
-        while (!Input.GetKeyDown(KeyCode.C) && !Input.GetKeyDown(KeyCode.Z) && !Input.GetButtonDown("Fire1joy") && !Input.GetButtonDown("Fire2joy"))
+        while (!Input.GetKeyDown(KeyCode.C) && !Input.GetKeyDown(KeyCode.Z) && !Input.GetButtonDown("Fire3joy") && !Input.GetButtonDown("Fire2joy"))
         {
             if ((Input.GetKey(KeyCode.D) || Input.GetAxis("HorizontalJoy") == 1))
             {
@@ -742,7 +742,7 @@ public class TurnManager : MonoBehaviour
 
         yield return null;
 
-        while (!Input.GetKeyDown(KeyCode.Z) && !Input.GetKeyDown(KeyCode.X) && !Input.GetKeyDown(KeyCode.C) && !Input.GetButtonDown("Fire1joy") && !Input.GetButtonDown("Fire2joy"))
+        while (!Input.GetKeyDown(KeyCode.Z) && !Input.GetKeyDown(KeyCode.X) && !Input.GetKeyDown(KeyCode.C) && !Input.GetButtonDown("Fire1joy") && !Input.GetButtonDown("Fire2joy") && !Input.GetButtonDown("Fire3joy"))
         {
             yield return null;
         }
@@ -753,13 +753,13 @@ public class TurnManager : MonoBehaviour
             rotationCursor.GetComponent<CursorMoving>().SetAtPosition(parkingPosition);
             StartCoroutine(ActivatePanel((int)panelSelection.terraformPanel));
         }
-        else if (Input.GetKeyDown(KeyCode.Z) || Input.GetButtonDown("Fire2joy"))
+        else if (Input.GetKeyDown(KeyCode.Z) || Input.GetButtonDown("Fire3joy"))
         {
             canTerraform = false;
             rotationCursor.GetComponent<CursorMoving>().CursorDeactivate();
             yield return StartCoroutine(ActivateRotation(1));
         }
-        else if (Input.GetKeyDown(KeyCode.X) || Input.GetButtonDown("Fire2joy"))
+        else if (Input.GetKeyDown(KeyCode.X) || Input.GetButtonDown("Fire1joy"))
         {
             canTerraform = false;
             rotationCursor.GetComponent<CursorMoving>().CursorDeactivate();
@@ -886,12 +886,12 @@ public class TurnManager : MonoBehaviour
 
         if (selectionDepth == (int)panelSelection.basePanel)
         {
-            if (Input.GetKeyDown(KeyCode.Z) && canMove) // Walk
+            if ((Input.GetKeyDown(KeyCode.Z) || Input.GetButtonDown("Fire3joy")) && canMove) // Walk
             {
                 StartCoroutine(ActivatePanel((int)panelSelection.walkPanel));
                 StartCoroutine(ActivateMovementPhase());
             }
-            else if (Input.GetKeyDown(KeyCode.X) && canTerraform) // Terraform
+            else if ((Input.GetKeyDown(KeyCode.X) || Input.GetButtonDown("Fire1joy")) && canTerraform) // Terraform
             {
                 StartCoroutine(ActivatePanel((int)panelSelection.terraformPanel));
             }
@@ -916,17 +916,17 @@ public class TurnManager : MonoBehaviour
 
         else if (selectionDepth == (int)panelSelection.terraformPanel)
         {
-            if (Input.GetKeyDown(KeyCode.Z)) // Slide
+            if (Input.GetKeyDown(KeyCode.Z) || Input.GetButtonDown("Fire3joy")) // Slide
             {
                 StartCoroutine(ActivatePanel((int)panelSelection.slidePanel));
                 StartCoroutine(ScrollTileInsertionSelection());
             }
-            else if (Input.GetKeyDown(KeyCode.X)) // Rotation
+            else if (Input.GetKeyDown(KeyCode.X) || Input.GetButtonDown("Fire1joy")) // Rotation
             {
                 StartCoroutine(ActivatePanel((int)panelSelection.rotatePanel));
                 StartCoroutine(ActivateRotationCursor());
             }
-            else if (Input.GetKeyDown(KeyCode.C)) // Back to base panel
+            else if (Input.GetKeyDown(KeyCode.C) || Input.GetButtonDown("Fire2joy")) // Back to base panel
             {
                 StartCoroutine(ActivatePanel((int)panelSelection.basePanel));
             }
@@ -934,13 +934,13 @@ public class TurnManager : MonoBehaviour
 
         else if (selectionDepth == (int)panelSelection.slidePanel)
         {
-            if (Input.GetKeyDown(KeyCode.Z)) // Confirm
+            if (Input.GetKeyDown(KeyCode.Z) || Input.GetButtonDown("Fire3joy")) // Confirm
             {
             }
-            else if (Input.GetKeyDown(KeyCode.X)) // Nothing
+            else if (Input.GetKeyDown(KeyCode.X) || Input.GetButtonDown("Fire1joy")) // Nothing
             {
             }
-            else if (Input.GetKeyDown(KeyCode.C)) // Back to terraform panel
+            else if (Input.GetKeyDown(KeyCode.C) || Input.GetButtonDown("Fire2joy")) // Back to terraform panel
             {
                 StartCoroutine(ActivatePanel((int)panelSelection.terraformPanel));
             }
@@ -948,13 +948,13 @@ public class TurnManager : MonoBehaviour
 
         else if (selectionDepth == (int)panelSelection.rotatePanel)
         {
-            if (Input.GetKeyDown(KeyCode.Z)) // rotation counterclockwise
+            if (Input.GetKeyDown(KeyCode.Z) || Input.GetButtonDown("Fire3joy")) // rotation counterclockwise
             {
             }
-            else if (Input.GetKeyDown(KeyCode.X)) // rotation clockwise
+            else if (Input.GetKeyDown(KeyCode.X) || Input.GetButtonDown("Fire1joy")) // rotation clockwise
             {
             }
-            else if (Input.GetKeyDown(KeyCode.C)) // Back to terraform panel
+            else if (Input.GetKeyDown(KeyCode.C) || Input.GetButtonDown("Fire2joy")) // Back to terraform panel
             {
                 StartCoroutine(ActivatePanel((int)panelSelection.terraformPanel));
             }
