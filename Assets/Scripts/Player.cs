@@ -18,6 +18,7 @@ public class Player : MonoBehaviour
     public MapManager mapManagerComponent;
     public List<Tile> toBright;
     public bool hasDiamond = false;
+    public PlayerAssignment playerSO;
     private Coordinate startingPoint;
     private bool checkingCombat = false;
     private bool isStasisActive = false, canActivateStasis = false;
@@ -39,25 +40,7 @@ public class Player : MonoBehaviour
 
     public void setPlayerSprite()
     {
-        switch (playerNbr)
-        {
-            case 1:
-                myTexture = (Texture2D)Resources.Load("PlayerProva/p5");
-                break;
-            case 2:
-                myTexture = (Texture2D)Resources.Load("PlayerProva/p6");
-                break;
-            case 3:
-                myTexture = (Texture2D)Resources.Load("PlayerProva/p7");
-                break;
-            case 4:
-                myTexture = (Texture2D)Resources.Load("PlayerProva/p8");
-                break;
-            default:
-                break;
-        }
-
-        mySprite = Sprite.Create(myTexture, new Rect(0, 0, myTexture.width, myTexture.height), new Vector2(0.5f, 0.5f));
+        mySprite = playerSO.GetSprite(playerNbr);
         myRenderer.sprite = mySprite;
         myCollider.size = new Vector2(myTexture.width/100f, myTexture.height/100f);
 
