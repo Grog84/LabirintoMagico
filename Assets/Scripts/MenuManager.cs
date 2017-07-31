@@ -12,6 +12,7 @@ public class MenuManager : MonoBehaviour
     private int selezione = 1;
     private bool moving = false;
     public FadeManager fading;
+    private float destination;
 
     IEnumerator Selection()
     {
@@ -52,8 +53,19 @@ public class MenuManager : MonoBehaviour
 
     void Update()
     {
-        if ((Input.GetKeyDown(KeyCode.W) || Input.GetAxis("VerticalJoy") > 0.5) && !moving)
+        if (transform.rotation.eulerAngles.z > (destination - 0.1f) && transform.rotation.eulerAngles.z < (destination + 0.1f) && moving)
         {
+            Vector3 newPos = transform.rotation.eulerAngles;
+            newPos.z = destination;
+            transform.rotation.eulerAngles.Set(newPos.x, newPos.y, newPos.z);
+            moving = false;
+        }    
+        
+
+        if ((Input.GetKeyDown(KeyCode.W) || Input.GetAxis("VerticalJoy") == 1) && !moving)
+        {
+            moving = true;
+            destination = (transform.rotation.eulerAngles.z + 90)%360;
             transform.DOLocalRotate(new Vector3(0, 0, 90), 1, RotateMode.LocalAxisAdd);
             camera.transform.DOShakePosition(0.8F, 0.7f);
             if (selezione < 4) selezione++;
@@ -62,8 +74,10 @@ public class MenuManager : MonoBehaviour
             Debug.Log(selezione);
             //StartCoroutine(MoveRight());
         }
-        if ((Input.GetKeyDown(KeyCode.S) || Input.GetAxis("VerticalJoy") < -0.5) && !moving)
+        if ((Input.GetKeyDown(KeyCode.S) || Input.GetAxis("VerticalJoy") == -1) && !moving)
         {
+            moving = true;
+            destination = (360+transform.rotation.eulerAngles.z - 90)%360;
             transform.DOLocalRotate(new Vector3(0, 0, -90), 1, RotateMode.LocalAxisAdd);
             camera.transform.DOShakePosition(0.8F, 0.7f);
             if (selezione > 1) selezione--;
@@ -77,7 +91,6 @@ public class MenuManager : MonoBehaviour
             StartCoroutine(Selection());
         }
 
-        if (transform.rotation.eulerAngles.z % 90 > 44.9f && transform.rotation.eulerAngles.z % 90 < 45.1f) moving = false;
-        else moving = true;
+        //if (destination > 360) 
     }
 }

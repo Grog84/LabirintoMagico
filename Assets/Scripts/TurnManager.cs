@@ -391,13 +391,13 @@ public class TurnManager : MonoBehaviour
 
         yield return null;
 
-        while ((!Input.GetKeyDown(KeyCode.Z) || Input.GetButtonDown("Fire3joy")) && (!Input.GetKeyDown(KeyCode.C) || Input.GetButtonDown("Fire2joy")) &&  !trapHasTriggered && !attackHasHappened)
+        while (!Input.GetKeyDown(KeyCode.Z) && !Input.GetButtonDown("Fire3joy") && !Input.GetKeyDown(KeyCode.C) && !Input.GetButtonDown("Fire2joy") &&  !trapHasTriggered && !attackHasHappened)
         {
             yield return null;
         }
 
 
-        if (Input.GetKeyDown(KeyCode.Z) || trapHasTriggered || attackHasHappened)
+        if (Input.GetKeyDown(KeyCode.Z) || Input.GetButtonDown("Fire3joy") || trapHasTriggered || attackHasHappened)
         {
             canMove = false;
             if (trapHasTriggered)
@@ -978,12 +978,12 @@ public class TurnManager : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("PassTurn"))
         {
             PassTurn();
         }
 
-        if (Input.GetKeyDown(KeyCode.M) && canUseCrystal)
+        if ((Input.GetKeyDown(KeyCode.M) || Input.GetButtonDown("Fire4joy")) && canUseCrystal)
         {
             ActivateDiamondStasis();
         }
