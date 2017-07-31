@@ -9,9 +9,10 @@ public class Player : MonoBehaviour
     public int isPlayerTurn; // number corresponding to the player playing
 
     SpriteRenderer myRenderer;
-    Texture2D myTexture;
+    //Texture2D myTexture;
     Sprite mySprite;
-    BoxCollider2D myCollider;
+    Animator myAnimator;
+    //BoxCollider2D myCollider;
     public bool moving = false;
     public Coordinate coordinate;
     public GameObject mapManager, turnManager;
@@ -42,7 +43,9 @@ public class Player : MonoBehaviour
     {
         mySprite = playerSO.GetSprite(playerNbr);
         myRenderer.sprite = mySprite;
-        myCollider.size = new Vector2(myTexture.width/100f, myTexture.height/100f);
+        transform.GetChild(0).GetComponent<Animator>().runtimeAnimatorController = playerSO.GetAnimator(playerNbr);
+
+        //myCollider.size = new Vector2(myTexture.width/100f, myTexture.height/100f);
 
     }
 
@@ -559,7 +562,8 @@ public class Player : MonoBehaviour
     void Awake()
     {
         myRenderer = transform.GetChild(0).GetComponent<SpriteRenderer>();
-        myCollider = GetComponent<BoxCollider2D>();
+        //myCollider = GetComponent<BoxCollider2D>();
+        myAnimator = GetComponent<Animator>();
         mapManager = GameObject.FindGameObjectWithTag("MapManager");
         turnManager = GameObject.FindGameObjectWithTag("TurnManager");
         toBright = new List<Tile>();
