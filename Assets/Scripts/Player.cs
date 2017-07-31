@@ -7,6 +7,7 @@ public class Player : MonoBehaviour
 
     public int playerNbr;
     public int isPlayerTurn; // number corresponding to the player playing
+    public float walkingTime;
 
     SpriteRenderer myRenderer;
     //Texture2D myTexture;
@@ -347,11 +348,14 @@ public class Player : MonoBehaviour
         //Debug.Log("possible: " + MapManager.GetComponent<MapManager>().myMap[coordinate.getX(), coordinate.getY()].GetComponent<Tile>().possibleConnections[1]);
         //Debug.Log("effective: " + MapManager.GetComponent<MapManager>().myMap[coordinate.getX(), coordinate.getY()].GetComponent<Tile>().effectiveConnections[1]);
         moving = true;
+        if (transform.GetChild(0).transform.localScale.x < 0f)
+            transform.GetChild(0).transform.localScale = new Vector3(transform.GetChild(0).transform.localScale.x * -1,
+                                                                     transform.GetChild(0).transform.localScale.y,
+                                                                     transform.GetChild(0).transform.localScale.z);
 
         if (mapManagerComponent.myMap[coordinate.getX(), coordinate.getY()].GetComponent<Tile>().effectiveConnections[1] == true)
         {
             float elapsedTime = 0;
-            float animTime = 0.2f;
 
             GameObject destinationTile = mapManagerComponent.myMap[coordinate.getX() + 1, coordinate.getY()];
             Vector3 destination = destinationTile.GetComponent<Transform>().position;
@@ -362,9 +366,9 @@ public class Player : MonoBehaviour
 
             if (!checkingCombat)
             {
-                while (elapsedTime < animTime)
+                while (elapsedTime < walkingTime)
                 {
-                    transform.position = Vector3.Lerp(transform.position, destination, elapsedTime / animTime);
+                    transform.position = Vector3.Lerp(transform.position, destination, elapsedTime / walkingTime);
 
                     elapsedTime += Time.deltaTime;
                     yield return null;
@@ -401,7 +405,6 @@ public class Player : MonoBehaviour
         {
 
             float elapsedTime = 0;
-            float animTime = 0.2f;
 
             GameObject destinationTile = mapManagerComponent.myMap[coordinate.getX(), coordinate.getY() + 1];
             Vector3 destination = destinationTile.GetComponent<Transform>().position;
@@ -412,9 +415,9 @@ public class Player : MonoBehaviour
 
             if (!checkingCombat)
             {
-                while (elapsedTime < animTime)
+                while (elapsedTime < walkingTime)
                 {
-                    transform.position = Vector3.Lerp(transform.position, destination, elapsedTime / animTime);
+                    transform.position = Vector3.Lerp(transform.position, destination, elapsedTime / walkingTime);
 
                     elapsedTime += Time.deltaTime;
                     yield return null;
@@ -451,7 +454,6 @@ public class Player : MonoBehaviour
         if (mapManagerComponent.myMap[coordinate.getX(), coordinate.getY()].GetComponent<Tile>().effectiveConnections[2] == true)
         {
             float elapsedTime = 0;
-            float animTime = 0.2f;
 
             GameObject destinationTile = mapManagerComponent.myMap[coordinate.getX(), coordinate.getY() - 1];
             Vector3 destination = destinationTile.GetComponent<Transform>().position;
@@ -462,9 +464,9 @@ public class Player : MonoBehaviour
 
             if (!checkingCombat)
             {
-                while (elapsedTime < animTime)
+                while (elapsedTime < walkingTime)
                 {
-                    transform.position = Vector3.Lerp(transform.position, destination, elapsedTime / animTime);
+                    transform.position = Vector3.Lerp(transform.position, destination, elapsedTime / walkingTime);
 
                     elapsedTime += Time.deltaTime;
                     yield return null;
@@ -496,11 +498,14 @@ public class Player : MonoBehaviour
     {
         //Debug.Log("possible: " + MapManager.GetComponent<MapManager>().myMap[coordinate.getX(), coordinate.getY()].GetComponent<Tile>().possibleConnections[3]);
         moving = true;
+        if (transform.GetChild(0).transform.localScale.x > 0f)
+            transform.GetChild(0).transform.localScale = new Vector3(transform.GetChild(0).transform.localScale.x * -1,
+                                                                     transform.GetChild(0).transform.localScale.y,
+                                                                     transform.GetChild(0).transform.localScale.z);
 
         if (mapManagerComponent.myMap[coordinate.getX(), coordinate.getY()].GetComponent<Tile>().effectiveConnections[3] == true)
         {
             float elapsedTime = 0;
-            float animTime = 0.2f;
 
             GameObject destinationTile = mapManagerComponent.myMap[coordinate.getX() - 1, coordinate.getY()];
             Vector3 destination = destinationTile.GetComponent<Transform>().position;
@@ -511,9 +516,9 @@ public class Player : MonoBehaviour
 
             if (!checkingCombat)
             {
-                while (elapsedTime < animTime)
+                while (elapsedTime < walkingTime)
                 {
-                    transform.position = Vector3.Lerp(transform.position, destination, elapsedTime / animTime);
+                    transform.position = Vector3.Lerp(transform.position, destination, elapsedTime / walkingTime);
 
                     elapsedTime += Time.deltaTime;
                     yield return null;
