@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
+using DG.Tweening;
 
 public class MapManager : MonoBehaviour {
 
@@ -21,7 +22,7 @@ public class MapManager : MonoBehaviour {
 
     public int columns = 0;
     public int rows = 0;
-    public float tileSize = 13.65f;
+    public float tileSize;
     public Count curvesCount = new Count(4, 8);
     public Count straightCount = new Count(4, 8);
     public Count tCount = new Count(4, 8);
@@ -584,6 +585,7 @@ public class MapManager : MonoBehaviour {
             playerInstance.transform.SetParent(myMap[0, rows-1].transform);
             playerInstance.GetComponent<Player>().playerNbr = 1;
             myMapTiles[0, rows - 1].SetPlayerChild(playerInstance.GetComponent<Player>());
+
         }
         else if (playerNbr == 2)
         {
@@ -952,7 +954,7 @@ public class Coordinate
 {
     public int x, y;
 
-    float tileSize = 13.65f;
+    float tileSize = 10.0f;
 
     public Coordinate(int x, int y)
     {

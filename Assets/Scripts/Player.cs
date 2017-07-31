@@ -42,16 +42,16 @@ public class Player : MonoBehaviour
         switch (playerNbr)
         {
             case 1:
-                myTexture = (Texture2D)Resources.Load("PlayerProva/p1");
+                myTexture = (Texture2D)Resources.Load("PlayerProva/p5");
                 break;
             case 2:
-                myTexture = (Texture2D)Resources.Load("PlayerProva/p2");
+                myTexture = (Texture2D)Resources.Load("PlayerProva/p6");
                 break;
             case 3:
-                myTexture = (Texture2D)Resources.Load("PlayerProva/p3");
+                myTexture = (Texture2D)Resources.Load("PlayerProva/p7");
                 break;
             case 4:
-                myTexture = (Texture2D)Resources.Load("PlayerProva/p4");
+                myTexture = (Texture2D)Resources.Load("PlayerProva/p8");
                 break;
             default:
                 break;
