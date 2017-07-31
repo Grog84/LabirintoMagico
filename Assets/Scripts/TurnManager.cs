@@ -28,6 +28,7 @@ public class TurnManager : MonoBehaviour
     private Vector3 parkingPosition;
     private List<Trap> trapsToActivate = new List<Trap>();
     private bool trapHasTriggered = false, diamondOnTable = true, attackHasHappened = false, resolvingCombat = true;
+    private bool inAction;
     private bool canBeActivated = true;
     private bool canBeRotated = true;
 
@@ -424,6 +425,7 @@ public class TurnManager : MonoBehaviour
         {
             p.UnchildFromTile();
             p.TeleportAtCoordinates(movementStartingPosition);
+            inAction = false;
         }
 
         p.SwitchOffTiles();
@@ -433,6 +435,7 @@ public class TurnManager : MonoBehaviour
         StartCoroutine(ActivatePanel((int)panelSelection.basePanel));
         
         CameraStopFollowingPlayer();
+        inAction = false;
 
         if (ChecksForPassTurnCondition())
             PassTurn();
@@ -451,6 +454,7 @@ public class TurnManager : MonoBehaviour
         buttonsAnimator[1].SetBool("canTerraform", false);
         StartCoroutine(ActivatePanel((int)panelSelection.basePanel));
         mapManager.UpdateTilesZOrder();
+        inAction = false;
 
         if (ChecksForPassTurnCondition())
             PassTurn();
@@ -716,6 +720,7 @@ public class TurnManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.C) || Input.GetButtonDown("Fire2joy"))
         {
+            inAction = false;
             mapManager.SetInsertArrowsVisible(false);
             allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", false);
             StartCoroutine(ActivatePanel((int)panelSelection.terraformPanel));
@@ -767,6 +772,7 @@ public class TurnManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.C) || Input.GetButtonDown("Fire2joy"))
         {
+            inAction = false;
             rotationCursor.GetComponent<CursorMoving>().CursorDeactivate();
             rotationCursor.GetComponent<CursorMoving>().SetAtPosition(parkingPosition);
             StartCoroutine(ActivatePanel((int)panelSelection.terraformPanel));
@@ -868,7 +874,7 @@ public class TurnManager : MonoBehaviour
         selectedButton = 0;
         playerOrder = new int[4] { 1, 2, 3, 4 };
         buttonsAnimator = new Animator[numberOfButtons];
-        cursorIsActive = true;
+        inAction = false;
 
         panelParkingPosition = new Vector2(0, -100);
         panelActivePosition = new Vector2(0, 50);
@@ -906,6 +912,7 @@ public class TurnManager : MonoBehaviour
         {
             if ((Input.GetKeyDown(KeyCode.Z) || Input.GetButtonDown("Fire3joy")) && canMove) // Walk
             {
+                inAction = true;
                 StartCoroutine(ActivatePanel((int)panelSelection.walkPanel));
                 StartCoroutine(ActivateMovementPhase());
             }
@@ -936,11 +943,13 @@ public class TurnManager : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Z) || Input.GetButtonDown("Fire3joy")) // Slide
             {
+                inAction = true;
                 StartCoroutine(ActivatePanel((int)panelSelection.slidePanel));
                 StartCoroutine(ScrollTileInsertionSelection());
             }
             else if (Input.GetKeyDown(KeyCode.X) || Input.GetButtonDown("Fire1joy")) // Rotation
             {
+                inAction = true;
                 StartCoroutine(ActivatePanel((int)panelSelection.rotatePanel));
                 StartCoroutine(ActivateRotationCursor());
             }
@@ -978,7 +987,7 @@ public class TurnManager : MonoBehaviour
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("PassTurn"))
+        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("PassTurn")) && !inAction)
         {
             PassTurn();
         }
