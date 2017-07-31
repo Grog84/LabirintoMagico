@@ -775,13 +775,13 @@ public class TurnManager : MonoBehaviour
         {
             canTerraform = false;
             rotationCursor.GetComponent<CursorMoving>().CursorDeactivate();
-            yield return StartCoroutine(ActivateRotation(1));
+            yield return StartCoroutine(ActivateRotation(-1));
         }
         else if (Input.GetKeyDown(KeyCode.X) || Input.GetButtonDown("Fire1joy"))
         {
             canTerraform = false;
             rotationCursor.GetComponent<CursorMoving>().CursorDeactivate();
-            yield return StartCoroutine(ActivateRotation(-1));
+            yield return StartCoroutine(ActivateRotation(1));
         }
 
         yield return null;
