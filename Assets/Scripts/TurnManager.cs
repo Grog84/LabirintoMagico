@@ -185,6 +185,15 @@ public class TurnManager : MonoBehaviour
         StartCoroutine(BackToMenu());
     }
 
+    public bool ChecksForPassTurnCondition()
+    {
+        if (!canMove && !canTerraform && !canUseCrystal)
+            return true;
+        else
+            return false;
+    }
+
+
     // // UI
 
     // Panel Selection
@@ -423,8 +432,10 @@ public class TurnManager : MonoBehaviour
         makePlayersChild();
         StartCoroutine(ActivatePanel((int)panelSelection.basePanel));
         
-
         CameraStopFollowingPlayer();
+
+        if (ChecksForPassTurnCondition())
+            PassTurn();
 
         yield return null;
     }
@@ -440,6 +451,10 @@ public class TurnManager : MonoBehaviour
         buttonsAnimator[1].SetBool("canTerraform", false);
         StartCoroutine(ActivatePanel((int)panelSelection.basePanel));
         mapManager.UpdateTilesZOrder();
+
+        if (ChecksForPassTurnCondition())
+            PassTurn();
+
         yield return null;
     }
 
@@ -533,6 +548,7 @@ public class TurnManager : MonoBehaviour
         }
 
         arrow.GetComponent<Animator>().SetBool("isActive", false);
+        mapManager.SetInsertArrowsVisible(false);
         StartCoroutine(EndTerraform());
 
         yield return null;
@@ -540,6 +556,7 @@ public class TurnManager : MonoBehaviour
 
     IEnumerator ScrollTileInsertionSelection()
     {
+        mapManager.SetInsertArrowsVisible(true);
         int currentSelection = 39; // Starts in the Top Left Side
         allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", true);
 
@@ -699,6 +716,7 @@ public class TurnManager : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.C) || Input.GetButtonDown("Fire2joy"))
         {
+            mapManager.SetInsertArrowsVisible(false);
             allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", false);
             StartCoroutine(ActivatePanel((int)panelSelection.terraformPanel));
         }

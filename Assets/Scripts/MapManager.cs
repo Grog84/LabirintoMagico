@@ -40,6 +40,7 @@ public class MapManager : MonoBehaviour {
     private List<Vector3> gridPositions = new List<Vector3>();
     private Vector3 finalShift;
     private GameObject[] allInsertArrows;
+    private SpriteRenderer[] allInsertArrowsRenderer;
     public GameObject myDiamondInstance;
     public Coordinate diamondCoords;
 
@@ -74,45 +75,69 @@ public class MapManager : MonoBehaviour {
     public void CreateInsertArrows()
     {
         allInsertArrows = new GameObject[2*columns + 2*rows];
+        allInsertArrowsRenderer = new SpriteRenderer[2 * columns + 2 * rows];
         int indx = 0;
+        float arrowZOrder = -2f;
         GameObject arrowInstance;
 
         for (int i = 0; i < columns; i++) // bot arrows
         {
-            arrowInstance = Instantiate(insertArrow, new Vector3((i * tileSize), -tileSize, 0f), Quaternion.identity);
+            arrowInstance = Instantiate(insertArrow, new Vector3((i * tileSize), -tileSize, arrowZOrder), Quaternion.identity);
             arrowInstance.transform.Rotate(Vector3.forward * 90);
             arrowInstance.GetComponent<InsertArrow>().setPointedCoords(i, i, 0, columns-1);
             arrowInstance.transform.SetParent(transform);
             allInsertArrows[i] = arrowInstance;
+            allInsertArrowsRenderer[i] = arrowInstance.GetComponent<SpriteRenderer>();
+            allInsertArrowsRenderer[i].color = Color.clear;
             indx++;
         }
         for (int i = 0; i < rows; i++) // right arrows
         {
-            arrowInstance = Instantiate(insertArrow, new Vector3(columns * tileSize, (i * tileSize), 0f), Quaternion.identity);
+            arrowInstance = Instantiate(insertArrow, new Vector3(columns * tileSize, (i * tileSize), arrowZOrder), Quaternion.identity);
             arrowInstance.transform.Rotate(Vector3.forward * 180);
             arrowInstance.GetComponent<InsertArrow>().setPointedCoords(columns-1, 0, i, i);
             arrowInstance.transform.SetParent(transform);
             allInsertArrows[i+columns] = arrowInstance;
+            allInsertArrowsRenderer[i + columns] = arrowInstance.GetComponent<SpriteRenderer>();
+            allInsertArrowsRenderer[i + columns].color = Color.clear;
             indx++;
         }
         for (int i = 0; i < columns; i++) // top arrows
         {
-            arrowInstance = Instantiate(insertArrow, new Vector3((columns-1) * tileSize - ((i * tileSize)), rows * tileSize , 0f), Quaternion.identity);
+            arrowInstance = Instantiate(insertArrow, new Vector3((columns-1) * tileSize - ((i * tileSize)), rows * tileSize , arrowZOrder), Quaternion.identity);
             arrowInstance.transform.Rotate(Vector3.forward * -90);
             arrowInstance.GetComponent<InsertArrow>().setPointedCoords(columns - 1 - i, columns - 1 - i, rows-1, 0);
             arrowInstance.transform.SetParent(transform);
             allInsertArrows[i+(columns + rows)] = arrowInstance;
+            allInsertArrowsRenderer[i + (columns + rows)] = arrowInstance.GetComponent<SpriteRenderer>();
+            allInsertArrowsRenderer[i + (columns + rows)].color = Color.clear;
             indx++;
         }
         for (int i = 0; i < rows; i++) // left arrows
         {
-            arrowInstance = Instantiate(insertArrow, new Vector3(-tileSize, (rows-1) * tileSize - ((i * tileSize) ), 0f), Quaternion.identity);
+            arrowInstance = Instantiate(insertArrow, new Vector3(-tileSize, (rows-1) * tileSize - ((i * tileSize) ), arrowZOrder), Quaternion.identity);
             arrowInstance.GetComponent<InsertArrow>().setPointedCoords(0, columns-1,rows-1- i, rows-1-i);
             arrowInstance.transform.SetParent(transform);
             allInsertArrows[i+ (2*columns + rows)] = arrowInstance;
+            allInsertArrowsRenderer[i + (2 * columns + rows)] = arrowInstance.GetComponent<SpriteRenderer>();
+            allInsertArrowsRenderer[i + (2 * columns + rows)].color = Color.clear;
             indx++;
         }
 
+    }
+
+    public void SetInsertArrowsVisible(bool status)
+    {
+        if (status)
+            foreach (var arrowRender in allInsertArrowsRenderer)
+            {
+                arrowRender.color = Color.white;
+            }
+        else
+            foreach (var arrowRender in allInsertArrowsRenderer)
+            {
+                arrowRender.color = Color.clear;
+            }
     }
 
     int[] GenerateInitialTiles()
