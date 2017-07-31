@@ -171,11 +171,11 @@ public class CursorMoving : MonoBehaviour {
             {
                 StartCoroutine(MoveLeft());
             }
-            if ((Input.GetKeyDown(KeyCode.W) || Input.GetAxis("VerticalJoy") == -1) && coordinate.getY() < mapManagerComponent.rows - 1)
+            if ((Input.GetKeyDown(KeyCode.W) || Input.GetAxis("VerticalJoy") == 1) && coordinate.getY() < mapManagerComponent.rows - 1)
             {
                 StartCoroutine(MoveUp());
             }
-            if ((Input.GetKeyDown(KeyCode.S) || Input.GetAxis("VerticalJoy") == 1) && coordinate.getY() >= 1)
+            if ((Input.GetKeyDown(KeyCode.S) || Input.GetAxis("VerticalJoy") == -1) && coordinate.getY() >= 1)
             {
                 StartCoroutine(MoveDown());
             }

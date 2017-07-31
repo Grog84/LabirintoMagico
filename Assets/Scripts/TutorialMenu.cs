@@ -24,10 +24,10 @@ public class TutorialMenu : MonoBehaviour {
 	
 	void Update ()
     {
-        if (transform.position.z > (destination - 0.1f) && transform.position.z < (destination + 0.1f) && move)
+        if (transform.position.y > (destination - 0.1f) && transform.position.y < (destination + 0.1f) && move)
         {
             Vector3 newPos = transform.position;
-            newPos.z = destination;
+            newPos.y = destination;
             transform.position.Set(newPos.x, newPos.y, newPos.z);
             move = false;
         }
@@ -37,10 +37,10 @@ public class TutorialMenu : MonoBehaviour {
 
         if ((Input.GetKeyDown(KeyCode.W) || Input.GetAxis("VerticalJoy") == 1) && !move)
         {
-            if (transform.position.y >= 0)
+            if (transform.position.y > -7)
             {
                 move = true;
-                destination = transform.position.z + 7.5f;
+                destination = transform.position.y - 7.5f;
                 selezione--;
                 transform.DOMoveY(transform.position.y - 7.5f, 1f);
                 for (int i = 0; i < 3; i++)
@@ -65,10 +65,10 @@ public class TutorialMenu : MonoBehaviour {
 
         if ((Input.GetKeyDown(KeyCode.S) || Input.GetAxis("VerticalJoy") == -1) && !move)
         {
-            if (transform.position.y <= 0)
+            if (transform.position.y < 7)
             {
                 move = true;
-                destination = transform.position.z - 7.5f;
+                destination = transform.position.y + 7.5f;
                 selezione++;
                 transform.DOMoveY(transform.position.y + 7.5f, 1f);
                 for (int i = 0; i < 3; i++)

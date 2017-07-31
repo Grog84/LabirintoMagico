@@ -596,11 +596,11 @@ public class Player : MonoBehaviour
             {
                 StartCoroutine(MoveLeft());
             }
-            if (Input.GetKeyDown(KeyCode.W) || Input.GetAxis("VerticalJoy") == -1)
+            if (Input.GetKeyDown(KeyCode.W) || Input.GetAxis("VerticalJoy") == 1)
             {
                 StartCoroutine(MoveUp());
             }
-            if (Input.GetKeyDown(KeyCode.S) || Input.GetAxis("VerticalJoy") == 1)
+            if (Input.GetKeyDown(KeyCode.S) || Input.GetAxis("VerticalJoy") == -1)
             {
                 StartCoroutine(MoveDown());
             }

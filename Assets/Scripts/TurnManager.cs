@@ -635,7 +635,7 @@ public class TurnManager : MonoBehaviour
                 }
             }
 
-            else if ((Input.GetKey(KeyCode.W) || Input.GetAxis("VerticalJoy") == -1))
+            else if ((Input.GetKey(KeyCode.W) || Input.GetAxis("VerticalJoy") == 1))
             {
                 //canBeActivated = false;
                 if (currentSelection >= 12 && currentSelection <= 25)
@@ -669,7 +669,7 @@ public class TurnManager : MonoBehaviour
                 }
             }
 
-            else if ((Input.GetKey(KeyCode.S) || Input.GetAxis("VerticalJoy") == 1))
+            else if ((Input.GetKey(KeyCode.S) || Input.GetAxis("VerticalJoy") == -1))
             {
                 //canBeActivated = false;
                 if (currentSelection >= 13 && currentSelection <= 26)

@@ -67,7 +67,7 @@ public class MenuManager : MonoBehaviour
             moving = true;
             destination = (transform.rotation.eulerAngles.z + 90)%360;
             transform.DOLocalRotate(new Vector3(0, 0, 90), 1, RotateMode.LocalAxisAdd);
-            camera.transform.DOShakePosition(0.8F, 0.7f);
+            camera.transform.DOShakePosition(0.6F, 0.7f);
             if (selezione < 4) selezione++;
             else selezione = 1;
 
@@ -79,7 +79,7 @@ public class MenuManager : MonoBehaviour
             moving = true;
             destination = (360+transform.rotation.eulerAngles.z - 90)%360;
             transform.DOLocalRotate(new Vector3(0, 0, -90), 1, RotateMode.LocalAxisAdd);
-            camera.transform.DOShakePosition(0.8F, 0.7f);
+            camera.transform.DOShakePosition(0.6F, 0.7f);
             if (selezione > 1) selezione--;
             else selezione = 4;
 
