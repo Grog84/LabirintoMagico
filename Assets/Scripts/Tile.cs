@@ -9,7 +9,7 @@ public class Tile : MonoBehaviour {
     public SpriteRenderer myRenderer;
     public Texture2D myTexture;
     public Coordinate myCoord;
-    public GameObject trap;
+    public GameObject trap, blackHole;
     public float playerOffset;
 
     public bool canBeMoved = true;
@@ -123,6 +123,21 @@ public class Tile : MonoBehaviour {
         mySprite = Sprite.Create(myTexture, new Rect(0, 0, myTexture.width, myTexture.height), new Vector2(0.5f, 0.66f));
         myRenderer.sprite = mySprite;
         myCollider.size = new Vector2(myTexture.width/100f, myTexture.height/100f);
+    }
+
+    public IEnumerator WaitForBlackholeAnim(GameObject myBlackHole)
+    {
+        Animator blackHoleAnimator = myBlackHole.GetComponent<Animator>();
+        do
+        {
+            yield return null;
+        } while (blackHoleAnimator.GetCurrentAnimatorStateInfo(0).IsName("blackHole"));
+    }
+
+    public IEnumerator BlackHole()
+    {
+        GameObject myBlackHole = Instantiate(blackHole, transform);
+        yield return StartCoroutine(WaitForBlackholeAnim(myBlackHole));
     }
 
     // Player Child

@@ -44,10 +44,47 @@ public class Player : MonoBehaviour
     {
         mySprite = playerSO.GetSprite(playerNbr);
         myRenderer.sprite = mySprite;
-        transform.GetChild(0).GetComponent<Animator>().runtimeAnimatorController = playerSO.GetAnimator(playerNbr);
+        myAnimator = transform.GetChild(0).GetComponent<Animator>();
+        myAnimator.runtimeAnimatorController = playerSO.GetAnimator(playerNbr);
 
         //myCollider.size = new Vector2(myTexture.width/100f, myTexture.height/100f);
 
+    }
+
+    public void StartWalking()
+    {
+        myAnimator.SetBool("isWalking", true);
+    }
+
+    public void StopWalking()
+    {
+        myAnimator.SetBool("isWalking", false);
+    }
+
+    public void StartAnimaitionAttack()
+    {
+        myAnimator.SetBool("isAttacking", true);
+    }
+
+    public IEnumerator StopAnimaitionAttack()
+    {
+        myAnimator.SetBool("isAttacking", false);
+        myAnimator.SetBool("isAttackingEnding", true);
+        yield return StartCoroutine(WaitForAnimation("attack_2"));
+        myAnimator.SetBool("isAttackingEnding", false);
+    }
+
+    private IEnumerator WaitForAnimation(string animationName)
+    {
+        do
+        {
+            yield return null;
+        } while (myAnimator.GetCurrentAnimatorStateInfo(0).IsName(animationName));
+    }
+
+    private IEnumerator CastBlackHole(Tile tile)
+    {
+        yield return tile.BlackHole();
     }
 
     // Initial Assignements
@@ -222,6 +259,11 @@ public class Player : MonoBehaviour
  
     public IEnumerator AttackPlayerOnTile(Tile tile)
     {
+        StartAnimaitionAttack();
+        yield return StartCoroutine(WaitForAnimation("attack_1"));
+        yield return StartCoroutine(CastBlackHole(tile));
+        yield return StartCoroutine(StopAnimaitionAttack());
+
         Player otherPlayer = tile.gameObject.transform.GetComponentInChildren<Player>();
         turnManager.GetComponent<TurnManager>().DropDiamond(otherPlayer);
         otherPlayer.ResetToStartingPosition();
@@ -231,6 +273,7 @@ public class Player : MonoBehaviour
 
         Vector3 destination = tile.GetComponent<Transform>().position;
         destination.z--;
+        StartWalking();
 
         while (elapsedTime < animTime)
         {
@@ -240,6 +283,7 @@ public class Player : MonoBehaviour
             yield return null;
         }
 
+        StopWalking();
         turnManager.GetComponent<TurnManager>().CollectDiamond(this);
         turnManager.GetComponent<TurnManager>().SetAttackHasHappened(true);
         checkingCombat = false;
@@ -348,6 +392,8 @@ public class Player : MonoBehaviour
         //Debug.Log("possible: " + MapManager.GetComponent<MapManager>().myMap[coordinate.getX(), coordinate.getY()].GetComponent<Tile>().possibleConnections[1]);
         //Debug.Log("effective: " + MapManager.GetComponent<MapManager>().myMap[coordinate.getX(), coordinate.getY()].GetComponent<Tile>().effectiveConnections[1]);
         moving = true;
+        StartWalking();
+
         if (transform.GetChild(0).transform.localScale.x < 0f)
             transform.GetChild(0).transform.localScale = new Vector3(transform.GetChild(0).transform.localScale.x * -1,
                                                                      transform.GetChild(0).transform.localScale.y,
@@ -393,6 +439,7 @@ public class Player : MonoBehaviour
 
         //yield return new WaitForSeconds(0.1f);
 
+        StopWalking();
         moving = false;
     }
 
@@ -400,6 +447,7 @@ public class Player : MonoBehaviour
     {
         //Debug.Log("possible: " + MapManager.GetComponent<MapManager>().myMap[coordinate.getX(), coordinate.getY()].GetComponent<Tile>().possibleConnections[0]);
         moving = true;
+        StartWalking();
 
         if (mapManagerComponent.myMap[coordinate.getX(), coordinate.getY()].GetComponent<Tile>().effectiveConnections[0] == true)
         {
@@ -442,6 +490,7 @@ public class Player : MonoBehaviour
 
         //yield return new WaitForSeconds(0.1f);
 
+        StopWalking();
         moving = false;
     }
 
@@ -450,6 +499,7 @@ public class Player : MonoBehaviour
         //Debug.Log("effective:" + MapManager.GetComponent<MapManager>().myMap[coordinate.getX(), coordinate.getY()].GetComponent<Tile>().effectiveConnections[2]);
         //Debug.Log("possible: " + MapManager.GetComponent<MapManager>().myMap[coordinate.getX(), coordinate.getY()].GetComponent<Tile>().possibleConnections[2]);
         moving = true;
+        StartWalking();
 
         if (mapManagerComponent.myMap[coordinate.getX(), coordinate.getY()].GetComponent<Tile>().effectiveConnections[2] == true)
         {
@@ -491,6 +541,7 @@ public class Player : MonoBehaviour
 
         //yield return new WaitForSeconds(0.1f);
 
+        StopWalking();
         moving = false;
     }
 
@@ -498,6 +549,8 @@ public class Player : MonoBehaviour
     {
         //Debug.Log("possible: " + MapManager.GetComponent<MapManager>().myMap[coordinate.getX(), coordinate.getY()].GetComponent<Tile>().possibleConnections[3]);
         moving = true;
+        StartWalking();
+
         if (transform.GetChild(0).transform.localScale.x > 0f)
             transform.GetChild(0).transform.localScale = new Vector3(transform.GetChild(0).transform.localScale.x * -1,
                                                                      transform.GetChild(0).transform.localScale.y,
@@ -543,6 +596,7 @@ public class Player : MonoBehaviour
 
         //yield return new WaitForSeconds(0.1f);
 
+        StopWalking();
         moving = false;
     }
 
