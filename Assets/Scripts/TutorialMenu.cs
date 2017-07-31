@@ -29,31 +29,33 @@ public class TutorialMenu : MonoBehaviour {
             Vector3 newPos = transform.position;
             newPos.y = destination;
             transform.position.Set(newPos.x, newPos.y, newPos.z);
-            move = false;
+            //move = false;
         }
+
+        if (transform.position.y == destination) move = false;
 
         //if (transform.position.y % 7.5 == 0 || transform.position.y % 7.5 == 7.5) move = false;
         //else move = true;
 
-        if ((Input.GetKeyDown(KeyCode.W) || Input.GetAxis("VerticalJoy") == 1) && !move)
+            if ((Input.GetKeyDown(KeyCode.W) || Input.GetAxis("VerticalJoy") == 1) && !move)
         {
-            if (transform.position.y > -7)
+            if (transform.position.y > -4)
             {
                 move = true;
-                destination = transform.position.y - 7.5f;
+                destination = transform.position.y - 1.235f;
                 selezione--;
-                transform.DOMoveY(transform.position.y - 7.5f, 1f);
+                transform.DOMoveY(transform.position.y - 1.235f, 1f);
                 for (int i = 0; i < 3; i++)
                 {
                     particleInst = Instantiate(particle, Vector3.zero, transform.rotation);
                     particleInst.transform.SetParent(transform);
-                    particleInst.transform.localPosition = new Vector3(partRight, Random.Range(-25, +25), 0);
+                    particleInst.transform.localPosition = new Vector3(partRight, Random.Range(-10, +10), 0);
                 }
                 for (int i = 0; i < 3; i++)
                 {
                     particleInst = Instantiate(particle, Vector3.zero, transform.rotation);
                     particleInst.transform.SetParent(transform);
-                    particleInst.transform.localPosition = new Vector3(partLeft, Random.Range(-25, +25), 0);
+                    particleInst.transform.localPosition = new Vector3(partLeft, Random.Range(-10, +10), 0);
                 }
                 
                 camera.transform.DOShakePosition(0.2f, 0.6f);
@@ -65,23 +67,23 @@ public class TutorialMenu : MonoBehaviour {
 
         if ((Input.GetKeyDown(KeyCode.S) || Input.GetAxis("VerticalJoy") == -1) && !move)
         {
-            if (transform.position.y < 7)
+            if (transform.position.y < 4)
             {
                 move = true;
-                destination = transform.position.y + 7.5f;
+                destination = transform.position.y + 1.235f;
                 selezione++;
-                transform.DOMoveY(transform.position.y + 7.5f, 1f);
+                transform.DOMoveY(transform.position.y + 1.235f, 1f);
                 for (int i = 0; i < 3; i++)
                 {
                     particleInst = Instantiate(particle, Vector3.zero, transform.rotation);
                     particleInst.transform.SetParent(transform);
-                    particleInst.transform.localPosition = new Vector3(partRight, Random.Range(-25, +25), 0);
+                    particleInst.transform.localPosition = new Vector3(partRight, Random.Range(-10, +10), 0);
                 }
                 for (int i = 0; i < 3; i++)
                 {
                     particleInst = Instantiate(particle, Vector3.zero, transform.rotation);
                     particleInst.transform.SetParent(transform);
-                    particleInst.transform.localPosition = new Vector3(partLeft, Random.Range(-25, +25), 0);
+                    particleInst.transform.localPosition = new Vector3(partLeft, Random.Range(-10, +10), 0);
                 }
 
                 camera.transform.DOShakePosition(0.2f, 0.6f);

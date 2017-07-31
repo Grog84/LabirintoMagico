@@ -30,6 +30,7 @@ public class Connection : MonoBehaviour {
 
         if ((Input.GetKey(KeyCode.Space) || Input.GetButtonDown("Fire1joy")) && searching >= 5)
         {
+            text.SetActive(false);
             StartCoroutine(fade.FadeOut("_Scenes/scenaprova"));
         }
     }
