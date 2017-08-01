@@ -279,7 +279,6 @@ public class Player : MonoBehaviour
         yield return StartCoroutine(WaitForAnimation("attack_1"));
         yield return StartCoroutine(CastBlackHole(tile));
         yield return StartCoroutine(StopAnimaitionAttack());
-        Debug.Log("Stop Animation");
 
         Player otherPlayer = tile.gameObject.transform.GetComponentInChildren<Player>();
         turnManager.GetComponent<TurnManager>().DropDiamond(otherPlayer);
@@ -309,6 +308,14 @@ public class Player : MonoBehaviour
 
     public IEnumerator AttackPlayerOnTileOnSlide(Player otherPlayer)
     {
+        Tile tile = otherPlayer.GetComponentInParent<Tile>();
+        StartAnimationAttack();
+        yield return null;
+
+        yield return StartCoroutine(WaitForAnimation("attack_1"));
+        yield return StartCoroutine(CastBlackHole(tile));
+        yield return StartCoroutine(StopAnimaitionAttack());
+
         turnManager.GetComponent<TurnManager>().DropDiamond(otherPlayer);
         otherPlayer.ResetToStartingPosition();
 
