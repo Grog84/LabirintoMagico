@@ -40,6 +40,13 @@ public class Player : MonoBehaviour
 
     // Animation
 
+    public void InvertTransformX()
+    {
+        transform.GetChild(0).transform.localScale = new Vector3(transform.GetChild(0).transform.localScale.x * -1,
+                                                                     transform.GetChild(0).transform.localScale.y,
+                                                                     transform.GetChild(0).transform.localScale.z);
+    }
+
     public void setPlayerSprite()
     {
         mySprite = playerSO.GetSprite(playerNbr);
@@ -395,9 +402,7 @@ public class Player : MonoBehaviour
         StartWalking();
 
         if (transform.GetChild(0).transform.localScale.x < 0f)
-            transform.GetChild(0).transform.localScale = new Vector3(transform.GetChild(0).transform.localScale.x * -1,
-                                                                     transform.GetChild(0).transform.localScale.y,
-                                                                     transform.GetChild(0).transform.localScale.z);
+            InvertTransformX();
 
         if (mapManagerComponent.myMap[coordinate.getX(), coordinate.getY()].GetComponent<Tile>().effectiveConnections[1] == true)
         {
@@ -552,9 +557,7 @@ public class Player : MonoBehaviour
         StartWalking();
 
         if (transform.GetChild(0).transform.localScale.x > 0f)
-            transform.GetChild(0).transform.localScale = new Vector3(transform.GetChild(0).transform.localScale.x * -1,
-                                                                     transform.GetChild(0).transform.localScale.y,
-                                                                     transform.GetChild(0).transform.localScale.z);
+            InvertTransformX();
 
         if (mapManagerComponent.myMap[coordinate.getX(), coordinate.getY()].GetComponent<Tile>().effectiveConnections[3] == true)
         {

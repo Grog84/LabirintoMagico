@@ -176,10 +176,12 @@ public class MapManager : MonoBehaviour {
 
         for (int i = 0; i < toInstantiate.Length; i++)
         {
+            InstantiateStartingPos(i + 1);
+
             if (i == 0)
             {
-                InstantiateTile(toInstantiate[i], new Coordinate(0, 0), false);
-                
+                // InstantiateTile(toInstantiate[i], new Coordinate(0, 0), false);
+
                 while (true)
                 {
                     myTile = noBottom[Random.Range(0, 4)];
@@ -207,7 +209,7 @@ public class MapManager : MonoBehaviour {
             }
             else if (i == 1)
             {
-                InstantiateTile(toInstantiate[i], new Coordinate(columns - 1, 0), false);
+                //InstantiateTile(toInstantiate[i], new Coordinate(columns - 1, 0), false);
 
                 while (true)
                 {
@@ -235,7 +237,7 @@ public class MapManager : MonoBehaviour {
             }
             else if (i == 2)
             {
-                InstantiateTile(toInstantiate[i], new Coordinate(0, rows - 1), false);
+                //InstantiateTile(toInstantiate[i], new Coordinate(0, rows - 1), false);
 
                 while (true)
                 {
@@ -264,7 +266,7 @@ public class MapManager : MonoBehaviour {
             }
             else
             {
-                InstantiateTile(toInstantiate[i], new Coordinate(columns - 1, rows - 1), false);
+                //InstantiateTile(toInstantiate[i], new Coordinate(columns - 1, rows - 1), false);
 
                 while (true)
                 {
@@ -517,6 +519,69 @@ public class MapManager : MonoBehaviour {
 
     //Objects Instance
 
+    void InstantiateStartingPos(int playerNbr)
+    {
+        Coordinate coordinate = null;
+        Tile myTileComponent = null;
+        GameObject tileInstance = null;
+
+        if (playerNbr == 1)
+        {
+            coordinate = new Coordinate(0, rows-1);
+            tileInstance = Instantiate(tile, coordinate.getVect3WithZ(), Quaternion.identity);
+            tileInstance.transform.SetParent(transform);
+
+            myTileComponent = tileInstance.GetComponent<Tile>();
+
+            myTileComponent.myTexture = (Texture2D)Resources.Load("Tiles/tile_spawn_1P");
+            myTileComponent.SetPossibleConnections(0);
+
+        }
+        else if (playerNbr == 2)
+        {
+            coordinate = new Coordinate(columns-1, rows - 1);
+            tileInstance = Instantiate(tile, coordinate.getVect3WithZ(), Quaternion.identity);
+            tileInstance.transform.SetParent(transform);
+
+            myTileComponent = tileInstance.GetComponent<Tile>();
+
+            myTileComponent.myTexture = (Texture2D)Resources.Load("Tiles/tile_spawn_2P");
+            myTileComponent.SetPossibleConnections(1);
+        }
+        else if (playerNbr == 3)
+        {
+            coordinate = new Coordinate(0, 0);
+            tileInstance = Instantiate(tile, coordinate.getVect3WithZ(), Quaternion.identity);
+            tileInstance.transform.SetParent(transform);
+
+            myTileComponent = tileInstance.GetComponent<Tile>();
+
+            myTileComponent.myTexture = (Texture2D)Resources.Load("Tiles/tile_spawn_3P");
+            myTileComponent.SetPossibleConnections(2);
+        }
+        else
+        {
+            coordinate = new Coordinate(columns-1, 0);
+            tileInstance = Instantiate(tile, coordinate.getVect3WithZ(), Quaternion.identity);
+            tileInstance.transform.SetParent(transform);
+
+            myTileComponent = tileInstance.GetComponent<Tile>();
+
+            myTileComponent.myTexture = (Texture2D)Resources.Load("Tiles/tile_spawn_4P");
+            myTileComponent.SetPossibleConnections(3);
+        }
+
+        myTileComponent.mySprite = Sprite.Create(myTileComponent.myTexture,
+            new Rect(0, 0, myTileComponent.myTexture.width, myTileComponent.myTexture.height),
+            new Vector2(0.5f, 0.66f));
+        myTileComponent.myRenderer.sprite = myTileComponent.mySprite;
+        myTileComponent.canBeMoved = false;
+        myTileComponent.myCoord = coordinate;
+        myTileComponent.SetPlayerChild();
+        myMap[coordinate.getX(), coordinate.getY()] = tileInstance;
+        myMapTiles[coordinate.getX(), coordinate.getY()] = tileInstance.GetComponent<Tile>();
+    }
+
     void InstantiateTile(int tileType, Coordinate coordinate, bool canBeMoved = true)
     {
         GameObject tileInstance = Instantiate(tile, coordinate.getVect3WithZ(), Quaternion.identity);
@@ -594,6 +659,7 @@ public class MapManager : MonoBehaviour {
             playerInstance.transform.SetParent(myMap[columns - 1, rows - 1].transform);
             playerInstance.GetComponent<Player>().playerNbr = 2;
             myMapTiles[columns - 1, rows - 1].SetPlayerChild(playerInstance.GetComponent<Player>());
+            playerInstance.GetComponent<Player>().InvertTransformX();
         }
         else if (playerNbr == 3)
         {
@@ -610,6 +676,7 @@ public class MapManager : MonoBehaviour {
             playerInstance.transform.SetParent(myMap[columns - 1, 0].transform);
             playerInstance.GetComponent<Player>().playerNbr = 4;
             myMapTiles[columns - 1, 0].SetPlayerChild(playerInstance.GetComponent<Player>());
+            playerInstance.GetComponent<Player>().InvertTransformX();
         }
 
         allPlayers[playerNbr-1] = playerInstance;

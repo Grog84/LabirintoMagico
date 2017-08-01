@@ -370,6 +370,7 @@ public class Tile : MonoBehaviour {
         myTrapComponent = myTrap.GetComponent<Trap>();
         myTrapComponent.SetPlayerDropping(playerNbr);
         myTrapComponent.SetCoordiantes(myCoord);
+        isTrapped = true;
         // isTrapped = true; true whena active?
     }
 
