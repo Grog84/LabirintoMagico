@@ -22,6 +22,8 @@ public class Tile : MonoBehaviour {
     public int childPlayerNbr;
     private Player childPlayerComponent;
 
+    private bool blackHolePlaying = false;
+
     private Vector3 playerPosition;  // check whether it is actually needed or not
 
     enum tileTypes // B - bottom, R - right, T - top, L - left, V - vertical, H - horizontal
@@ -31,6 +33,11 @@ public class Tile : MonoBehaviour {
     };
 
     // Animation
+
+    public void SetBlackHolePlaying(bool status)
+    {
+        blackHolePlaying = status;
+    }
 
     public void SetSprite(int type)
     {
@@ -127,17 +134,26 @@ public class Tile : MonoBehaviour {
 
     public IEnumerator WaitForBlackholeAnim(GameObject myBlackHole)
     {
+        Debug.Log("Started Wait Tile Black Hole");
         Animator blackHoleAnimator = myBlackHole.GetComponent<Animator>();
         do
         {
             yield return null;
-        } while (blackHoleAnimator.GetCurrentAnimatorStateInfo(0).IsName("blackHole"));
+        } while (blackHolePlaying);
+        Debug.Log("Finished Wait Tile Black Hole");
+        Destroy(myBlackHole);
+        yield return null;
     }
 
     public IEnumerator BlackHole()
     {
+        Debug.Log("Started Tile Black Hole");
+        SetBlackHolePlaying(true);
         GameObject myBlackHole = Instantiate(blackHole, transform);
+        myBlackHole.GetComponent<blackHole>().AssignTile(this);
         yield return StartCoroutine(WaitForBlackholeAnim(myBlackHole));
+        yield return null;
+        Debug.Log("Finished Tile Black Hole");
     }
 
     // Player Child

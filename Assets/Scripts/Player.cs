@@ -77,21 +77,28 @@ public class Player : MonoBehaviour
     {
         myAnimator.SetBool("isAttacking", false);
         myAnimator.SetBool("isAttackingEnding", true);
+        yield return null;
         yield return StartCoroutine(WaitForAnimation("attack_2"));
         myAnimator.SetBool("isAttackingEnding", false);
     }
 
     private IEnumerator WaitForAnimation(string animationName)
     {
-        do
-        {
-            yield return null;
-        } while (myAnimator.GetCurrentAnimatorStateInfo(0).IsName(animationName));
+        Debug.Log("Started waiting for attack animation");
+        //do
+        //{
+        //    yield return null;
+        //} while (myAnimator.GetCurrentAnimatorStateInfo(0).IsName(animationName));
+        yield return new WaitForSeconds(0.1f);
+        Debug.Log("Finished waiting for attack animation");
     }
 
     private IEnumerator CastBlackHole(Tile tile)
     {
+        Debug.Log("Started Cast Black Hole");
         yield return tile.BlackHole();
+        yield return null;
+        Debug.Log("Finished Cast Black Hole");
     }
 
     // Initial Assignements
@@ -267,9 +274,12 @@ public class Player : MonoBehaviour
     public IEnumerator AttackPlayerOnTile(Tile tile)
     {
         StartAnimationAttack();
+        yield return null;
+
         yield return StartCoroutine(WaitForAnimation("attack_1"));
         yield return StartCoroutine(CastBlackHole(tile));
         yield return StartCoroutine(StopAnimaitionAttack());
+        Debug.Log("Stop Animation");
 
         Player otherPlayer = tile.gameObject.transform.GetComponentInChildren<Player>();
         turnManager.GetComponent<TurnManager>().DropDiamond(otherPlayer);
@@ -399,7 +409,6 @@ public class Player : MonoBehaviour
         //Debug.Log("possible: " + MapManager.GetComponent<MapManager>().myMap[coordinate.getX(), coordinate.getY()].GetComponent<Tile>().possibleConnections[1]);
         //Debug.Log("effective: " + MapManager.GetComponent<MapManager>().myMap[coordinate.getX(), coordinate.getY()].GetComponent<Tile>().effectiveConnections[1]);
         moving = true;
-        StartWalking();
 
         if (transform.GetChild(0).transform.localScale.x < 0f)
             InvertTransformX();
@@ -417,6 +426,7 @@ public class Player : MonoBehaviour
 
             if (!checkingCombat)
             {
+                StartWalking();
                 while (elapsedTime < walkingTime)
                 {
                     transform.position = Vector3.Lerp(transform.position, destination, elapsedTime / walkingTime);
@@ -452,7 +462,6 @@ public class Player : MonoBehaviour
     {
         //Debug.Log("possible: " + MapManager.GetComponent<MapManager>().myMap[coordinate.getX(), coordinate.getY()].GetComponent<Tile>().possibleConnections[0]);
         moving = true;
-        StartWalking();
 
         if (mapManagerComponent.myMap[coordinate.getX(), coordinate.getY()].GetComponent<Tile>().effectiveConnections[0] == true)
         {
@@ -468,6 +477,7 @@ public class Player : MonoBehaviour
 
             if (!checkingCombat)
             {
+                StartWalking();
                 while (elapsedTime < walkingTime)
                 {
                     transform.position = Vector3.Lerp(transform.position, destination, elapsedTime / walkingTime);
@@ -504,7 +514,6 @@ public class Player : MonoBehaviour
         //Debug.Log("effective:" + MapManager.GetComponent<MapManager>().myMap[coordinate.getX(), coordinate.getY()].GetComponent<Tile>().effectiveConnections[2]);
         //Debug.Log("possible: " + MapManager.GetComponent<MapManager>().myMap[coordinate.getX(), coordinate.getY()].GetComponent<Tile>().possibleConnections[2]);
         moving = true;
-        StartWalking();
 
         if (mapManagerComponent.myMap[coordinate.getX(), coordinate.getY()].GetComponent<Tile>().effectiveConnections[2] == true)
         {
@@ -519,6 +528,7 @@ public class Player : MonoBehaviour
 
             if (!checkingCombat)
             {
+                StartWalking();
                 while (elapsedTime < walkingTime)
                 {
                     transform.position = Vector3.Lerp(transform.position, destination, elapsedTime / walkingTime);
@@ -554,7 +564,6 @@ public class Player : MonoBehaviour
     {
         //Debug.Log("possible: " + MapManager.GetComponent<MapManager>().myMap[coordinate.getX(), coordinate.getY()].GetComponent<Tile>().possibleConnections[3]);
         moving = true;
-        StartWalking();
 
         if (transform.GetChild(0).transform.localScale.x > 0f)
             InvertTransformX();
@@ -572,6 +581,7 @@ public class Player : MonoBehaviour
 
             if (!checkingCombat)
             {
+                StartWalking();
                 while (elapsedTime < walkingTime)
                 {
                     transform.position = Vector3.Lerp(transform.position, destination, elapsedTime / walkingTime);
