@@ -68,7 +68,7 @@ public class Player : MonoBehaviour
         myAnimator.SetBool("isWalking", false);
     }
 
-    public void StartAnimaitionAttack()
+    public void StartAnimationAttack()
     {
         myAnimator.SetBool("isAttacking", true);
     }
@@ -266,7 +266,7 @@ public class Player : MonoBehaviour
  
     public IEnumerator AttackPlayerOnTile(Tile tile)
     {
-        StartAnimaitionAttack();
+        StartAnimationAttack();
         yield return StartCoroutine(WaitForAnimation("attack_1"));
         yield return StartCoroutine(CastBlackHole(tile));
         yield return StartCoroutine(StopAnimaitionAttack());
