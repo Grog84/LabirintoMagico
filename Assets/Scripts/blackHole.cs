@@ -16,8 +16,14 @@ public class blackHole : MonoBehaviour {
         myTile.SetBlackHolePlaying(false);
     }
 
-	// Use this for initialization
-	void Start () {
+    public void clearTile()
+    {
+        myTile.ClearTile();
+        myTile.SetBlackHolePlaying(false);
+    }
+
+    // Use this for initialization
+    void Start () {
 		
 	}
 	

@@ -594,6 +594,7 @@ public class MapManager : MonoBehaviour {
         myTileComponent.myCoord = coordinate;
         myTileComponent.SetPossibleConnections(tileType);
         myTileComponent.SetPlayerChild();
+        myTileComponent.SetTurnManager();
 
         myMap[coordinate.getX(), coordinate.getY()] = tileInstance;
         myMapTiles[coordinate.getX(), coordinate.getY()] = tileInstance.GetComponent<Tile>();
@@ -606,6 +607,7 @@ public class MapManager : MonoBehaviour {
         tileInstance.transform.SetParent(transform);
 
         Tile myTileComponent = tileInstance.GetComponent<Tile>();
+        myTileComponent.SetTurnManager();
 
         myTileComponent.SetSprite(tileType);
         // TODO modificare type per diventare come quello non speciale

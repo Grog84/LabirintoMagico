@@ -49,6 +49,11 @@ public class TurnManager : MonoBehaviour
 
     // Initialization Methods - variables assignments of the automatically generated objects
 
+    public Player[] GetAllPayers()
+    {
+        return playerComponent;
+    }
+
     public void AssignButtonsAnimators()
     {
         buttonsAnimator[0] = xButton.GetComponent<Animator>();

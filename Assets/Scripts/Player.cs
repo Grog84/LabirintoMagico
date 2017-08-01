@@ -22,7 +22,7 @@ public class Player : MonoBehaviour
     public bool hasDiamond = false;
     public PlayerAssignment playerSO;
     private Coordinate startingPoint;
-    private bool checkingCombat = false;
+    private bool checkingCombat = false, attack1active=false, attack2active = false;
     private bool isStasisActive = false, canActivateStasis = false;
     private int turnsBeforeStasisCounter = 0, turnsBeforeStasisIsActive = 3;
 
@@ -36,6 +36,16 @@ public class Player : MonoBehaviour
     public Coordinate GetCoordinatesCopy()
     {
         return new Coordinate(coordinate.getX(), coordinate.getY());
+    }
+
+    public void SetAttack1Status(bool status)
+    {
+        attack1active = status;
+    }
+
+    public void SetAttack2Status(bool status)
+    {
+        attack2active = status;
     }
 
     // Animation
@@ -71,6 +81,7 @@ public class Player : MonoBehaviour
     public void StartAnimationAttack()
     {
         myAnimator.SetBool("isAttacking", true);
+        SetAttack1Status(true);
     }
 
     public IEnumerator StopAnimaitionAttack()
@@ -84,21 +95,30 @@ public class Player : MonoBehaviour
 
     private IEnumerator WaitForAnimation(string animationName)
     {
-        Debug.Log("Started waiting for attack animation");
-        //do
-        //{
-        //    yield return null;
-        //} while (myAnimator.GetCurrentAnimatorStateInfo(0).IsName(animationName));
-        yield return new WaitForSeconds(0.1f);
-        Debug.Log("Finished waiting for attack animation");
+        if (animationName == "attack_1")
+        {
+            do
+            {
+                yield return null;
+            } while (attack1active);
+        }
+        else if(animationName == "attack_2")
+        {
+            do
+            {
+                yield return null;
+            } while (attack2active);
+        }
+
+        yield return null;
+
+        //yield return new WaitForSeconds(0.1f);
     }
 
     private IEnumerator CastBlackHole(Tile tile)
     {
-        Debug.Log("Started Cast Black Hole");
         yield return tile.BlackHole();
         yield return null;
-        Debug.Log("Finished Cast Black Hole");
     }
 
     // Initial Assignements
@@ -278,11 +298,12 @@ public class Player : MonoBehaviour
 
         yield return StartCoroutine(WaitForAnimation("attack_1"));
         yield return StartCoroutine(CastBlackHole(tile));
+        SetAttack2Status(true);
         yield return StartCoroutine(StopAnimaitionAttack());
 
         Player otherPlayer = tile.gameObject.transform.GetComponentInChildren<Player>();
-        turnManager.GetComponent<TurnManager>().DropDiamond(otherPlayer);
-        otherPlayer.ResetToStartingPosition();
+        //turnManager.GetComponent<TurnManager>().DropDiamond(otherPlayer);
+        //otherPlayer.ResetToStartingPosition();
 
         float elapsedTime = 0;
         float animTime = 1f;
@@ -308,16 +329,16 @@ public class Player : MonoBehaviour
 
     public IEnumerator AttackPlayerOnTileOnSlide(Player otherPlayer)
     {
-        Tile tile = otherPlayer.GetComponentInParent<Tile>();
+        Tile tile = mapManagerComponent.PickTileComponent(otherPlayer.coordinate);
         StartAnimationAttack();
         yield return null;
 
         yield return StartCoroutine(WaitForAnimation("attack_1"));
         yield return StartCoroutine(CastBlackHole(tile));
+        SetAttack2Status(true);
+        //turnManager.GetComponent<TurnManager>().DropDiamond(otherPlayer);
+        //otherPlayer.ResetToStartingPosition();
         yield return StartCoroutine(StopAnimaitionAttack());
-
-        turnManager.GetComponent<TurnManager>().DropDiamond(otherPlayer);
-        otherPlayer.ResetToStartingPosition();
 
         turnManager.GetComponent<TurnManager>().SetResolvingCombat(false);
         checkingCombat = false;

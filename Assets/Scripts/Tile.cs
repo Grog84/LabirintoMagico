@@ -10,7 +10,6 @@ public class Tile : MonoBehaviour {
     public Texture2D myTexture;
     public Coordinate myCoord;
     public GameObject trap, blackHole;
-    public float playerOffset;
 
     public bool canBeMoved = true;
     public bool[] possibleConnections, effectiveConnections;
@@ -21,7 +20,8 @@ public class Tile : MonoBehaviour {
     public bool isTrapped, hasDiamond;
     public int childPlayerNbr;
     private Player childPlayerComponent;
-
+    private Player[] allPlayersComponent;
+    private TurnManager turnManager;
     private bool blackHolePlaying = false;
 
     private Vector3 playerPosition;  // check whether it is actually needed or not
@@ -183,6 +183,28 @@ public class Tile : MonoBehaviour {
     {
         return childPlayerComponent;
     }
+
+    public void ClearTile()
+    {
+        if (childPlayerNbr != -1)
+        {
+            turnManager.GetComponent<TurnManager>().DropDiamond(childPlayerComponent);
+            childPlayerComponent.ResetToStartingPosition();
+        }
+        else
+        {
+            foreach (var player in turnManager.GetAllPayers())
+            {
+                if (player.coordinate.isEqual(myCoord))  // if true it mean that a player has the stasis active
+                {
+                    turnManager.GetComponent<TurnManager>().DropDiamond(player);
+                    player.ResetToStartingPosition();
+                }
+            }
+
+        }
+    }
+
 
     // Tiles connectivity
 
@@ -363,10 +385,10 @@ public class Tile : MonoBehaviour {
         transform.position = position;
     }
 
-    public void SetPlayerPosition()
-    {
-        playerPosition = transform.position + new Vector3(0f, playerOffset, 0f);
-    }
+    //public void SetPlayerPosition()
+    //{
+    //    playerPosition = transform.position + new Vector3(0f, playerOffset, 0f);
+    //}
 
     // Trap
 
@@ -395,6 +417,12 @@ public class Tile : MonoBehaviour {
         return myTrapComponent;
     }
 
+    public void SetTurnManager()
+    {
+        turnManager = transform.parent.gameObject.GetComponentInChildren<TurnManager>();
+        //allPlayersComponent = turnManager.GetAllPayers();
+    }
+
     // Unity Specific methods
 
     void Awake () {
@@ -404,8 +432,7 @@ public class Tile : MonoBehaviour {
         effectiveConnections = new bool[4];
         childPlayerNbr = -1;
         hasDiamond = false;
-        playerOffset = -0.1f;
-       
+
         //Debug.Log(possibleConnections.Length);
     }
 	
