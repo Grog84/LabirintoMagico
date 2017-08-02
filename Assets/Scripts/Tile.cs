@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class Tile : MonoBehaviour {
 
@@ -345,16 +346,17 @@ public class Tile : MonoBehaviour {
     {
         // Might there be a child unchild issue?
 
-        float elapsedTime = 0;
+        //float elapsedTime = 0;
 
         Vector3 destination = new Vector3(transform.position.x + movement[0], transform.position.y + movement[1], transform.position.z);
+        transform.DOMove(destination, animTime);
 
-        while (elapsedTime < animTime)
-        {
-            transform.position = Vector3.Lerp(transform.position, destination, elapsedTime / animTime);
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
+        //while (elapsedTime < animTime)
+        //{
+        //    transform.position = Vector3.Lerp(transform.position, destination, elapsedTime / animTime);
+        //    elapsedTime += Time.deltaTime;
+        //    yield return null;
+        //}
 
         yield return null;
     }

@@ -737,7 +737,7 @@ public class MapManager : MonoBehaviour {
         Tile tmpTile;
         GameObject tmpTileObj;
 
-        float animationTime = 3f;
+        float animationTime = 0.5f;
 
         DestroyTile(PickTileObject(myCoords[myCoords.Length - 1])); // destroys the last movable tile, could become a coroutine
 
@@ -757,18 +757,18 @@ public class MapManager : MonoBehaviour {
 
         }
 
-        float waitingTime = 0;
+        yield return new WaitForSeconds(animationTime);
 
-        while (waitingTime < animationTime + 0.5f)
-        {
-            waitingTime += Time.deltaTime;
-            if (waitingTime > animationTime)
-                turnManager.isSliding = false;
-            yield return null;
-        }
+        //float waitingTime = 0;
+        //while (waitingTime < animationTime + 0.5f)
+        //{
+        //    waitingTime += Time.deltaTime;
+        //    if (waitingTime > animationTime)
+        //        turnManager.isSliding = false;
+        //    yield return null;
+        //}
 
-        yield return null;
-
+        //yield return null;
     }
 
     public IEnumerator RotateTiles(Coordinate[] selectedCoords, int rotationDirection) // 1 clockwise, -1 counterclockwise
@@ -785,7 +785,7 @@ public class MapManager : MonoBehaviour {
         GameObject tmpTileObj;
         var tmpTileObjMatrix = new GameObject[selectedCoords.Length];
 
-        float animationTime = 3f;
+        float animationTime = 0.5f;
         var myMovement = new Vector2(0, 0);
 
         for (int i = 0; i < selectedCoords.Length; i++)

@@ -567,14 +567,15 @@ public class TurnManager : MonoBehaviour
             repositionPlayer = true;
         }
 
-        StartCoroutine(mapManager.SlideLine(lineCoordinates, slideDirection));
+        yield return StartCoroutine(mapManager.SlideLine(lineCoordinates, slideDirection));
+        isSliding = false;
 
         int tileType = 0;
 
-        while (isSliding)
-        {
-            yield return null;
-        }
+        //while (isSliding)
+        //{
+        //    yield return null;
+        //}
 
         if (fallingPlayer != null)
         {
