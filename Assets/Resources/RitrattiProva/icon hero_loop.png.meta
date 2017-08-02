@@ -1,0 +1,1000 @@
+fileFormatVersion: 2
+guid: ba30c0de3d64b14449a965acbae9c39a
+timeCreated: 1501664058
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: icon hero_loop_0
+    21300002: icon hero_loop_1
+    21300004: icon hero_loop_2
+    21300006: icon hero_loop_3
+    21300008: icon hero_loop_4
+    21300010: icon hero_loop_5
+    21300012: icon hero_loop_6
+    21300014: icon hero_loop_7
+    21300016: icon hero_loop_8
+    21300018: icon hero_loop_9
+    21300020: icon hero_loop_10
+    21300022: icon hero_loop_11
+    21300024: icon hero_loop_12
+    21300026: icon hero_loop_13
+    21300028: icon hero_loop_14
+    21300030: icon hero_loop_15
+    21300032: icon hero_loop_16
+    21300034: icon hero_loop_17
+    21300036: icon hero_loop_18
+    21300038: icon hero_loop_19
+    21300040: icon hero_loop_20
+    21300042: icon hero_loop_21
+    21300044: icon hero_loop_22
+    21300046: icon hero_loop_23
+    21300048: icon hero_loop_24
+    21300050: icon hero_loop_25
+    21300052: icon hero_loop_26
+    21300054: icon hero_loop_27
+    21300056: icon hero_loop_28
+    21300058: icon hero_loop_29
+    21300060: icon hero_loop_30
+    21300062: icon hero_loop_31
+    21300064: icon hero_loop_32
+    21300066: icon hero_loop_33
+    21300068: icon hero_loop_34
+    21300070: icon hero_loop_35
+    21300072: icon hero_loop_36
+    21300074: icon hero_loop_37
+    21300076: icon hero_loop_38
+    21300078: icon hero_loop_39
+    21300080: icon hero_loop_40
+    21300082: icon hero_loop_41
+    21300084: icon hero_loop_42
+    21300086: icon hero_loop_43
+    21300088: icon hero_loop_44
+    21300090: icon hero_loop_45
+    21300092: icon hero_loop_46
+    21300094: icon hero_loop_47
+    21300096: icon hero_loop_48
+    21300098: icon hero_loop_49
+    21300100: icon hero_loop_50
+    21300102: icon hero_loop_51
+    21300104: icon hero_loop_52
+    21300106: icon hero_loop_53
+    21300108: icon hero_loop_54
+    21300110: icon hero_loop_55
+    21300112: icon hero_loop_56
+    21300114: icon hero_loop_57
+    21300116: icon hero_loop_58
+    21300118: icon hero_loop_59
+    21300120: icon hero_loop_60
+    21300122: icon hero_loop_61
+    21300124: icon hero_loop_62
+    21300126: icon hero_loop_63
+    21300128: icon hero_loop_64
+    21300130: icon hero_loop_65
+  serializedVersion: 4
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: -1
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: Standalone
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: icon hero_loop_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 3576
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_1
+      rect:
+        serializedVersion: 2
+        x: 250
+        y: 3576
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_2
+      rect:
+        serializedVersion: 2
+        x: 500
+        y: 3576
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_3
+      rect:
+        serializedVersion: 2
+        x: 750
+        y: 3576
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_4
+      rect:
+        serializedVersion: 2
+        x: 1000
+        y: 3576
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_5
+      rect:
+        serializedVersion: 2
+        x: 1250
+        y: 3576
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_6
+      rect:
+        serializedVersion: 2
+        x: 1500
+        y: 3576
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_7
+      rect:
+        serializedVersion: 2
+        x: 1750
+        y: 3576
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_8
+      rect:
+        serializedVersion: 2
+        x: 2000
+        y: 3576
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_9
+      rect:
+        serializedVersion: 2
+        x: 2250
+        y: 3576
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_10
+      rect:
+        serializedVersion: 2
+        x: 2500
+        y: 3576
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_11
+      rect:
+        serializedVersion: 2
+        x: 2750
+        y: 3576
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_12
+      rect:
+        serializedVersion: 2
+        x: 3000
+        y: 3576
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_13
+      rect:
+        serializedVersion: 2
+        x: 3250
+        y: 3576
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_14
+      rect:
+        serializedVersion: 2
+        x: 3500
+        y: 3576
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_15
+      rect:
+        serializedVersion: 2
+        x: 3750
+        y: 3576
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_16
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 3056
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_17
+      rect:
+        serializedVersion: 2
+        x: 250
+        y: 3056
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_18
+      rect:
+        serializedVersion: 2
+        x: 500
+        y: 3056
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_19
+      rect:
+        serializedVersion: 2
+        x: 750
+        y: 3056
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_20
+      rect:
+        serializedVersion: 2
+        x: 1000
+        y: 3056
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_21
+      rect:
+        serializedVersion: 2
+        x: 1250
+        y: 3056
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_22
+      rect:
+        serializedVersion: 2
+        x: 1500
+        y: 3056
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_23
+      rect:
+        serializedVersion: 2
+        x: 1750
+        y: 3056
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_24
+      rect:
+        serializedVersion: 2
+        x: 2000
+        y: 3056
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_25
+      rect:
+        serializedVersion: 2
+        x: 2250
+        y: 3056
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_26
+      rect:
+        serializedVersion: 2
+        x: 2500
+        y: 3056
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_27
+      rect:
+        serializedVersion: 2
+        x: 2750
+        y: 3056
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_28
+      rect:
+        serializedVersion: 2
+        x: 3000
+        y: 3056
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_29
+      rect:
+        serializedVersion: 2
+        x: 3250
+        y: 3056
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_30
+      rect:
+        serializedVersion: 2
+        x: 3500
+        y: 3056
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_31
+      rect:
+        serializedVersion: 2
+        x: 3750
+        y: 3056
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_32
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 2536
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_33
+      rect:
+        serializedVersion: 2
+        x: 250
+        y: 2536
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_34
+      rect:
+        serializedVersion: 2
+        x: 500
+        y: 2536
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_35
+      rect:
+        serializedVersion: 2
+        x: 750
+        y: 2536
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_36
+      rect:
+        serializedVersion: 2
+        x: 1000
+        y: 2536
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_37
+      rect:
+        serializedVersion: 2
+        x: 1250
+        y: 2536
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_38
+      rect:
+        serializedVersion: 2
+        x: 1500
+        y: 2536
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_39
+      rect:
+        serializedVersion: 2
+        x: 1750
+        y: 2536
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_40
+      rect:
+        serializedVersion: 2
+        x: 2000
+        y: 2536
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_41
+      rect:
+        serializedVersion: 2
+        x: 2250
+        y: 2536
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_42
+      rect:
+        serializedVersion: 2
+        x: 2500
+        y: 2536
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_43
+      rect:
+        serializedVersion: 2
+        x: 2750
+        y: 2536
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_44
+      rect:
+        serializedVersion: 2
+        x: 3000
+        y: 2536
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_45
+      rect:
+        serializedVersion: 2
+        x: 3250
+        y: 2536
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_46
+      rect:
+        serializedVersion: 2
+        x: 3500
+        y: 2536
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_47
+      rect:
+        serializedVersion: 2
+        x: 3750
+        y: 2536
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_48
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 2016
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_49
+      rect:
+        serializedVersion: 2
+        x: 250
+        y: 2016
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_50
+      rect:
+        serializedVersion: 2
+        x: 500
+        y: 2016
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_51
+      rect:
+        serializedVersion: 2
+        x: 750
+        y: 2016
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_52
+      rect:
+        serializedVersion: 2
+        x: 1000
+        y: 2016
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_53
+      rect:
+        serializedVersion: 2
+        x: 1250
+        y: 2016
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_54
+      rect:
+        serializedVersion: 2
+        x: 1500
+        y: 2016
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_55
+      rect:
+        serializedVersion: 2
+        x: 1750
+        y: 2016
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_56
+      rect:
+        serializedVersion: 2
+        x: 2000
+        y: 2016
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_57
+      rect:
+        serializedVersion: 2
+        x: 2250
+        y: 2016
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_58
+      rect:
+        serializedVersion: 2
+        x: 2500
+        y: 2016
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_59
+      rect:
+        serializedVersion: 2
+        x: 2750
+        y: 2016
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_60
+      rect:
+        serializedVersion: 2
+        x: 3000
+        y: 2016
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_61
+      rect:
+        serializedVersion: 2
+        x: 3250
+        y: 2016
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_62
+      rect:
+        serializedVersion: 2
+        x: 3500
+        y: 2016
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_63
+      rect:
+        serializedVersion: 2
+        x: 3750
+        y: 2016
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_64
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1496
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: icon hero_loop_65
+      rect:
+        serializedVersion: 2
+        x: 250
+        y: 1496
+        width: 250
+        height: 520
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

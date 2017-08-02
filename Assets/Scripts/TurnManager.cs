@@ -791,13 +791,13 @@ public class TurnManager : MonoBehaviour
         {
             canTerraform = false;
             rotationCursor.GetComponent<CursorMoving>().CursorDeactivate();
-            yield return StartCoroutine(ActivateRotation(-1));
+            yield return StartCoroutine(ActivateRotation(1));
         }
         else if (Input.GetKeyDown(KeyCode.X) || Input.GetButtonDown("Fire1joy"))
         {
             canTerraform = false;
             rotationCursor.GetComponent<CursorMoving>().CursorDeactivate();
-            yield return StartCoroutine(ActivateRotation(1));
+            yield return StartCoroutine(ActivateRotation(-1));
         }
 
         yield return null;
@@ -885,6 +885,7 @@ public class TurnManager : MonoBehaviour
         playerOrder = new int[4] { 1, 2, 3, 4 };
         buttonsAnimator = new Animator[numberOfButtons];
         inAction = false;
+        myCameraMovement = myCamera.GetComponent<CameraMovement>();
 
         panelParkingPosition = new Vector2(0, -100);
         panelActivePosition = new Vector2(0, 50);
@@ -917,6 +918,7 @@ public class TurnManager : MonoBehaviour
         //{
         //    canBeActivated = false;
         //}
+        if (Input.GetKeyDown(KeyCode.R)) SceneManager.LoadScene("_Scenes/scenaprova");
 
         if (selectionDepth == (int)panelSelection.basePanel)
         {

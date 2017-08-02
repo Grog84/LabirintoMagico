@@ -44,27 +44,39 @@ public class CameraMovement : MonoBehaviour {
 
     private void MoveCamera()
     {
-        if ((Input.GetKey(KeyCode.RightArrow) || Input.GetAxis("RotationJoyH") >= 0.1f))
+        if (Input.GetKey(KeyCode.RightArrow))
         {
-            float newPosX = transform.position.x + (Mathf.Abs(movingSpeed * Input.GetAxis("RotationJoyH"))) * Time.deltaTime;
+            float newPosX = transform.position.x + movingSpeed * Time.deltaTime;
             newPosX = Mathf.Clamp(newPosX, xLimits[0], xLimits[1]);
             transform.position = new Vector3(newPosX, transform.position.y, transform.position.z);
         }
-        if ((Input.GetKey(KeyCode.LeftArrow) || Input.GetAxis("RotationJoyH") <= -0.1f))
+        if (Input.GetKey(KeyCode.LeftArrow))
         {
-            float newPosX = transform.position.x - (Mathf.Abs(movingSpeed * Input.GetAxis("RotationJoyH"))) * Time.deltaTime;
+            float newPosX = transform.position.x - movingSpeed * Time.deltaTime;
             newPosX = Mathf.Clamp(newPosX, xLimits[0], xLimits[1]);
             transform.position = new Vector3(newPosX, transform.position.y, transform.position.z);
         }
-        if ((Input.GetKey(KeyCode.UpArrow) || Input.GetAxis("RotationJoyV") <= -0.1f))
+        if (Input.GetKey(KeyCode.UpArrow))
         {
-            float newPosY = transform.position.y + (Mathf.Abs(movingSpeed * Input.GetAxis("RotationJoyV"))) * Time.deltaTime;
+            float newPosY = transform.position.y + movingSpeed * Time.deltaTime;
             newPosY = Mathf.Clamp(newPosY, yLimits[0], yLimits[1]);
             transform.position = new Vector3(transform.position.x, newPosY, transform.position.z);
         }
-        if ((Input.GetKey(KeyCode.DownArrow) || Input.GetAxis("RotationJoyV") >= 0.1f))
+        if (Input.GetKey(KeyCode.DownArrow))
         {
-            float newPosY = transform.position.y - (Mathf.Abs(movingSpeed * Input.GetAxis("RotationJoyV"))) * Time.deltaTime;
+            float newPosY = transform.position.y - movingSpeed * Time.deltaTime;
+            newPosY = Mathf.Clamp(newPosY, yLimits[0], yLimits[1]);
+            transform.position = new Vector3(transform.position.x, newPosY, transform.position.z);
+        }
+        if ((Input.GetAxis("RotationJoyH") != 0))
+        {
+            float newPosX = transform.position.x + (movingSpeed * Input.GetAxis("RotationJoyH")) * Time.deltaTime;
+            newPosX = Mathf.Clamp(newPosX, xLimits[0], xLimits[1]);
+            transform.position = new Vector3(newPosX, transform.position.y, transform.position.z);
+        }
+        if ((Input.GetAxis("RotationJoyV") != 0))
+        {
+            float newPosY = transform.position.y + (movingSpeed * Input.GetAxis("RotationJoyV")) * Time.deltaTime;
             newPosY = Mathf.Clamp(newPosY, yLimits[0], yLimits[1]);
             transform.position = new Vector3(transform.position.x, newPosY, transform.position.z);
         }
@@ -72,15 +84,21 @@ public class CameraMovement : MonoBehaviour {
 
     private void ZoomCamera()
     {
-        if ((Input.GetKey(KeyCode.U) || Input.GetAxis("ZoomJoy") > 0))
+        if (Input.GetKey(KeyCode.U))
         {
-            float newSize = thisCamera.orthographicSize + (zoomingSpeed * Input.GetAxis("ZoomJoy")) * Time.deltaTime;
+            float newSize = thisCamera.orthographicSize + zoomingSpeed * Time.deltaTime;
             newSize = Mathf.Clamp(newSize, zoomInSizeLimit, zoomOutSizeLimit);
             thisCamera.orthographicSize = newSize;
         }
-        if ((Input.GetKey(KeyCode.I) || Input.GetAxis("ZoomJoy") < 0))
+        if (Input.GetKey(KeyCode.I))
         {
-            float newSize = thisCamera.orthographicSize - (Mathf.Abs(zoomingSpeed * Input.GetAxis("ZoomJoy"))) * Time.deltaTime;
+            float newSize = thisCamera.orthographicSize - zoomingSpeed * Time.deltaTime;
+            newSize = Mathf.Clamp(newSize, zoomInSizeLimit, zoomOutSizeLimit);
+            thisCamera.orthographicSize = newSize;
+        }
+        if (Input.GetAxis("ZoomJoy") != 0)
+        {
+            float newSize = thisCamera.orthographicSize + (zoomingSpeed * Input.GetAxis("ZoomJoy")) * Time.deltaTime;
             newSize = Mathf.Clamp(newSize, zoomInSizeLimit, zoomOutSizeLimit);
             thisCamera.orthographicSize = newSize;
         }
