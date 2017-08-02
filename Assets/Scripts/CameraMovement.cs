@@ -38,8 +38,10 @@ public class CameraMovement : MonoBehaviour {
         float cameraX = Mathf.Clamp(position.x, xLimits[0], xLimits[1]);
         float cameraY = Mathf.Clamp(position.y, yLimits[0], yLimits[1]);
         var cameraPosition = new Vector3(cameraX, cameraY, transform.position.z);
-        transform.DOMove(cameraPosition, 1f);
-        transform.position = cameraPosition;
+        float distance = Vector3.Distance(transform.position, cameraPosition);
+
+        transform.DOMove(cameraPosition, distance * 0.02f);
+        transform.position = cameraPosition;   
     }
 
     private void MoveCamera()
@@ -109,7 +111,8 @@ public class CameraMovement : MonoBehaviour {
 
     private void FollowPlayer()
     {
-        var playerPosition = followedPlayer.coordinate.GetPositionFromCoords(mapColumns, mapRows);
+        var playerPosition = followedPlayer.GetComponentInParent<Transform>().position;
+        //var playerPosition = followedPlayer.coordinate.GetPositionFromCoords(mapColumns, mapRows);
         MoveToPosition(playerPosition);
     }
 

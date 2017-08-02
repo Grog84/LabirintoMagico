@@ -93,6 +93,7 @@ public class TurnManager : MonoBehaviour
         playerPlayingIdx %= 4;
         playerPlaying = playerOrder[playerPlayingIdx];
         activePlayer = playerComponent[playerPlayingIdx];
+
         myCameraMovement.MoveToPosition(activePlayer.GetComponentInParent<Transform>().position);
 
         mapManager.updateTilesConnection(playerPlaying);
