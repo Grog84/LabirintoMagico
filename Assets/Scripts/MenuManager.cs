@@ -13,6 +13,8 @@ public class MenuManager : MonoBehaviour
     private bool moving = false;
     public FadeManager fading;
     private float destination;
+    public AudioClip[] SFX;
+    private AudioSource audio;
 
     IEnumerator Selection()
     {
@@ -48,7 +50,7 @@ public class MenuManager : MonoBehaviour
     void Start()
     {
         StartCoroutine(fading.FadeIn());
-        //fading.FadeIn();
+        audio = GetComponent<AudioSource>();
     }
 
     void Update()
@@ -65,6 +67,8 @@ public class MenuManager : MonoBehaviour
         if ((Input.GetKeyDown(KeyCode.W) || Input.GetAxis("VerticalJoy") == 1) && !moving)
         {
             moving = true;
+            audio.clip = SFX[0];
+            audio.Play();
             destination = (transform.rotation.eulerAngles.z + 90)%360;
             transform.DOLocalRotate(new Vector3(0, 0, 90), 1, RotateMode.LocalAxisAdd);
             camera.transform.DOShakePosition(0.6F, 0.7f);
@@ -77,6 +81,8 @@ public class MenuManager : MonoBehaviour
         if ((Input.GetKeyDown(KeyCode.S) || Input.GetAxis("VerticalJoy") == -1) && !moving)
         {
             moving = true;
+            audio.clip = SFX[0];
+            audio.Play();
             destination = (360+transform.rotation.eulerAngles.z - 90)%360;
             transform.DOLocalRotate(new Vector3(0, 0, -90), 1, RotateMode.LocalAxisAdd);
             camera.transform.DOShakePosition(0.6F, 0.7f);
@@ -88,6 +94,8 @@ public class MenuManager : MonoBehaviour
         }
         if ((Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Fire1joy")) && !moving)
         {
+            audio.clip = SFX[1];
+            audio.Play();
             StartCoroutine(Selection());
         }
 
