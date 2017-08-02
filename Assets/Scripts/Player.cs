@@ -241,7 +241,7 @@ public class Player : MonoBehaviour
         transform.position = new Vector3(targetTile.transform.position.x, targetTile.transform.position.y, -5);
         UpdatePlayerPosition(targetTile.GetComponent<Tile>());
 
-        //targetTile.GetComponent<Tile>().SetPlayerChild(this);
+        targetTile.GetComponent<Tile>().SetPlayerChild(this);
 
     }
 

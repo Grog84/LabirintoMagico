@@ -23,6 +23,7 @@ public class CameraMovement : MonoBehaviour {
     public void StartFollowingPlayer(Player player)
     {
         followedPlayer = player;
+        MoveToPosition(player.transform.position);
         isFollowingPlayer = true;
     }
 
@@ -30,6 +31,15 @@ public class CameraMovement : MonoBehaviour {
     {
         followedPlayer = null;
         isFollowingPlayer = false;
+    }
+
+    public void MoveToPosition(Vector3 position)
+    {
+        float cameraX = Mathf.Clamp(position.x, xLimits[0], xLimits[1]);
+        float cameraY = Mathf.Clamp(position.y, yLimits[0], yLimits[1]);
+        var cameraPosition = new Vector3(cameraX, cameraY, transform.position.z);
+        transform.DOMove(cameraPosition, 1f);
+        transform.position = cameraPosition;
     }
 
     private void MoveCamera()
@@ -82,11 +92,7 @@ public class CameraMovement : MonoBehaviour {
     private void FollowPlayer()
     {
         var playerPosition = followedPlayer.coordinate.GetPositionFromCoords(mapColumns, mapRows);
-        float cameraX = Mathf.Clamp(playerPosition.x, xLimits[0], xLimits[1]);
-        float cameraY = Mathf.Clamp(playerPosition.y, yLimits[0], yLimits[1]);
-        var cameraPosition = new Vector3(cameraX, cameraY, transform.position.z);
-        transform.DOMove(cameraPosition, 1f);
-        transform.position = cameraPosition;
+        MoveToPosition(playerPosition);
     }
 
     private void UpdatePositionLimits()

@@ -11,7 +11,7 @@ public class TurnManager : MonoBehaviour
     public GameObject xButton, aButton, bButton, diamondButton, rotationCursor;
     public GameObject[] portraits;
     public GameObject[] playerWinsText;
-    public Camera camera;
+    public Camera myCamera;
     public MapManager mapManager;
     public bool isSliding = false, isRotating = false;
 
@@ -31,6 +31,7 @@ public class TurnManager : MonoBehaviour
     private bool inAction;
     private bool canBeActivated = true;
     private bool canBeRotated = true;
+    private CameraMovement myCameraMovement;
 
     enum myButtons
     {
@@ -92,6 +93,7 @@ public class TurnManager : MonoBehaviour
         playerPlayingIdx %= 4;
         playerPlaying = playerOrder[playerPlayingIdx];
         activePlayer = playerComponent[playerPlayingIdx];
+        myCameraMovement.MoveToPosition(activePlayer.GetComponentInParent<Transform>().position);
 
         mapManager.updateTilesConnection(playerPlaying);
         activePlayer.CheckDiamondStatusTimer();
@@ -408,6 +410,9 @@ public class TurnManager : MonoBehaviour
             canMove = false;
             if (trapHasTriggered)
                 SetTrapHasTriggered(false);
+
+            if(attackHasHappened)
+                attackHasHappened = false;
 
             if (ChecksForDiamond(p))
             {
@@ -814,17 +819,17 @@ public class TurnManager : MonoBehaviour
 
     private void CameraStartFollowingPlayer(Player player)
     {
-        camera.GetComponent<CameraMovement>().StartFollowingPlayer(player);
+        myCameraMovement.StartFollowingPlayer(player);
     }
 
     private void CameraStopFollowingPlayer()
     {
-        camera.GetComponent<CameraMovement>().StopFollowingPlayer();
+        myCameraMovement.StopFollowingPlayer();
     }
 
     public void CameraSetRowsAndColumns()
     {
-        camera.GetComponent<CameraMovement>().SetRowsAndColumns(mapManager);
+        myCameraMovement.SetRowsAndColumns(mapManager);
     }
 
     // General Methods
