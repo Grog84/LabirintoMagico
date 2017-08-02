@@ -24,7 +24,7 @@ public class Player : MonoBehaviour
     private Coordinate startingPoint;
     private bool checkingCombat = false, attack1active=false, attack2active = false;
     private bool isStasisActive = false, canActivateStasis = false;
-    private int turnsBeforeStasisCounter = 0, turnsBeforeStasisIsActive = 3;
+    private int turnsBeforeStasisCounter = 3, turnsBeforeStasisIsActive = 3;
 
     // Accessing Variable
 
@@ -362,9 +362,16 @@ public class Player : MonoBehaviour
 
     // Diamond
 
+    public void ResetTurnsBeforeStasis()
+    {
+        turnsBeforeStasisCounter = turnsBeforeStasisIsActive;
+    }
+
     public void SetHasDiamond(bool hasDiamond)
     {
         this.hasDiamond = hasDiamond;
+        if (hasDiamond)
+            turnsBeforeStasisCounter = 0;
     }
 
     public bool GetHasDiamond()
@@ -400,6 +407,11 @@ public class Player : MonoBehaviour
 
         canActivateStasis = false;
         isStasisActive = false;
+    }
+
+    public int GetTurnsBeforeStasisCounter()
+    {
+        return turnsBeforeStasisCounter;
     }
 
     public void CheckDiamondStatusTimer()

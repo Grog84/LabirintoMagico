@@ -133,12 +133,16 @@ public class TurnManager : MonoBehaviour
         if (activePlayer.GetCanActivateStasis())
         {
             canUseCrystal = true;
-            buttonsAnimator[3].SetBool("isActive", true);
+            StartCoroutine(SetDiamondAnimation(0));
+            buttonsAnimator[3].SetBool("isActive", false);
+            //buttonsAnimator[3].SetInteger("ActiveStatus", 3);
         }
         else
         {
             canUseCrystal = false;
             buttonsAnimator[3].SetBool("isActive", false);
+            StartCoroutine(SetDiamondAnimation(activePlayer.GetTurnsBeforeStasisCounter()));
+            //buttonsAnimator[3].SetBool("isActive", false);
         }
 
     }
@@ -348,6 +352,8 @@ public class TurnManager : MonoBehaviour
         
         mapManager.myDiamondInstance.transform.localPosition = collectedPosition;
         mapManager.diamondCoords = player.coordinate;
+
+        StartCoroutine(SetDiamondAnimation(0));
     }
 
     public void DropDiamond(Player player)
@@ -357,6 +363,7 @@ public class TurnManager : MonoBehaviour
         mapManager.myDiamondInstance.transform.position = new Vector3(mapManager.myDiamondInstance.transform.position.x,
                                                                       mapManager.myDiamondInstance.transform.position.y,
                                                                       -10);
+        player.ResetTurnsBeforeStasis();
     }
 
     private void ConnectToTile(GameObject tile)
@@ -380,7 +387,39 @@ public class TurnManager : MonoBehaviour
     {
         mapManager.myDiamondInstance.transform.GetComponentInParent<Player>().ActivateStasis();
         canUseCrystal = false;
-        buttonsAnimator[3].SetBool("isActive", false);
+        buttonsAnimator[3].SetBool("isActive", true);
+    }
+
+    public IEnumerator SetDiamondAnimation(int anim)
+    {
+        switch (anim)
+        {
+            case 0:
+                buttonsAnimator[3].SetInteger("ActiveStatus", 3);
+                break;
+            case 1:
+                buttonsAnimator[3].SetInteger("ActiveStatus", 2);
+                break;
+            case 2:
+                buttonsAnimator[3].SetInteger("ActiveStatus", 1);
+                break;
+            case 3:
+                buttonsAnimator[3].SetInteger("ActiveStatus", 0);
+                break;
+            case 4:
+                buttonsAnimator[3].SetInteger("ActiveStatus", 0);
+                break;
+            case 5:
+                buttonsAnimator[3].SetBool("isActive", true);
+                break;
+
+            default:
+                break;
+        }
+
+        yield return null;
+        buttonsAnimator[3].SetInteger("ActiveStatus", -1);
+        yield return null;
     }
 
     // Player Movement
