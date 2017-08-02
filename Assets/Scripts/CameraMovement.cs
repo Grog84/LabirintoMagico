@@ -35,13 +35,24 @@ public class CameraMovement : MonoBehaviour {
 
     public void MoveToPosition(Vector3 position)
     {
-        float cameraX = Mathf.Clamp(position.x, xLimits[0], xLimits[1]);
-        float cameraY = Mathf.Clamp(position.y, yLimits[0], yLimits[1]);
+        float cameraX = Mathf.Clamp(position.x, -maxXDisplacement, maxXDisplacement);
+        float cameraY = Mathf.Clamp(position.y, -maxYDisplacement, maxYDisplacement);
         var cameraPosition = new Vector3(cameraX, cameraY, transform.position.z);
         float distance = Vector3.Distance(transform.position, cameraPosition);
+        float toZoom = thisCamera.orthographicSize - zoomInSizeLimit;
 
-        transform.DOMove(cameraPosition, distance * 0.02f);
-        transform.position = cameraPosition;   
+        transform.DOMove(cameraPosition, distance * 0.03f);
+        thisCamera.DOOrthoSize(zoomInSizeLimit, toZoom * 0.03f);
+    }
+
+    public void MoveToCenter()
+    {
+        var center = new Vector3(0, 0, transform.position.z);
+        float distance = Vector3.Distance(transform.position, center);
+        float toZoom = zoomOutSizeLimit - thisCamera.orthographicSize;
+
+        transform.DOMove(center, distance * 0.03f);
+        thisCamera.DOOrthoSize(zoomInSizeLimit, toZoom * 0.03f);
     }
 
     private void MoveCamera()
