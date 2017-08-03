@@ -94,7 +94,10 @@ public class TurnManager : MonoBehaviour
         playerPlaying = playerOrder[playerPlayingIdx];
         activePlayer = playerComponent[playerPlayingIdx];
 
-        myCameraMovement.MoveToPosition(activePlayer.GetComponentInParent<Transform>().position);
+        StartCoroutine(MoveToNextPlayer());
+        //myCameraMovement.MoveToPosition(activePlayer.GetComponentInParent<Transform>().position);
+
+        //while (movingCamera) { }
 
         mapManager.updateTilesConnection(playerPlaying);
         activePlayer.CheckDiamondStatusTimer();
@@ -206,6 +209,13 @@ public class TurnManager : MonoBehaviour
             return false;
     }
 
+    IEnumerator MoveToNextPlayer()
+    {
+        myCameraMovement.MoveToCenter();
+        yield return new WaitForSeconds(2f);
+        myCameraMovement.MoveToPosition(activePlayer.GetComponentInParent<Transform>().position);
+        yield return null;
+    }
 
     // // UI
 
@@ -514,6 +524,12 @@ public class TurnManager : MonoBehaviour
 
     // Tile Slide
 
+    IEnumerator ZoomToCenter()
+    {
+        myCameraMovement.MoveToCenter();
+        yield return null;
+    }
+
     IEnumerator InsertTile(GameObject arrow, int slideDirection)
     {
         isSliding = true;
@@ -611,6 +627,7 @@ public class TurnManager : MonoBehaviour
 
     IEnumerator ScrollTileInsertionSelection()
     {
+        StartCoroutine(ZoomToCenter());
         mapManager.SetInsertArrowsVisible(true);
         int currentSelection = 39; // Starts in the Top Left Side
         allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", true);

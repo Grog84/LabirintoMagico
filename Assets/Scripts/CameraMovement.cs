@@ -51,8 +51,8 @@ public class CameraMovement : MonoBehaviour {
         float distance = Vector3.Distance(transform.position, center);
         float toZoom = zoomOutSizeLimit - thisCamera.orthographicSize;
 
-        transform.DOMove(center, distance * 0.03f);
-        thisCamera.DOOrthoSize(zoomInSizeLimit, toZoom * 0.03f);
+        transform.DOMove(center, distance * 0.02f);
+        thisCamera.DOOrthoSize(zoomOutSizeLimit, toZoom * 0.02f);
     }
 
     private void MoveCamera()
