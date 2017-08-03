@@ -33,6 +33,7 @@ public class TurnManager : MonoBehaviour
     private bool canBeActivated = true;
     private bool canBeRotated = true;
     private CameraMovement myCameraMovement;
+    public GameObject passButton;
     private Vector3 oldCameraPosition;
     private float oldCameraSize;
 
@@ -90,11 +91,12 @@ public class TurnManager : MonoBehaviour
 
     public void PassTurn()
     {
-        
+             
         ActivatePlayer(0);
 
         playerPlayingIdx++;
         playerPlayingIdx %= 4;
+        passButton.GetComponent<Animator>().SetInteger("Player", playerPlayingIdx + 1);
         playerPlaying = playerOrder[playerPlayingIdx];
         activePlayer = playerComponent[playerPlayingIdx];
 
