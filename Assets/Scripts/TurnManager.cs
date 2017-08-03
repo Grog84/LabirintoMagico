@@ -33,12 +33,9 @@ public class TurnManager : MonoBehaviour
     private bool canBeActivated = true;
     private bool canBeRotated = true;
     private CameraMovement myCameraMovement;
-<<<<<<< HEAD
     public GameObject passButton;
-=======
     private Vector3 oldCameraPosition;
     private float oldCameraSize;
->>>>>>> origin/master
 
     enum myButtons
     {
