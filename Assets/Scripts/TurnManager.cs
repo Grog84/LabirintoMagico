@@ -88,6 +88,7 @@ public class TurnManager : MonoBehaviour
 
     public void PassTurn()
     {
+        
         ActivatePlayer(0);
 
         playerPlayingIdx++;
@@ -99,6 +100,8 @@ public class TurnManager : MonoBehaviour
         //myCameraMovement.MoveToPosition(activePlayer.GetComponentInParent<Transform>().position);
 
         //while (movingCamera) { }
+
+        isAcceptingInputs = false;
 
         mapManager.updateTilesConnection(playerPlaying);
         activePlayer.CheckDiamondStatusTimer();
@@ -113,6 +116,7 @@ public class TurnManager : MonoBehaviour
         ActivateTraps();
 
         selectedButton = 0;
+        isAcceptingInputs = true;
 
         // StartCoroutine(MoveCamera(players[playerPlayingIdx]));  
 
@@ -319,7 +323,7 @@ public class TurnManager : MonoBehaviour
 
     public void ActivateTraps()
     {
-        for (int i = 0; i < trapsToActivate.Count; i++)
+        for (int i = trapsToActivate.Count - 1; i >= 0; i--)
         {
             Trap thisTrap = trapsToActivate[i];
             bool isOverlappedToPlayer = false;
@@ -331,7 +335,8 @@ public class TurnManager : MonoBehaviour
             if (!isOverlappedToPlayer)
             {
                 thisTrap.Activate();
-                trapsToActivate.RemoveAt(i);
+                trapsToActivate.Remove(thisTrap);
+                //trapsToActivate.RemoveAt(i);
             }
         }
     }
@@ -519,6 +524,7 @@ public class TurnManager : MonoBehaviour
         mapManager.UpdateTilesZOrder();
         inAction = false;
         isAcceptingInputs = true;
+        yield return null;
 
         if (ChecksForPassTurnCondition())
             PassTurn();
@@ -574,7 +580,7 @@ public class TurnManager : MonoBehaviour
 
         while (resolvingCombat) { yield return null; }
 
-        // Possible Playeer on destroyed tile
+        // Possible Player on destroyed tile
         Tile lastTile = mapManager.PickTileComponent(lineCoordinates[lineCoordinates.Length - 1]);
         int newCardType = lastTile.type;
         bool trapStatus = lastTile.GetIsTrapped();
@@ -815,7 +821,6 @@ public class TurnManager : MonoBehaviour
 
         yield return null;
     }
-
 
     // Tile Rotation
 
