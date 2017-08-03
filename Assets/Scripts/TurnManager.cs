@@ -32,6 +32,7 @@ public class TurnManager : MonoBehaviour
     private bool canBeActivated = true;
     private bool canBeRotated = true;
     private CameraMovement myCameraMovement;
+    private bool isAcceptingInputs=true;
 
     enum myButtons
     {
@@ -224,6 +225,7 @@ public class TurnManager : MonoBehaviour
     //TODO ADD INACTIVE STATUS
     IEnumerator ActivatePanel(int panelType)
     {
+        isAcceptingInputs = false;
         foreach (var btn in buttonsAnimator)
         {
             //btn.SetBool("hasChanged", true);
@@ -254,6 +256,7 @@ public class TurnManager : MonoBehaviour
         }
 
         yield return null;
+        isAcceptingInputs = true;
     }
 
     void ActivateBasePanel()  
@@ -976,175 +979,177 @@ public class TurnManager : MonoBehaviour
         //{
         //    canBeActivated = false;
         //}
-        if (Input.GetKeyDown(KeyCode.R)) SceneManager.LoadScene("_Scenes/scenaprova");
-
-        if (selectionDepth == (int)panelSelection.basePanel)
+        if (isAcceptingInputs)
         {
-            if ((Input.GetKeyDown(KeyCode.Z) || Input.GetButtonDown("Fire3joy")) && canMove) // Walk
+            if (Input.GetKeyDown(KeyCode.R)) SceneManager.LoadScene("_Scenes/scenaprova");
+
+            if (selectionDepth == (int)panelSelection.basePanel)
             {
-                inAction = true;
-                StartCoroutine(ActivatePanel((int)panelSelection.walkPanel));
-                StartCoroutine(ActivateMovementPhase());
+                if ((Input.GetKeyDown(KeyCode.Z) || Input.GetButtonDown("Fire3joy")) && canMove) // Walk
+                {
+                    inAction = true;
+                    StartCoroutine(ActivatePanel((int)panelSelection.walkPanel));
+                    StartCoroutine(ActivateMovementPhase());
+                }
+                else if ((Input.GetKeyDown(KeyCode.X) || Input.GetButtonDown("Fire1joy")) && canTerraform) // Terraform
+                {
+                    StartCoroutine(ActivatePanel((int)panelSelection.terraformPanel));
+                }
+                else if (Input.GetKeyDown(KeyCode.C)) // Nothing
+                {
+                }
             }
-            else if ((Input.GetKeyDown(KeyCode.X) || Input.GetButtonDown("Fire1joy")) && canTerraform) // Terraform
+
+            //else if (selectionDepth == (int)panelSelection.walkPanel)
+            //{
+            //    if (Input.GetKeyDown(KeyCode.Z)) // Confirm Walk
+            //    {
+            //    }
+            //    else if (Input.GetKeyDown(KeyCode.S)) // Nothing
+            //    {
+            //    }
+            //    else if (Input.GetKeyDown(KeyCode.D)) // Back to base panel
+            //    {
+            //        ActivatePanel((int)panelSelection.basePanel);
+            //    }
+            //}
+
+            else if (selectionDepth == (int)panelSelection.terraformPanel)
             {
-                StartCoroutine(ActivatePanel((int)panelSelection.terraformPanel));
+                if (Input.GetKeyDown(KeyCode.Z) || Input.GetButtonDown("Fire3joy")) // Slide
+                {
+                    inAction = true;
+                    StartCoroutine(ActivatePanel((int)panelSelection.slidePanel));
+                    StartCoroutine(ScrollTileInsertionSelection());
+                }
+                else if (Input.GetKeyDown(KeyCode.X) || Input.GetButtonDown("Fire1joy")) // Rotation
+                {
+                    inAction = true;
+                    StartCoroutine(ActivatePanel((int)panelSelection.rotatePanel));
+                    StartCoroutine(ActivateRotationCursor());
+                }
+                else if (Input.GetKeyDown(KeyCode.C) || Input.GetButtonDown("Fire2joy")) // Back to base panel
+                {
+                    StartCoroutine(ActivatePanel((int)panelSelection.basePanel));
+                }
             }
-            else if (Input.GetKeyDown(KeyCode.C)) // Nothing
-            {      
+
+            else if (selectionDepth == (int)panelSelection.slidePanel)
+            {
+                if (Input.GetKeyDown(KeyCode.Z) || Input.GetButtonDown("Fire3joy")) // Confirm
+                {
+                }
+                else if (Input.GetKeyDown(KeyCode.X) || Input.GetButtonDown("Fire1joy")) // Nothing
+                {
+                }
+                else if (Input.GetKeyDown(KeyCode.C) || Input.GetButtonDown("Fire2joy")) // Back to terraform panel
+                {
+                    StartCoroutine(ActivatePanel((int)panelSelection.terraformPanel));
+                }
             }
+
+            else if (selectionDepth == (int)panelSelection.rotatePanel)
+            {
+                if (Input.GetKeyDown(KeyCode.Z) || Input.GetButtonDown("Fire3joy")) // rotation counterclockwise
+                {
+                }
+                else if (Input.GetKeyDown(KeyCode.X) || Input.GetButtonDown("Fire1joy")) // rotation clockwise
+                {
+                }
+                else if (Input.GetKeyDown(KeyCode.C) || Input.GetButtonDown("Fire2joy")) // Back to terraform panel
+                {
+                    StartCoroutine(ActivatePanel((int)panelSelection.terraformPanel));
+                }
+            }
+
+            if ((Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("PassTurn")) && !inAction)
+            {
+                PassTurn();
+            }
+
+            if ((Input.GetKeyDown(KeyCode.M) || Input.GetButtonDown("Fire4joy")) && canUseCrystal)
+            {
+                ActivateDiamondStasis();
+            }
+
+            // cristallo
+            //if (Input.GetKeyDown(KeyCode.Space))
+            //{
+            //    PassTurn();
+            //}
         }
 
-        //else if (selectionDepth == (int)panelSelection.walkPanel)
-        //{
-        //    if (Input.GetKeyDown(KeyCode.Z)) // Confirm Walk
-        //    {
-        //    }
-        //    else if (Input.GetKeyDown(KeyCode.S)) // Nothing
-        //    {
-        //    }
-        //    else if (Input.GetKeyDown(KeyCode.D)) // Back to base panel
-        //    {
-        //        ActivatePanel((int)panelSelection.basePanel);
-        //    }
-        //}
-
-        else if (selectionDepth == (int)panelSelection.terraformPanel)
+        //deprecated
+        /*
+        IEnumerator ActivateCardRotation(int cardNbr)
         {
-            if (Input.GetKeyDown(KeyCode.Z) || Input.GetButtonDown("Fire3joy")) // Slide
-            {
-                inAction = true;
-                StartCoroutine(ActivatePanel((int)panelSelection.slidePanel));
-                StartCoroutine(ScrollTileInsertionSelection());
-            }
-            else if (Input.GetKeyDown(KeyCode.X) || Input.GetButtonDown("Fire1joy")) // Rotation
-            {
-                inAction = true;
-                StartCoroutine(ActivatePanel((int)panelSelection.rotatePanel));
-                StartCoroutine(ActivateRotationCursor());
-            }
-            else if (Input.GetKeyDown(KeyCode.C) || Input.GetButtonDown("Fire2joy")) // Back to base panel
-            {
-                StartCoroutine(ActivatePanel((int)panelSelection.basePanel));
-            }
-        }
+            selectionDepth = 3;
+            CardButton activatedCard = null;
 
-        else if (selectionDepth == (int)panelSelection.slidePanel)
-        {
-            if (Input.GetKeyDown(KeyCode.Z) || Input.GetButtonDown("Fire3joy")) // Confirm
+            // set the arrows in position
+            if (cardNbr == 1)
             {
+                arrows.GetComponent<RectTransform>().anchoredPosition = card1Button.GetComponent<RectTransform>().anchoredPosition + arrowsRelativePosition;
+                activatedCard = cardsButtonComponent[0];
             }
-            else if (Input.GetKeyDown(KeyCode.X) || Input.GetButtonDown("Fire1joy")) // Nothing
+            else if (cardNbr == 2)
             {
+                arrows.GetComponent<RectTransform>().anchoredPosition = card2Button.GetComponent<RectTransform>().anchoredPosition + arrowsRelativePosition;
+                activatedCard = cardsButtonComponent[1];
             }
-            else if (Input.GetKeyDown(KeyCode.C) || Input.GetButtonDown("Fire2joy")) // Back to terraform panel
+
+            yield return null;
+
+            while (!Input.GetKeyDown(KeyCode.B) && !Input.GetKeyDown(KeyCode.Space) && !Input.GetButtonDown("Fire1joy") && !Input.GetButtonDown("Fire2joy"))
             {
-                StartCoroutine(ActivatePanel((int)panelSelection.terraformPanel));
+                if ((Input.GetKeyDown(KeyCode.D) || Input.GetAxis("RotationJoy") > 0) && canBeRotated)
+                {
+                    canBeRotated = false;
+                    activatedCard.RotateTile(-1);
+                }
+                else if ((Input.GetKeyDown(KeyCode.A) || Input.GetAxis("RotationJoy") < 0) && canBeRotated)
+                {
+                    canBeRotated = false;
+                    activatedCard.RotateTile(1);
+                }
+
+                yield return null;
             }
-        }
 
-        else if (selectionDepth == (int)panelSelection.rotatePanel)
-        {
-            if (Input.GetKeyDown(KeyCode.Z) || Input.GetButtonDown("Fire3joy")) // rotation counterclockwise
+            if (Input.GetKeyDown(KeyCode.B) || Input.GetButtonDown("Fire2joy"))
             {
+                arrows.GetComponent<RectTransform>().anchoredPosition += panelParkingPosition;
+                ActivateCardSelection();
             }
-            else if (Input.GetKeyDown(KeyCode.X) || Input.GetButtonDown("Fire1joy")) // rotation clockwise
+            else
             {
-            }
-            else if (Input.GetKeyDown(KeyCode.C) || Input.GetButtonDown("Fire2joy")) // Back to terraform panel
-            {
-                StartCoroutine(ActivatePanel((int)panelSelection.terraformPanel));
-            }
-        }
-
-        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("PassTurn")) && !inAction)
-        {
-            PassTurn();
-        }
-
-        if ((Input.GetKeyDown(KeyCode.M) || Input.GetButtonDown("Fire4joy")) && canUseCrystal)
-        {
-            ActivateDiamondStasis();
-        }
-
-        // cristallo
-        //if (Input.GetKeyDown(KeyCode.Space))
-        //{
-        //    PassTurn();
-        //}
-    }
-
-    //deprecated
-    /*
-    IEnumerator ActivateCardRotation(int cardNbr)
-    {
-        selectionDepth = 3;
-        CardButton activatedCard = null;
-
-        // set the arrows in position
-        if (cardNbr == 1)
-        {
-            arrows.GetComponent<RectTransform>().anchoredPosition = card1Button.GetComponent<RectTransform>().anchoredPosition + arrowsRelativePosition;
-            activatedCard = cardsButtonComponent[0];
-        }
-        else if (cardNbr == 2)
-        {
-            arrows.GetComponent<RectTransform>().anchoredPosition = card2Button.GetComponent<RectTransform>().anchoredPosition + arrowsRelativePosition;
-            activatedCard = cardsButtonComponent[1];
-        }
-
-        yield return null;
-
-        while (!Input.GetKeyDown(KeyCode.B) && !Input.GetKeyDown(KeyCode.Space) && !Input.GetButtonDown("Fire1joy") && !Input.GetButtonDown("Fire2joy"))
-        {
-            if ((Input.GetKeyDown(KeyCode.D) || Input.GetAxis("RotationJoy") > 0) && canBeRotated)
-            {
-                canBeRotated = false;
-                activatedCard.RotateTile(-1);
-            }
-            else if ((Input.GetKeyDown(KeyCode.A) || Input.GetAxis("RotationJoy") < 0) && canBeRotated)
-            {
-                canBeRotated = false;
-                activatedCard.RotateTile(1);
+                StartCoroutine(ScrollTileInsertionSelection(cardNbr));
             }
 
             yield return null;
         }
 
-        if (Input.GetKeyDown(KeyCode.B) || Input.GetButtonDown("Fire2joy"))
+        public IEnumerator MoveCamera(GameObject player) // Temporarly deactivated untill the camera position is properly fixed
         {
-            arrows.GetComponent<RectTransform>().anchoredPosition += panelParkingPosition;
-            ActivateCardSelection();
-        }
-        else
-        {
-            StartCoroutine(ScrollTileInsertionSelection(cardNbr));
-        }
+            float elapsedTime = 0;
+            float animTime = 1f;
 
-        yield return null;
+            Vector3 old_position = camera.transform.GetComponentInParent<Transform>().position;
+
+            camera.transform.parent = null;
+            camera.transform.position = old_position;
+            Vector3 destination = player.GetComponent<Transform>().position;
+            destination.z = camera.transform.position.z; // 
+
+            while (elapsedTime < animTime)
+            {
+                camera.transform.position = Vector3.Lerp(camera.transform.position, destination, elapsedTime / animTime);
+                elapsedTime += Time.deltaTime;
+                yield return null;
+            }
+
+            camera.transform.SetParent(player.transform);
+            //ActivatePlayer(player.GetComponent<Player>().playerNbr);
+        }*/
     }
-
-    public IEnumerator MoveCamera(GameObject player) // Temporarly deactivated untill the camera position is properly fixed
-    {
-        float elapsedTime = 0;
-        float animTime = 1f;
-
-        Vector3 old_position = camera.transform.GetComponentInParent<Transform>().position;
-
-        camera.transform.parent = null;
-        camera.transform.position = old_position;
-        Vector3 destination = player.GetComponent<Transform>().position;
-        destination.z = camera.transform.position.z; // 
-
-        while (elapsedTime < animTime)
-        {
-            camera.transform.position = Vector3.Lerp(camera.transform.position, destination, elapsedTime / animTime);
-            elapsedTime += Time.deltaTime;
-            yield return null;
-        }
-
-        camera.transform.SetParent(player.transform);
-        //ActivatePlayer(player.GetComponent<Player>().playerNbr);
-    }*/
-
 }
