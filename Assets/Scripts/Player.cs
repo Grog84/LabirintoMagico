@@ -287,6 +287,9 @@ public class Player : MonoBehaviour
         int other = tile.GetPlayerChildNbr();
         if (other != -1)
         {
+            turnManagerComponent.SetOldCameraPosition(GeneralMethods.GetVect3Midpoint(transform.position, tile.GetComponent<Transform>().position));
+            turnManagerComponent.SetOldCameraSize();
+
             checkingCombat = true;
             StartCoroutine(AttackPlayerOnTile(tile));
         }
@@ -294,6 +297,10 @@ public class Player : MonoBehaviour
  
     public IEnumerator AttackPlayerOnTile(Tile tile)
     {
+
+        CameraMovement myCamera = turnManagerComponent.GetCameraComponent();
+        myCamera.MoveToHighlight(GeneralMethods.GetVect3Midpoint(transform.position, tile.GetComponent<Transform>().position));
+
         StartAnimationAttack();
         yield return null;
 
@@ -320,6 +327,8 @@ public class Player : MonoBehaviour
             elapsedTime += Time.deltaTime;
             yield return null;
         }
+
+        myCamera.MoveToPositionAndZoom(turnManagerComponent.GetOldCameraPosition(), turnManagerComponent.GetOldCameraSize());
 
         StopWalking();
         turnManager.GetComponent<TurnManager>().CollectDiamond(this);

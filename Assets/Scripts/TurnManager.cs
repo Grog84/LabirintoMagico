@@ -33,7 +33,12 @@ public class TurnManager : MonoBehaviour
     private bool canBeActivated = true;
     private bool canBeRotated = true;
     private CameraMovement myCameraMovement;
+<<<<<<< HEAD
     public GameObject passButton;
+=======
+    private Vector3 oldCameraPosition;
+    private float oldCameraSize;
+>>>>>>> origin/master
 
     enum myButtons
     {
@@ -635,6 +640,7 @@ public class TurnManager : MonoBehaviour
         arrow.GetComponent<Animator>().SetBool("isActive", false);
         mapManager.SetInsertArrowsVisible(false);
         StartCoroutine(EndTerraform());
+        myCameraMovement.MoveToPosition(activePlayer.GetComponentInParent<Transform>().position);
         yield return null;
     }
 
@@ -900,6 +906,41 @@ public class TurnManager : MonoBehaviour
     public void CameraSetRowsAndColumns()
     {
         myCameraMovement.SetRowsAndColumns(mapManager);
+    }
+
+    public float GetOldCameraSize()
+    {
+        return oldCameraSize;
+    }
+
+    public Vector3 GetOldCameraPosition()
+    {
+        return oldCameraPosition;
+    }
+
+    public void SetOldCameraSize()
+    {
+        oldCameraSize = myCamera.orthographicSize;
+    }
+
+    public void SetOldCameraSize(float value)
+    {
+        oldCameraSize = value;
+    }
+
+    public void SetOldCameraPosition()
+    {
+        oldCameraPosition = myCamera.transform.position;
+    }
+
+    public void SetOldCameraPosition(Vector3 position)
+    {
+        oldCameraPosition = position;
+    }
+
+    public CameraMovement GetCameraComponent()
+    {
+        return myCameraMovement;
     }
 
     // General Methods

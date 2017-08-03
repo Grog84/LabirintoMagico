@@ -9,10 +9,11 @@ public class CameraMovement : MonoBehaviour {
     public float maxXDisplacement, maxYDisplacement;
 
     private int mapColumns, mapRows;
-    private float[] xLimits, yLimits;
+    private float[] xLimits, yLimits, xLimitsWalk, yLimitsWalk;
     private Camera thisCamera;
     private bool isFollowingPlayer;
     private Player followedPlayer;
+    private float zoomInSizeWalk = 22f;
 
     public void SetRowsAndColumns(MapManager mapManager)
     {
@@ -37,15 +38,15 @@ public class CameraMovement : MonoBehaviour {
     {
         if (withZoom)
         {
-            float cameraX = Mathf.Clamp(position.x, -maxXDisplacement, maxXDisplacement);
-            float cameraY = Mathf.Clamp(position.y, -maxYDisplacement, maxYDisplacement);
+            float cameraX = Mathf.Clamp(position.x, xLimitsWalk[0], xLimitsWalk[1]);
+            float cameraY = Mathf.Clamp(position.y, yLimitsWalk[0], yLimitsWalk[1]);
             var cameraPosition = new Vector3(cameraX, cameraY, transform.position.z);
             float distance = Vector3.Distance(transform.position, cameraPosition);
 
             transform.DOMove(cameraPosition, distance * 0.03f);
 
-            float toZoom = thisCamera.orthographicSize - zoomInSizeLimit;
-            thisCamera.DOOrthoSize(zoomInSizeLimit, toZoom * 0.03f);
+            float toZoom = thisCamera.orthographicSize - zoomInSizeWalk;
+            thisCamera.DOOrthoSize(zoomInSizeWalk, toZoom * 0.03f);
         }
         else
         {
@@ -56,6 +57,30 @@ public class CameraMovement : MonoBehaviour {
 
             transform.DOMove(cameraPosition, distance * 0.03f);
         }
+    }
+
+    public void MoveToHighlight(Vector3 position) 
+    {     
+        float cameraX = Mathf.Clamp(position.x, xLimits[0], xLimits[1]);
+        float cameraY = Mathf.Clamp(position.y, yLimits[0], yLimits[1]);
+        var cameraPosition = new Vector3(cameraX, cameraY, transform.position.z);
+
+        transform.DOMove(cameraPosition, 0.1f);
+        thisCamera.DOOrthoSize(zoomInSizeLimit, 0.1f);
+    }
+
+    public void MoveToPositionAndZoom(Vector3 position, float zoom)
+    {
+        float distance = Vector3.Distance(transform.position, position);
+        float toZoom = thisCamera.orthographicSize - zoom;
+
+        float[] limits = GetLimitsAtZoom(zoom);
+        float cameraX = Mathf.Clamp(position.x, limits[0], limits[1]);
+        float cameraY = Mathf.Clamp(position.y, limits[2], limits[3]);
+        var cameraPosition = new Vector3(cameraX, cameraY, transform.position.z);
+
+        transform.DOMove(cameraPosition, 0.1f);
+        thisCamera.DOOrthoSize(zoom, 0.1f);
     }
 
     public void MoveToCenter()
@@ -149,6 +174,20 @@ public class CameraMovement : MonoBehaviour {
         yLimits = new float[2] { -yLim, yLim };
     }
 
+    private float[] GetLimitsAtZoom(float zoom)
+    {
+        var limits = new float[4];
+        float xLim = (maxXDisplacement * (zoomOutSizeLimit - zoom)) / (zoomOutSizeLimit - zoomInSizeLimit);
+        float yLim = (maxYDisplacement * (zoomOutSizeLimit - zoom)) / (zoomOutSizeLimit - zoomInSizeLimit);
+
+        limits[0] = -xLim;
+        limits[1] = xLim;
+        limits[0] = -yLim;
+        limits[1] = yLim;
+
+        return limits;
+    }
+
     private void RepositionInsideLimits()
     {
         float newPosX = Mathf.Clamp(transform.position.x, xLimits[0], xLimits[1]);
@@ -168,6 +207,12 @@ public class CameraMovement : MonoBehaviour {
         thisCamera = GetComponent<Camera>();
 
         isFollowingPlayer = false;
+
+        float xLim = (maxXDisplacement * (zoomOutSizeLimit - zoomInSizeWalk)) / (zoomOutSizeLimit - zoomInSizeLimit);
+        xLimitsWalk = new float[2] { -xLim, xLim };
+
+        float yLim = (maxYDisplacement * (zoomOutSizeLimit - zoomInSizeWalk)) / (zoomOutSizeLimit - zoomInSizeLimit);
+        yLimitsWalk = new float[2] { -yLim, yLim };
 
     }
 	
