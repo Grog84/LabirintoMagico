@@ -74,4 +74,13 @@ static class GeneralMethods
         return indx;
     }
 
+    static public Vector3 GetVect3Midpoint(Vector3 vec1, Vector3 vec2)
+    {
+        var mid = Vector3.zero;
+        mid.x = (vec1.x + vec2.x) / 2f;
+        mid.y = (vec1.y + vec2.y) / 2f;
+        mid.z = (vec1.z + vec2.z) / 2f;
+        return mid;
+    }
+
 }
