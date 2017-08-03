@@ -64,7 +64,7 @@ public class MenuManager : MonoBehaviour
         }    
         
 
-        if ((Input.GetKeyDown(KeyCode.W) || Input.GetAxis("VerticalJoy") == 1) && !moving)
+        if ((Input.GetKeyDown(KeyCode.W) || Input.GetAxis("VerticalJoy") == 1 || Input.GetAxis("VerticalAnalog") >= 0.9f) && !moving)
         {
             moving = true;
             audio.clip = SFX[0];
@@ -78,7 +78,7 @@ public class MenuManager : MonoBehaviour
             Debug.Log(selezione);
             //StartCoroutine(MoveRight());
         }
-        if ((Input.GetKeyDown(KeyCode.S) || Input.GetAxis("VerticalJoy") == -1) && !moving)
+        if ((Input.GetKeyDown(KeyCode.S) || Input.GetAxis("VerticalJoy") == -1 || Input.GetAxis("VerticalAnalog") <= -0.9f) && !moving)
         {
             moving = true;
             audio.clip = SFX[0];

@@ -37,7 +37,7 @@ public class TutorialMenu : MonoBehaviour {
         //if (transform.position.y % 7.5 == 0 || transform.position.y % 7.5 == 7.5) move = false;
         //else move = true;
 
-            if ((Input.GetKeyDown(KeyCode.W) || Input.GetAxis("VerticalJoy") == 1) && !move)
+            if ((Input.GetKeyDown(KeyCode.W) || Input.GetAxis("VerticalJoy") == 1 || Input.GetAxis("VerticalAnalog") >= 0.9f) && !move)
         {
             if (transform.position.y > -4)
             {
@@ -65,7 +65,7 @@ public class TutorialMenu : MonoBehaviour {
             Debug.Log(selezione);
         }
 
-        if ((Input.GetKeyDown(KeyCode.S) || Input.GetAxis("VerticalJoy") == -1) && !move)
+        if ((Input.GetKeyDown(KeyCode.S) || Input.GetAxis("VerticalJoy") == -1 || Input.GetAxis("VerticalAnalog") <= -0.9f) && !move)
         {
             if (transform.position.y < 4)
             {

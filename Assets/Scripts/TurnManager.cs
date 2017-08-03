@@ -639,7 +639,7 @@ public class TurnManager : MonoBehaviour
 
         while (!Input.GetKeyDown(KeyCode.C) && !Input.GetKeyDown(KeyCode.Z) && !Input.GetButtonDown("Fire3joy") && !Input.GetButtonDown("Fire2joy"))
         {
-            if ((Input.GetKey(KeyCode.D) || Input.GetAxis("HorizontalJoy") == 1))
+            if ((Input.GetKey(KeyCode.D) || Input.GetAxis("HorizontalJoy") == 1 || Input.GetAxis("HorizontalAnalog") >= 0.9f))
             {
                 if (currentSelection >= 26 && currentSelection <= 39)
                 {
@@ -672,7 +672,7 @@ public class TurnManager : MonoBehaviour
                 }
             }
 
-            else if ((Input.GetKey(KeyCode.A) || Input.GetAxis("HorizontalJoy") == -1))
+            else if ((Input.GetKey(KeyCode.A) || Input.GetAxis("HorizontalJoy") == -1 || Input.GetAxis("HorizontalAnalog") <= -0.9f))
             {
                 //canBeActivated = false;
                 if (currentSelection >= 1 && currentSelection <= 13)
@@ -707,7 +707,7 @@ public class TurnManager : MonoBehaviour
                 }
             }
 
-            else if ((Input.GetKey(KeyCode.W) || Input.GetAxis("VerticalJoy") == 1))
+            else if ((Input.GetKey(KeyCode.W) || Input.GetAxis("VerticalJoy") == 1 || Input.GetAxis("VerticalAnalog") >= 0.9f))
             {
                 //canBeActivated = false;
                 if (currentSelection >= 12 && currentSelection <= 25)
@@ -741,7 +741,7 @@ public class TurnManager : MonoBehaviour
                 }
             }
 
-            else if ((Input.GetKey(KeyCode.S) || Input.GetAxis("VerticalJoy") == -1))
+            else if ((Input.GetKey(KeyCode.S) || Input.GetAxis("VerticalJoy") == -1 || Input.GetAxis("VerticalAnalog") <= -0.9f))
             {
                 //canBeActivated = false;
                 if (currentSelection >= 13 && currentSelection <= 26)
