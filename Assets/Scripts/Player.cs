@@ -266,7 +266,7 @@ public class Player : MonoBehaviour
                 turnManager.GetComponent<TurnManager>().SetTrapHasTriggered(true);
                 tile.SetPlayerChild();
             }
-            else if (!trap.GetIsActive())
+            else if (!trap.GetIsActive() && trap.GetPlayerDropping() == 0)
             {
                 trap.SetPlayerDropping(playerNbr);
                 turnManager.GetComponent<TurnManager>().AddToActivateTrapList(trap);

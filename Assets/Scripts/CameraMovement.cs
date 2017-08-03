@@ -43,10 +43,10 @@ public class CameraMovement : MonoBehaviour {
             var cameraPosition = new Vector3(cameraX, cameraY, transform.position.z);
             float distance = Vector3.Distance(transform.position, cameraPosition);
 
-            transform.DOMove(cameraPosition, distance * 0.03f);
+            transform.DOMove(cameraPosition, distance * 0.02f);
 
             float toZoom = thisCamera.orthographicSize - zoomInSizeWalk;
-            thisCamera.DOOrthoSize(zoomInSizeWalk, toZoom * 0.03f);
+            thisCamera.DOOrthoSize(zoomInSizeWalk, toZoom * 0.02f);
         }
         else
         {
@@ -55,7 +55,7 @@ public class CameraMovement : MonoBehaviour {
             var cameraPosition = new Vector3(cameraX, cameraY, transform.position.z);
             float distance = Vector3.Distance(transform.position, cameraPosition);
 
-            transform.DOMove(cameraPosition, distance * 0.03f);
+            transform.DOMove(cameraPosition, distance * 0.02f);
         }
     }
 

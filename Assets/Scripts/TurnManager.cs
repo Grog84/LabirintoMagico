@@ -404,11 +404,13 @@ public class TurnManager : MonoBehaviour
         mapManager.diamondCoords = centralCoords;
     }
 
-    public void ActivateDiamondStasis()
+    public IEnumerator ActivateDiamondStasis()
     {
         mapManager.myDiamondInstance.transform.GetComponentInParent<Player>().ActivateStasis();
         canUseCrystal = false;
         buttonsAnimator[3].SetBool("isActive", true);
+        yield return null;
+        PassTurn();
     }
 
     public IEnumerator SetDiamondAnimation(int anim)
@@ -459,9 +461,15 @@ public class TurnManager : MonoBehaviour
 
         yield return null;
 
-        while (!Input.GetKeyDown(KeyCode.X) && !Input.GetButtonDown("Fire1joy") && !Input.GetKeyDown(KeyCode.C) && !Input.GetButtonDown("Fire2joy") &&  !trapHasTriggered && !attackHasHappened)
+        bool waitInput = true;
+        while (waitInput)
         {
             yield return null;
+            if (isAcceptingInputs)
+            {
+                if (Input.GetKeyDown(KeyCode.X) || Input.GetButtonDown("Fire1joy") || Input.GetKeyDown(KeyCode.C) || Input.GetButtonDown("Fire2joy") || trapHasTriggered || attackHasHappened)
+                    waitInput = false;
+            }
         }
 
 
@@ -495,6 +503,7 @@ public class TurnManager : MonoBehaviour
         {
             p.UnchildFromTile();
             p.TeleportAtCoordinates(movementStartingPosition);
+            myCameraMovement.MoveToPosition(p.transform.position);
             inAction = false;
         }
 
@@ -1114,7 +1123,7 @@ public class TurnManager : MonoBehaviour
 
             if ((Input.GetKeyDown(KeyCode.M) || Input.GetButtonDown("Fire4joy")) && canUseCrystal)
             {
-                ActivateDiamondStasis();
+                StartCoroutine(ActivateDiamondStasis());
             }
 
             // cristallo
