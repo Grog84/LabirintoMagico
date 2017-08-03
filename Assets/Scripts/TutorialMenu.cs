@@ -93,7 +93,7 @@ public class TutorialMenu : MonoBehaviour {
             Debug.Log(selezione);
         }
 
-        if ((Input.GetKeyDown(KeyCode.B) || Input.GetButtonDown("Fire2joy")))
+        if ((Input.GetKeyDown(KeyCode.B) || Input.GetButtonDown("Fire2joy")) && !fade.fading)
         {
             //fade.GetComponent<FadeManager>().fadeIn = false;
             StartCoroutine(fade.FadeOut("_Scenes/MenuIniziale"));

@@ -12,7 +12,7 @@ public class Controls : MonoBehaviour {
     }
 
     void Update () {
-		if ((Input.GetKeyDown(KeyCode.B) || Input.GetButtonDown("Fire2joy")))
+		if ((Input.GetKeyDown(KeyCode.B) || Input.GetButtonDown("Fire2joy")) && !fade.fading)
         {
             StartCoroutine(fade.FadeOut("_Scenes/MenuIniziale"));
         }

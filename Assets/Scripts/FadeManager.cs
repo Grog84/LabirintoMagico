@@ -7,6 +7,7 @@ public class FadeManager : ScriptableObject
 {
     public GameObject mask;
     private GameObject maskInstance;
+    public bool fading;
 
     [Header("FadeIn Speed")]
     [Tooltip ("FadeIn Speed value between 1 and 20.")]
@@ -31,24 +32,27 @@ public class FadeManager : ScriptableObject
 
     public IEnumerator FadeOut (string destination)
     {
+        fading = true;
         while (maskInstance.GetComponent<Renderer>().material.color.a < 1)
         {
             maskInstance.GetComponent<Renderer>().material.color += new Color(0, 0, 0, fadeOutEffective);
             yield return null;
         }
+        fading = false;
         SceneManager.LoadScene(destination);
         yield return null;
     }
 
     public IEnumerator FadeIn()
     {
+        fading = true;
         createFadeMask();
         while (maskInstance.GetComponent<Renderer>().material.color.a > 0)
         {
             maskInstance.GetComponent<Renderer>().material.color -= new Color(0, 0, 0, fadeInEffective);
             yield return null;
         }
-
+        fading = false;
     }
 
     
