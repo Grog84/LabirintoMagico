@@ -266,7 +266,7 @@ public class TurnManager : MonoBehaviour
     void ActivateBasePanel()  
     {
         selectionDepth = (int)panelSelection.basePanel;
-        foreach (var btn in buttonsAnimator)
+        foreach (Animator btn in buttonsAnimator)
         {
             btn.SetInteger("ButtonStatus", 1);
         }
@@ -457,13 +457,13 @@ public class TurnManager : MonoBehaviour
 
         yield return null;
 
-        while (!Input.GetKeyDown(KeyCode.Z) && !Input.GetButtonDown("Fire3joy") && !Input.GetKeyDown(KeyCode.C) && !Input.GetButtonDown("Fire2joy") &&  !trapHasTriggered && !attackHasHappened)
+        while (!Input.GetKeyDown(KeyCode.X) && !Input.GetButtonDown("Fire1joy") && !Input.GetKeyDown(KeyCode.C) && !Input.GetButtonDown("Fire2joy") &&  !trapHasTriggered && !attackHasHappened)
         {
             yield return null;
         }
 
 
-        if (Input.GetKeyDown(KeyCode.Z) || Input.GetButtonDown("Fire3joy") || trapHasTriggered || attackHasHappened)
+        if (Input.GetKeyDown(KeyCode.X) || Input.GetButtonDown("Fire1joy") || trapHasTriggered || attackHasHappened)
         {
             canMove = false;
             if (trapHasTriggered)
@@ -648,7 +648,7 @@ public class TurnManager : MonoBehaviour
         bool firstClick = false;
         float firstClickWaitingTime = 0.5f;
 
-        while (!Input.GetKeyDown(KeyCode.C) && !Input.GetKeyDown(KeyCode.Z) && !Input.GetButtonDown("Fire3joy") && !Input.GetButtonDown("Fire2joy"))
+        while (!Input.GetKeyDown(KeyCode.C) && !Input.GetKeyDown(KeyCode.X) && !Input.GetButtonDown("Fire1joy") && !Input.GetButtonDown("Fire2joy"))
         {
             if ((Input.GetKey(KeyCode.D) || Input.GetAxis("HorizontalJoy") == 1 || Input.GetAxis("HorizontalAnalog") >= 0.9f))
             {
@@ -712,7 +712,6 @@ public class TurnManager : MonoBehaviour
                 }
                 if (!firstClick)
                 {
-                    Debug.Log("passa");
                     yield return new WaitForSeconds(firstClickWaitingTime);
                     firstClick = true;
                 }
