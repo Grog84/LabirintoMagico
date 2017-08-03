@@ -17,6 +17,7 @@ public class Player : MonoBehaviour
     public bool moving = false;
     public Coordinate coordinate;
     public GameObject mapManager, turnManager;
+    public TurnManager turnManagerComponent;
     public MapManager mapManagerComponent;
     public List<Tile> toBright;
     public bool hasDiamond = false;
@@ -449,6 +450,7 @@ public class Player : MonoBehaviour
         //Debug.Log("possible: " + MapManager.GetComponent<MapManager>().myMap[coordinate.getX(), coordinate.getY()].GetComponent<Tile>().possibleConnections[1]);
         //Debug.Log("effective: " + MapManager.GetComponent<MapManager>().myMap[coordinate.getX(), coordinate.getY()].GetComponent<Tile>().effectiveConnections[1]);
         moving = true;
+        turnManagerComponent.isAcceptingInputs = false;
 
         if (transform.GetChild(0).transform.localScale.x < 0f)
             InvertTransformX();
@@ -496,12 +498,14 @@ public class Player : MonoBehaviour
 
         StopWalking();
         moving = false;
+        turnManagerComponent.isAcceptingInputs = true;
     }
 
     public IEnumerator MoveUp()
     {
         //Debug.Log("possible: " + MapManager.GetComponent<MapManager>().myMap[coordinate.getX(), coordinate.getY()].GetComponent<Tile>().possibleConnections[0]);
         moving = true;
+        turnManagerComponent.isAcceptingInputs = false;
 
         if (mapManagerComponent.myMap[coordinate.getX(), coordinate.getY()].GetComponent<Tile>().effectiveConnections[0] == true)
         {
@@ -546,6 +550,7 @@ public class Player : MonoBehaviour
         //yield return new WaitForSeconds(0.1f);
 
         StopWalking();
+        turnManagerComponent.isAcceptingInputs = true;
         moving = false;
     }
 
@@ -554,6 +559,7 @@ public class Player : MonoBehaviour
         //Debug.Log("effective:" + MapManager.GetComponent<MapManager>().myMap[coordinate.getX(), coordinate.getY()].GetComponent<Tile>().effectiveConnections[2]);
         //Debug.Log("possible: " + MapManager.GetComponent<MapManager>().myMap[coordinate.getX(), coordinate.getY()].GetComponent<Tile>().possibleConnections[2]);
         moving = true;
+        turnManagerComponent.isAcceptingInputs = false;
 
         if (mapManagerComponent.myMap[coordinate.getX(), coordinate.getY()].GetComponent<Tile>().effectiveConnections[2] == true)
         {
@@ -597,6 +603,7 @@ public class Player : MonoBehaviour
         //yield return new WaitForSeconds(0.1f);
 
         StopWalking();
+        turnManagerComponent.isAcceptingInputs = true;
         moving = false;
     }
 
@@ -604,6 +611,7 @@ public class Player : MonoBehaviour
     {
         //Debug.Log("possible: " + MapManager.GetComponent<MapManager>().myMap[coordinate.getX(), coordinate.getY()].GetComponent<Tile>().possibleConnections[3]);
         moving = true;
+        turnManagerComponent.isAcceptingInputs = false;
 
         if (transform.GetChild(0).transform.localScale.x > 0f)
             InvertTransformX();
@@ -650,6 +658,7 @@ public class Player : MonoBehaviour
         //yield return new WaitForSeconds(0.1f);
 
         StopWalking();
+        turnManagerComponent.isAcceptingInputs = true;
         moving = false;
     }
 
@@ -678,6 +687,7 @@ public class Player : MonoBehaviour
         myAnimator = GetComponent<Animator>();
         mapManager = GameObject.FindGameObjectWithTag("MapManager");
         turnManager = GameObject.FindGameObjectWithTag("TurnManager");
+        turnManagerComponent = turnManager.GetComponent<TurnManager>();
         toBright = new List<Tile>();
         mapManagerComponent = mapManager.GetComponent<MapManager>();
         SetStartingPoint();
@@ -685,23 +695,26 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        if (!moving && playerNbr == isPlayerTurn)
+        if (turnManagerComponent.isAcceptingInputs)
         {
-            if (Input.GetKeyDown(KeyCode.D) || Input.GetAxis("HorizontalJoy") == 1 || Input.GetAxis("HorizontalAnalog") >= 0.9f)
+            if (!moving && playerNbr == isPlayerTurn)
             {
-                StartCoroutine(MoveRight());
-            }
-            if (Input.GetKeyDown(KeyCode.A) || Input.GetAxis("HorizontalJoy") == -1 || Input.GetAxis("HorizontalAnalog") <= -0.9f)
-            {
-                StartCoroutine(MoveLeft());
-            }
-            if (Input.GetKeyDown(KeyCode.W) || Input.GetAxis("VerticalJoy") == 1 || Input.GetAxis("VerticalAnalog") >= 0.9f)
-            {
-                StartCoroutine(MoveUp());
-            }
-            if (Input.GetKeyDown(KeyCode.S) || Input.GetAxis("VerticalJoy") == -1 || Input.GetAxis("VerticalAnalog") <= -0.9f)
-            {
-                StartCoroutine(MoveDown());
+                if (Input.GetKeyDown(KeyCode.D) || Input.GetAxis("HorizontalJoy") == 1 || Input.GetAxis("HorizontalAnalog") >= 0.9f)
+                {
+                    StartCoroutine(MoveRight());
+                }
+                if (Input.GetKeyDown(KeyCode.A) || Input.GetAxis("HorizontalJoy") == -1 || Input.GetAxis("HorizontalAnalog") <= -0.9f)
+                {
+                    StartCoroutine(MoveLeft());
+                }
+                if (Input.GetKeyDown(KeyCode.W) || Input.GetAxis("VerticalJoy") == 1 || Input.GetAxis("VerticalAnalog") >= 0.9f)
+                {
+                    StartCoroutine(MoveUp());
+                }
+                if (Input.GetKeyDown(KeyCode.S) || Input.GetAxis("VerticalJoy") == -1 || Input.GetAxis("VerticalAnalog") <= -0.9f)
+                {
+                    StartCoroutine(MoveDown());
+                }
             }
         }
     }

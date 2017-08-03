@@ -14,6 +14,7 @@ public class TurnManager : MonoBehaviour
     public Camera myCamera;
     public MapManager mapManager;
     public bool isSliding = false, isRotating = false;
+    public bool isAcceptingInputs=true;
 
     private int playerPlaying, playerPlayingIdx, turnNbr, selectedButton, selectionDepth;
     private int[] playerOrder;
@@ -32,7 +33,6 @@ public class TurnManager : MonoBehaviour
     private bool canBeActivated = true;
     private bool canBeRotated = true;
     private CameraMovement myCameraMovement;
-    private bool isAcceptingInputs=true;
 
     enum myButtons
     {
@@ -518,6 +518,7 @@ public class TurnManager : MonoBehaviour
         StartCoroutine(ActivatePanel((int)panelSelection.basePanel));
         mapManager.UpdateTilesZOrder();
         inAction = false;
+        isAcceptingInputs = true;
 
         if (ChecksForPassTurnCondition())
             PassTurn();
@@ -543,6 +544,8 @@ public class TurnManager : MonoBehaviour
 
         Coordinate[] lineCoordinates = arrow.GetComponent<InsertArrow>().getPointedCoords();
         lineCoordinates = mapManager.KeepMovableTiles(lineCoordinates);
+
+        isAcceptingInputs = false;
 
         // Possible PvP
         attackHasHappened = false;
@@ -624,7 +627,6 @@ public class TurnManager : MonoBehaviour
         arrow.GetComponent<Animator>().SetBool("isActive", false);
         mapManager.SetInsertArrowsVisible(false);
         StartCoroutine(EndTerraform());
-
         yield return null;
     }
 
@@ -819,6 +821,7 @@ public class TurnManager : MonoBehaviour
 
     IEnumerator ActivateRotation(int direction)
     {
+        isAcceptingInputs = false;
         Coordinate[] selectedCoords = rotationCursor.GetComponent<CursorMoving>().getSelectedCoords();
         rotationCursor.GetComponent<CursorMoving>().SetAtPosition(parkingPosition);
         yield return StartCoroutine(mapManager.RotateTiles(selectedCoords, direction));
