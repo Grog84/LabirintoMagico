@@ -33,16 +33,29 @@ public class CameraMovement : MonoBehaviour {
         isFollowingPlayer = false;
     }
 
-    public void MoveToPosition(Vector3 position)
+    public void MoveToPosition(Vector3 position, bool withZoom=true)
     {
-        float cameraX = Mathf.Clamp(position.x, -maxXDisplacement, maxXDisplacement);
-        float cameraY = Mathf.Clamp(position.y, -maxYDisplacement, maxYDisplacement);
-        var cameraPosition = new Vector3(cameraX, cameraY, transform.position.z);
-        float distance = Vector3.Distance(transform.position, cameraPosition);
-        float toZoom = thisCamera.orthographicSize - zoomInSizeLimit;
+        if (withZoom)
+        {
+            float cameraX = Mathf.Clamp(position.x, -maxXDisplacement, maxXDisplacement);
+            float cameraY = Mathf.Clamp(position.y, -maxYDisplacement, maxYDisplacement);
+            var cameraPosition = new Vector3(cameraX, cameraY, transform.position.z);
+            float distance = Vector3.Distance(transform.position, cameraPosition);
 
-        transform.DOMove(cameraPosition, distance * 0.03f);
-        thisCamera.DOOrthoSize(zoomInSizeLimit, toZoom * 0.03f);
+            transform.DOMove(cameraPosition, distance * 0.03f);
+
+            float toZoom = thisCamera.orthographicSize - zoomInSizeLimit;
+            thisCamera.DOOrthoSize(zoomInSizeLimit, toZoom * 0.03f);
+        }
+        else
+        {
+            float cameraX = Mathf.Clamp(position.x, xLimits[0], xLimits[1]);
+            float cameraY = Mathf.Clamp(position.y, yLimits[0], yLimits[1]);
+            var cameraPosition = new Vector3(cameraX, cameraY, transform.position.z);
+            float distance = Vector3.Distance(transform.position, cameraPosition);
+
+            transform.DOMove(cameraPosition, distance * 0.03f);
+        }
     }
 
     public void MoveToCenter()
@@ -124,7 +137,7 @@ public class CameraMovement : MonoBehaviour {
     {
         var playerPosition = followedPlayer.GetComponentInParent<Transform>().position;
         //var playerPosition = followedPlayer.coordinate.GetPositionFromCoords(mapColumns, mapRows);
-        MoveToPosition(playerPosition);
+        MoveToPosition(playerPosition, false);
     }
 
     private void UpdatePositionLimits()
