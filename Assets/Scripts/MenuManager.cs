@@ -92,7 +92,7 @@ public class MenuManager : MonoBehaviour
             Debug.Log(selezione);
             //StartCoroutine(MoveLeft());
         }
-        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Fire1joy")) && !moving)
+        if ((Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Fire1joy")) && !moving && !fading.fading)
         {
             audio.clip = SFX[1];
             audio.Play();
