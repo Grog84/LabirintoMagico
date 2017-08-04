@@ -1,46 +1,46 @@
 fileFormatVersion: 2
-guid: cfd09d8471155834aa533493c2f5c232
-timeCreated: 1501776786
+guid: 94be25611bbe049408db4766b2147af3
+timeCreated: 1501837268
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: icon hero_loop_correctframes_blue_0
-    21300002: icon hero_loop_correctframes_blue_1
-    21300004: icon hero_loop_correctframes_blue_2
-    21300006: icon hero_loop_correctframes_blue_3
-    21300008: icon hero_loop_correctframes_blue_4
-    21300010: icon hero_loop_correctframes_blue_5
-    21300012: icon hero_loop_correctframes_blue_6
-    21300014: icon hero_loop_correctframes_blue_7
-    21300016: icon hero_loop_correctframes_blue_8
-    21300018: icon hero_loop_correctframes_blue_9
-    21300020: icon hero_loop_correctframes_blue_10
-    21300022: icon hero_loop_correctframes_blue_11
-    21300024: icon hero_loop_correctframes_blue_12
-    21300026: icon hero_loop_correctframes_blue_13
-    21300028: icon hero_loop_correctframes_blue_14
-    21300030: icon hero_loop_correctframes_blue_15
-    21300032: icon hero_loop_correctframes_blue_16
-    21300034: icon hero_loop_correctframes_blue_17
-    21300036: icon hero_loop_correctframes_blue_18
-    21300038: icon hero_loop_correctframes_blue_19
-    21300040: icon hero_loop_correctframes_blue_20
-    21300042: icon hero_loop_correctframes_blue_21
-    21300044: icon hero_loop_correctframes_blue_22
-    21300046: icon hero_loop_correctframes_blue_23
-    21300048: icon hero_loop_correctframes_blue_24
-    21300050: icon hero_loop_correctframes_blue_25
-    21300052: icon hero_loop_correctframes_blue_26
-    21300054: icon hero_loop_correctframes_blue_27
-    21300056: icon hero_loop_correctframes_blue_28
-    21300058: icon hero_loop_correctframes_blue_29
-    21300060: icon hero_loop_correctframes_blue_30
-    21300062: icon hero_loop_correctframes_blue_31
-    21300064: icon hero_loop_correctframes_blue_32
-    21300066: icon hero_loop_correctframes_blue_33
-    21300068: icon hero_loop_correctframes_blue_34
-    21300070: icon hero_loop_correctframes_blue_35
-    21300072: icon hero_loop_correctframes_blue_36
+    21300000: icon hero_loop_green_0
+    21300002: icon hero_loop_green_1
+    21300004: icon hero_loop_green_2
+    21300006: icon hero_loop_green_3
+    21300008: icon hero_loop_green_4
+    21300010: icon hero_loop_green_5
+    21300012: icon hero_loop_green_6
+    21300014: icon hero_loop_green_7
+    21300016: icon hero_loop_green_8
+    21300018: icon hero_loop_green_9
+    21300020: icon hero_loop_green_10
+    21300022: icon hero_loop_green_11
+    21300024: icon hero_loop_green_12
+    21300026: icon hero_loop_green_13
+    21300028: icon hero_loop_green_14
+    21300030: icon hero_loop_green_15
+    21300032: icon hero_loop_green_16
+    21300034: icon hero_loop_green_17
+    21300036: icon hero_loop_green_18
+    21300038: icon hero_loop_green_19
+    21300040: icon hero_loop_green_20
+    21300042: icon hero_loop_green_21
+    21300044: icon hero_loop_green_22
+    21300046: icon hero_loop_green_23
+    21300048: icon hero_loop_green_24
+    21300050: icon hero_loop_green_25
+    21300052: icon hero_loop_green_26
+    21300054: icon hero_loop_green_27
+    21300056: icon hero_loop_green_28
+    21300058: icon hero_loop_green_29
+    21300060: icon hero_loop_green_30
+    21300062: icon hero_loop_green_31
+    21300064: icon hero_loop_green_32
+    21300066: icon hero_loop_green_33
+    21300068: icon hero_loop_green_34
+    21300070: icon hero_loop_green_35
+    21300072: icon hero_loop_green_36
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -103,40 +103,24 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
-  - buildTarget: Android
-    maxTextureSize: 4096
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-  - buildTarget: WebGL
-    maxTextureSize: 4096
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_blue_0
+      name: icon hero_loop_green_0
       rect:
         serializedVersion: 2
         x: 0
         y: 1478
         width: 300
         height: 570
-      alignment: 9
-      pivot: {x: 0.6, y: 0.5}
+      alignment: 0
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_blue_1
+      name: icon hero_loop_green_1
       rect:
         serializedVersion: 2
         x: 300
@@ -144,12 +128,12 @@ TextureImporter:
         width: 300
         height: 570
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_blue_2
+      name: icon hero_loop_green_2
       rect:
         serializedVersion: 2
         x: 600
@@ -157,12 +141,12 @@ TextureImporter:
         width: 300
         height: 570
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_blue_3
+      name: icon hero_loop_green_3
       rect:
         serializedVersion: 2
         x: 900
@@ -170,12 +154,12 @@ TextureImporter:
         width: 300
         height: 570
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_blue_4
+      name: icon hero_loop_green_4
       rect:
         serializedVersion: 2
         x: 1200
@@ -183,12 +167,12 @@ TextureImporter:
         width: 300
         height: 570
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_blue_5
+      name: icon hero_loop_green_5
       rect:
         serializedVersion: 2
         x: 1500
@@ -196,12 +180,12 @@ TextureImporter:
         width: 300
         height: 570
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_blue_6
+      name: icon hero_loop_green_6
       rect:
         serializedVersion: 2
         x: 1800
@@ -209,12 +193,12 @@ TextureImporter:
         width: 300
         height: 570
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_blue_7
+      name: icon hero_loop_green_7
       rect:
         serializedVersion: 2
         x: 2100
@@ -222,12 +206,12 @@ TextureImporter:
         width: 300
         height: 570
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_blue_8
+      name: icon hero_loop_green_8
       rect:
         serializedVersion: 2
         x: 2400
@@ -235,12 +219,12 @@ TextureImporter:
         width: 300
         height: 570
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_blue_9
+      name: icon hero_loop_green_9
       rect:
         serializedVersion: 2
         x: 2700
@@ -248,12 +232,12 @@ TextureImporter:
         width: 300
         height: 570
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_blue_10
+      name: icon hero_loop_green_10
       rect:
         serializedVersion: 2
         x: 3000
@@ -261,12 +245,12 @@ TextureImporter:
         width: 300
         height: 570
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_blue_11
+      name: icon hero_loop_green_11
       rect:
         serializedVersion: 2
         x: 3300
@@ -274,12 +258,12 @@ TextureImporter:
         width: 300
         height: 570
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_blue_12
+      name: icon hero_loop_green_12
       rect:
         serializedVersion: 2
         x: 3600
@@ -287,12 +271,12 @@ TextureImporter:
         width: 300
         height: 570
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_blue_13
+      name: icon hero_loop_green_13
       rect:
         serializedVersion: 2
         x: 0
@@ -300,12 +284,12 @@ TextureImporter:
         width: 300
         height: 570
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_blue_14
+      name: icon hero_loop_green_14
       rect:
         serializedVersion: 2
         x: 300
@@ -313,12 +297,12 @@ TextureImporter:
         width: 300
         height: 570
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_blue_15
+      name: icon hero_loop_green_15
       rect:
         serializedVersion: 2
         x: 600
@@ -326,12 +310,12 @@ TextureImporter:
         width: 300
         height: 570
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_blue_16
+      name: icon hero_loop_green_16
       rect:
         serializedVersion: 2
         x: 900
@@ -339,12 +323,12 @@ TextureImporter:
         width: 300
         height: 570
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_blue_17
+      name: icon hero_loop_green_17
       rect:
         serializedVersion: 2
         x: 1200
@@ -352,12 +336,12 @@ TextureImporter:
         width: 300
         height: 570
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_blue_18
+      name: icon hero_loop_green_18
       rect:
         serializedVersion: 2
         x: 1500
@@ -365,12 +349,12 @@ TextureImporter:
         width: 300
         height: 570
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_blue_19
+      name: icon hero_loop_green_19
       rect:
         serializedVersion: 2
         x: 1800
@@ -378,12 +362,12 @@ TextureImporter:
         width: 300
         height: 570
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_blue_20
+      name: icon hero_loop_green_20
       rect:
         serializedVersion: 2
         x: 2100
@@ -391,12 +375,12 @@ TextureImporter:
         width: 300
         height: 570
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_blue_21
+      name: icon hero_loop_green_21
       rect:
         serializedVersion: 2
         x: 2400
@@ -404,12 +388,12 @@ TextureImporter:
         width: 300
         height: 570
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_blue_22
+      name: icon hero_loop_green_22
       rect:
         serializedVersion: 2
         x: 2700
@@ -417,12 +401,12 @@ TextureImporter:
         width: 300
         height: 570
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_blue_23
+      name: icon hero_loop_green_23
       rect:
         serializedVersion: 2
         x: 3000
@@ -430,12 +414,12 @@ TextureImporter:
         width: 300
         height: 570
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_blue_24
+      name: icon hero_loop_green_24
       rect:
         serializedVersion: 2
         x: 3300
@@ -443,12 +427,12 @@ TextureImporter:
         width: 300
         height: 570
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_blue_25
+      name: icon hero_loop_green_25
       rect:
         serializedVersion: 2
         x: 3600
@@ -456,12 +440,12 @@ TextureImporter:
         width: 300
         height: 570
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_blue_26
+      name: icon hero_loop_green_26
       rect:
         serializedVersion: 2
         x: 0
@@ -469,12 +453,12 @@ TextureImporter:
         width: 300
         height: 570
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_blue_27
+      name: icon hero_loop_green_27
       rect:
         serializedVersion: 2
         x: 300
@@ -482,12 +466,12 @@ TextureImporter:
         width: 300
         height: 570
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_blue_28
+      name: icon hero_loop_green_28
       rect:
         serializedVersion: 2
         x: 600
@@ -495,12 +479,12 @@ TextureImporter:
         width: 300
         height: 570
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_blue_29
+      name: icon hero_loop_green_29
       rect:
         serializedVersion: 2
         x: 900
@@ -508,12 +492,12 @@ TextureImporter:
         width: 300
         height: 570
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_blue_30
+      name: icon hero_loop_green_30
       rect:
         serializedVersion: 2
         x: 1200
@@ -521,12 +505,12 @@ TextureImporter:
         width: 300
         height: 570
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_blue_31
+      name: icon hero_loop_green_31
       rect:
         serializedVersion: 2
         x: 1500
@@ -534,12 +518,12 @@ TextureImporter:
         width: 300
         height: 570
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_blue_32
+      name: icon hero_loop_green_32
       rect:
         serializedVersion: 2
         x: 1800
@@ -547,12 +531,12 @@ TextureImporter:
         width: 300
         height: 570
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_blue_33
+      name: icon hero_loop_green_33
       rect:
         serializedVersion: 2
         x: 2100
@@ -560,12 +544,12 @@ TextureImporter:
         width: 300
         height: 570
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_blue_34
+      name: icon hero_loop_green_34
       rect:
         serializedVersion: 2
         x: 2400
@@ -573,12 +557,12 @@ TextureImporter:
         width: 300
         height: 570
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_blue_35
+      name: icon hero_loop_green_35
       rect:
         serializedVersion: 2
         x: 2700
@@ -586,12 +570,12 @@ TextureImporter:
         width: 300
         height: 570
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_blue_36
+      name: icon hero_loop_green_36
       rect:
         serializedVersion: 2
         x: 3000
@@ -599,7 +583,7 @@ TextureImporter:
         width: 300
         height: 570
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       tessellationDetail: 0
