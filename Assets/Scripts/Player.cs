@@ -17,6 +17,7 @@ public class Player : MonoBehaviour
     public bool moving = false;
     public Coordinate coordinate;
     public GameObject mapManager, turnManager;
+    public GameObject stasisEffectPrefab, stasisEffect;
     public TurnManager turnManagerComponent;
     public MapManager mapManagerComponent;
     public List<Tile> toBright;
@@ -372,6 +373,17 @@ public class Player : MonoBehaviour
 
     // Diamond
 
+    private void InstantiateStasisEffect()
+    {
+        stasisEffect = Instantiate(stasisEffectPrefab, transform);
+        stasisEffect.transform.localPosition = new Vector3(0, 0, -0.1f);
+    }
+
+    private void DestroyStasisEffect()
+    {
+        Destroy(stasisEffect);
+    }
+
     public void ResetTurnsBeforeStasis()
     {
         turnsBeforeStasisCounter = turnsBeforeStasisIsActive+1;
@@ -405,6 +417,7 @@ public class Player : MonoBehaviour
         turnsBeforeStasisCounter = turnsBeforeStasisIsActive;
         canActivateStasis = false;
         isStasisActive = true;
+        InstantiateStasisEffect();
     }
 
     public void DeactivateStasis()
@@ -417,6 +430,7 @@ public class Player : MonoBehaviour
 
         canActivateStasis = false;
         isStasisActive = false;
+        DestroyStasisEffect();
     }
 
     public int GetTurnsBeforeStasisCounter()
@@ -450,6 +464,11 @@ public class Player : MonoBehaviour
     public bool GetCanActivateStasis()
     {
         return canActivateStasis;
+    }
+
+    public void SetCanActivateStasis(bool status)
+    {
+        canActivateStasis = status;
     }
 
     // Movement Coroutines
@@ -700,6 +719,7 @@ public class Player : MonoBehaviour
         toBright = new List<Tile>();
         mapManagerComponent = mapManager.GetComponent<MapManager>();
         SetStartingPoint();
+        stasisEffectPrefab = (GameObject)Resources.Load("Stasis");
     }
 
     void Update()

@@ -370,6 +370,8 @@ public class TurnManager : MonoBehaviour
     {
         diamondOnTable = false;
         player.SetHasDiamond(true);
+        player.SetCanActivateStasis(true);
+        canUseCrystal = true;
         mapManager.myDiamondInstance.transform.parent = player.transform;
         Vector3 collectedPosition = new Vector3(0, 0, 100);
         
@@ -410,7 +412,7 @@ public class TurnManager : MonoBehaviour
     {
         mapManager.myDiamondInstance.transform.GetComponentInParent<Player>().ActivateStasis();
         canUseCrystal = false;
-        buttonsAnimator[3].SetBool("isActive", true);
+        //buttonsAnimator[3].SetBool("isActive", true);
         yield return null;
         PassTurn();
     }

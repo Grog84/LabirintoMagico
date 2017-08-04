@@ -133,16 +133,16 @@ public class Tile : MonoBehaviour {
         myCollider.size = new Vector2(myTexture.width/100f, myTexture.height/100f);
     }
 
-    public IEnumerator WaitForBlackholeAnim(GameObject myBlackHole)
+    public IEnumerator WaitForBlackholeAnim(GameObject myBlackHole, string animName)
     {
-        Debug.Log("Started Wait Tile Black Hole");
+
         Animator blackHoleAnimator = myBlackHole.GetComponent<Animator>();
         do
         {
             yield return null;
-        } while (blackHolePlaying);
-        Debug.Log("Finished Wait Tile Black Hole");
-        Destroy(myBlackHole);
+        } while (blackHoleAnimator.GetCurrentAnimatorStateInfo(0).IsName(animName));
+
+        
         yield return null;
     }
 
@@ -151,8 +151,14 @@ public class Tile : MonoBehaviour {
         Debug.Log("Started Tile Black Hole");
         SetBlackHolePlaying(true);
         GameObject myBlackHole = Instantiate(blackHole, transform);
+        yield return null;
+        myBlackHole.transform.localPosition = new Vector3(0f, 0f, -3f);
+
         myBlackHole.GetComponent<blackHole>().AssignTile(this);
-        yield return StartCoroutine(WaitForBlackholeAnim(myBlackHole));
+        yield return StartCoroutine(WaitForBlackholeAnim(myBlackHole, "blackHole_1"));
+        ClearTile();
+        yield return StartCoroutine(WaitForBlackholeAnim(myBlackHole, "blackHole_2"));
+        Destroy(myBlackHole);
         yield return null;
         Debug.Log("Finished Tile Black Hole");
     }
