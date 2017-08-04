@@ -741,15 +741,15 @@ public class Player : MonoBehaviour
                 {
                     StartCoroutine(MoveRight());
                 }
-                if (Input.GetKeyDown(KeyCode.A) || Input.GetAxis("HorizontalJoy") == -1 || Input.GetAxis("HorizontalAnalog") <= -0.9f)
+                else if (Input.GetKeyDown(KeyCode.A) || Input.GetAxis("HorizontalJoy") == -1 || Input.GetAxis("HorizontalAnalog") <= -0.9f)
                 {
                     StartCoroutine(MoveLeft());
                 }
-                if (Input.GetKeyDown(KeyCode.W) || Input.GetAxis("VerticalJoy") == 1 || Input.GetAxis("VerticalAnalog") >= 0.9f)
+                else if (Input.GetKeyDown(KeyCode.W) || Input.GetAxis("VerticalJoy") == 1 || Input.GetAxis("VerticalAnalog") >= 0.9f)
                 {
                     StartCoroutine(MoveUp());
                 }
-                if (Input.GetKeyDown(KeyCode.S) || Input.GetAxis("VerticalJoy") == -1 || Input.GetAxis("VerticalAnalog") <= -0.9f)
+                else if (Input.GetKeyDown(KeyCode.S) || Input.GetAxis("VerticalJoy") == -1 || Input.GetAxis("VerticalAnalog") <= -0.9f)
                 {
                     StartCoroutine(MoveDown());
                 }
