@@ -421,18 +421,23 @@ public class TurnManager : MonoBehaviour
         {
             case 0:
                 buttonsAnimator[3].SetInteger("ActiveStatus", 3);
+                while (!buttonsAnimator[3].GetCurrentAnimatorStateInfo(0).IsName("active")) { yield return null; }
                 break;
             case 1:
                 buttonsAnimator[3].SetInteger("ActiveStatus", 2);
+                while (!buttonsAnimator[3].GetCurrentAnimatorStateInfo(0).IsName("transient_2")) { yield return null; }
                 break;
             case 2:
                 buttonsAnimator[3].SetInteger("ActiveStatus", 1);
+                while (!buttonsAnimator[3].GetCurrentAnimatorStateInfo(0).IsName("transient_1")) { yield return null; }
                 break;
             case 3:
                 buttonsAnimator[3].SetInteger("ActiveStatus", 0);
+                while (!buttonsAnimator[3].GetCurrentAnimatorStateInfo(0).IsName("inactive")) { yield return null; }
                 break;
             case 4:
                 buttonsAnimator[3].SetInteger("ActiveStatus", 0);
+                while (!buttonsAnimator[3].GetCurrentAnimatorStateInfo(0).IsName("inactive")) { yield return null; }
                 break;
             case 5:
                 buttonsAnimator[3].SetBool("isActive", true);
@@ -601,9 +606,9 @@ public class TurnManager : MonoBehaviour
         {
             int playerIdx = GeneralMethods.FindElementIdx(playerOrder, lastTile.GetPlayerChildNbr());
             fallingPlayer = playerComponent[playerIdx];
-            fallingPlayer.transform.parent = null;
             if (fallingPlayer.hasDiamond)
                 DropDiamond(fallingPlayer);
+            fallingPlayer.transform.parent = null;
             diamondOnTable = true;
             fallingPlayer.TeleportOffScreen();
             repositionPlayer = true;
