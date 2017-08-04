@@ -319,6 +319,8 @@ public class Player : MonoBehaviour
         Vector3 destination = tile.GetComponent<Transform>().position;
         destination.z--;
         StartWalking();
+        yield return null;
+        StopWalking();
 
         while (elapsedTime < animTime)
         {
@@ -330,7 +332,6 @@ public class Player : MonoBehaviour
 
         myCamera.MoveToPositionAndZoom(turnManagerComponent.GetOldCameraPosition(), turnManagerComponent.GetOldCameraSize());
 
-        StopWalking();
         turnManager.GetComponent<TurnManager>().CollectDiamond(this);
         turnManager.GetComponent<TurnManager>().SetAttackHasHappened(true);
         checkingCombat = false;
@@ -478,6 +479,8 @@ public class Player : MonoBehaviour
             if (!checkingCombat)
             {
                 StartWalking();
+                yield return null;
+                StopWalking();
                 while (elapsedTime < walkingTime)
                 {
                     transform.position = Vector3.Lerp(transform.position, destination, elapsedTime / walkingTime);
@@ -505,7 +508,7 @@ public class Player : MonoBehaviour
 
         //yield return new WaitForSeconds(0.1f);
 
-        StopWalking();
+        //StopWalking();
         moving = false;
         turnManagerComponent.isAcceptingInputs = true;
     }
@@ -531,6 +534,8 @@ public class Player : MonoBehaviour
             if (!checkingCombat)
             {
                 StartWalking();
+                yield return null;
+                StopWalking();
                 while (elapsedTime < walkingTime)
                 {
                     transform.position = Vector3.Lerp(transform.position, destination, elapsedTime / walkingTime);
@@ -558,7 +563,7 @@ public class Player : MonoBehaviour
 
         //yield return new WaitForSeconds(0.1f);
 
-        StopWalking();
+        //StopWalking();
         turnManagerComponent.isAcceptingInputs = true;
         moving = false;
     }
@@ -584,6 +589,8 @@ public class Player : MonoBehaviour
             if (!checkingCombat)
             {
                 StartWalking();
+                yield return null;
+                StopWalking();
                 while (elapsedTime < walkingTime)
                 {
                     transform.position = Vector3.Lerp(transform.position, destination, elapsedTime / walkingTime);
@@ -611,7 +618,7 @@ public class Player : MonoBehaviour
 
         //yield return new WaitForSeconds(0.1f);
 
-        StopWalking();
+        //StopWalking();
         turnManagerComponent.isAcceptingInputs = true;
         moving = false;
     }
@@ -639,6 +646,8 @@ public class Player : MonoBehaviour
             if (!checkingCombat)
             {
                 StartWalking();
+                yield return null;
+                StopWalking();
                 while (elapsedTime < walkingTime)
                 {
                     transform.position = Vector3.Lerp(transform.position, destination, elapsedTime / walkingTime);
@@ -666,7 +675,7 @@ public class Player : MonoBehaviour
 
         //yield return new WaitForSeconds(0.1f);
 
-        StopWalking();
+        //StopWalking();
         turnManagerComponent.isAcceptingInputs = true;
         moving = false;
     }
