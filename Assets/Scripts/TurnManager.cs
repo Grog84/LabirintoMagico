@@ -602,7 +602,8 @@ public class TurnManager : MonoBehaviour
             int playerIdx = GeneralMethods.FindElementIdx(playerOrder, lastTile.GetPlayerChildNbr());
             fallingPlayer = playerComponent[playerIdx];
             fallingPlayer.transform.parent = null;
-            DropDiamond(fallingPlayer);
+            if (fallingPlayer.hasDiamond)
+                DropDiamond(fallingPlayer);
             diamondOnTable = true;
             fallingPlayer.TeleportOffScreen();
             repositionPlayer = true;
