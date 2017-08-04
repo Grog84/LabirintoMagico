@@ -374,7 +374,7 @@ public class Player : MonoBehaviour
 
     public void ResetTurnsBeforeStasis()
     {
-        turnsBeforeStasisCounter = turnsBeforeStasisIsActive;
+        turnsBeforeStasisCounter = turnsBeforeStasisIsActive+1;
     }
 
     public void SetHasDiamond(bool hasDiamond)
