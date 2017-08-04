@@ -34,37 +34,37 @@ public class Card : MonoBehaviour {
         switch (tileType)
         {
             case (int)tileTypes.Curve_BR:
-                myTexture = (Texture2D)Resources.Load("TileProva/curva");
+                myTexture = (Texture2D)Resources.Load("MenuUI/curva");
                 break;
             case (int)tileTypes.Curve_LB:
-                myTexture = (Texture2D)Resources.Load("TileProva/curva2");
+                myTexture = (Texture2D)Resources.Load("MenuUI/curva2");
                 break;
             case (int)tileTypes.Curve_RT:
-                myTexture = (Texture2D)Resources.Load("TileProva/curva3");
+                myTexture = (Texture2D)Resources.Load("MenuUI/curva3");
                 break;
             case (int)tileTypes.Curve_TL:
-                myTexture = (Texture2D)Resources.Load("TileProva/curva4");
+                myTexture = (Texture2D)Resources.Load("MenuUI/curva4");
                 break;
             case (int)tileTypes.Straight_V:
-                myTexture = (Texture2D)Resources.Load("TileProva/Straight");
+                myTexture = (Texture2D)Resources.Load("MenuUI/Straight");
                 break;
             case (int)tileTypes.Straight_H:
-                myTexture = (Texture2D)Resources.Load("TileProva/Straight2");
+                myTexture = (Texture2D)Resources.Load("MenuUI/Straight2");
                 break;
             case (int)tileTypes.T_B:
-                myTexture = (Texture2D)Resources.Load("TileProva/t");
+                myTexture = (Texture2D)Resources.Load("MenuUI/t");
                 break;
             case (int)tileTypes.T_L:
-                myTexture = (Texture2D)Resources.Load("TileProva/t2");
+                myTexture = (Texture2D)Resources.Load("MenuUI/t2");
                 break;
             case (int)tileTypes.T_T:
-                myTexture = (Texture2D)Resources.Load("TileProva/t3");
+                myTexture = (Texture2D)Resources.Load("MenuUI/t3");
                 break;
             case (int)tileTypes.T_R:
-                myTexture = (Texture2D)Resources.Load("TileProva/t4");
+                myTexture = (Texture2D)Resources.Load("MenuUI/t4");
                 break;
             case (int)tileTypes.Cross:
-                myTexture = (Texture2D)Resources.Load("TileProva/cross");
+                myTexture = (Texture2D)Resources.Load("MenuUI/cross");
                 break;
 
             default:
