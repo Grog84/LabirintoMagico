@@ -1,46 +1,46 @@
 fileFormatVersion: 2
-guid: 17e4376069348fc47bff9f7c5fb53f09
-timeCreated: 1501773843
+guid: 19cdf9ec27734c948aaf49579a6d3a9e
+timeCreated: 1501837283
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: icon hero_loop_correctframes_red_0
-    21300002: icon hero_loop_correctframes_red_1
-    21300004: icon hero_loop_correctframes_red_2
-    21300006: icon hero_loop_correctframes_red_3
-    21300008: icon hero_loop_correctframes_red_4
-    21300010: icon hero_loop_correctframes_red_5
-    21300012: icon hero_loop_correctframes_red_6
-    21300014: icon hero_loop_correctframes_red_7
-    21300016: icon hero_loop_correctframes_red_8
-    21300018: icon hero_loop_correctframes_red_9
-    21300020: icon hero_loop_correctframes_red_10
-    21300022: icon hero_loop_correctframes_red_11
-    21300024: icon hero_loop_correctframes_red_12
-    21300026: icon hero_loop_correctframes_red_13
-    21300028: icon hero_loop_correctframes_red_14
-    21300030: icon hero_loop_correctframes_red_15
-    21300032: icon hero_loop_correctframes_red_16
-    21300034: icon hero_loop_correctframes_red_17
-    21300036: icon hero_loop_correctframes_red_18
-    21300038: icon hero_loop_correctframes_red_19
-    21300040: icon hero_loop_correctframes_red_20
-    21300042: icon hero_loop_correctframes_red_21
-    21300044: icon hero_loop_correctframes_red_22
-    21300046: icon hero_loop_correctframes_red_23
-    21300048: icon hero_loop_correctframes_red_24
-    21300050: icon hero_loop_correctframes_red_25
-    21300052: icon hero_loop_correctframes_red_26
-    21300054: icon hero_loop_correctframes_red_27
-    21300056: icon hero_loop_correctframes_red_28
-    21300058: icon hero_loop_correctframes_red_29
-    21300060: icon hero_loop_correctframes_red_30
-    21300062: icon hero_loop_correctframes_red_31
-    21300064: icon hero_loop_correctframes_red_32
-    21300066: icon hero_loop_correctframes_red_33
-    21300068: icon hero_loop_correctframes_red_34
-    21300070: icon hero_loop_correctframes_red_35
-    21300072: icon hero_loop_correctframes_red_36
+    21300000: icon hero_loop_red_0
+    21300002: icon hero_loop_red_1
+    21300004: icon hero_loop_red_2
+    21300006: icon hero_loop_red_3
+    21300008: icon hero_loop_red_4
+    21300010: icon hero_loop_red_5
+    21300012: icon hero_loop_red_6
+    21300014: icon hero_loop_red_7
+    21300016: icon hero_loop_red_8
+    21300018: icon hero_loop_red_9
+    21300020: icon hero_loop_red_10
+    21300022: icon hero_loop_red_11
+    21300024: icon hero_loop_red_12
+    21300026: icon hero_loop_red_13
+    21300028: icon hero_loop_red_14
+    21300030: icon hero_loop_red_15
+    21300032: icon hero_loop_red_16
+    21300034: icon hero_loop_red_17
+    21300036: icon hero_loop_red_18
+    21300038: icon hero_loop_red_19
+    21300040: icon hero_loop_red_20
+    21300042: icon hero_loop_red_21
+    21300044: icon hero_loop_red_22
+    21300046: icon hero_loop_red_23
+    21300048: icon hero_loop_red_24
+    21300050: icon hero_loop_red_25
+    21300052: icon hero_loop_red_26
+    21300054: icon hero_loop_red_27
+    21300056: icon hero_loop_red_28
+    21300058: icon hero_loop_red_29
+    21300060: icon hero_loop_red_30
+    21300062: icon hero_loop_red_31
+    21300064: icon hero_loop_red_32
+    21300066: icon hero_loop_red_33
+    21300068: icon hero_loop_red_34
+    21300070: icon hero_loop_red_35
+    21300072: icon hero_loop_red_36
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -103,27 +103,11 @@ TextureImporter:
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
-  - buildTarget: Android
-    maxTextureSize: 4096
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
-  - buildTarget: WebGL
-    maxTextureSize: 4096
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
-    crunchedCompression: 0
-    allowsAlphaSplitting: 0
-    overridden: 0
   spriteSheet:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_red_0
+      name: icon hero_loop_red_0
       rect:
         serializedVersion: 2
         x: 0
@@ -136,7 +120,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_red_1
+      name: icon hero_loop_red_1
       rect:
         serializedVersion: 2
         x: 300
@@ -149,7 +133,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_red_2
+      name: icon hero_loop_red_2
       rect:
         serializedVersion: 2
         x: 600
@@ -162,7 +146,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_red_3
+      name: icon hero_loop_red_3
       rect:
         serializedVersion: 2
         x: 900
@@ -175,7 +159,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_red_4
+      name: icon hero_loop_red_4
       rect:
         serializedVersion: 2
         x: 1200
@@ -188,7 +172,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_red_5
+      name: icon hero_loop_red_5
       rect:
         serializedVersion: 2
         x: 1500
@@ -201,7 +185,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_red_6
+      name: icon hero_loop_red_6
       rect:
         serializedVersion: 2
         x: 1800
@@ -214,7 +198,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_red_7
+      name: icon hero_loop_red_7
       rect:
         serializedVersion: 2
         x: 2100
@@ -227,7 +211,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_red_8
+      name: icon hero_loop_red_8
       rect:
         serializedVersion: 2
         x: 2400
@@ -240,7 +224,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_red_9
+      name: icon hero_loop_red_9
       rect:
         serializedVersion: 2
         x: 2700
@@ -253,7 +237,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_red_10
+      name: icon hero_loop_red_10
       rect:
         serializedVersion: 2
         x: 3000
@@ -266,7 +250,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_red_11
+      name: icon hero_loop_red_11
       rect:
         serializedVersion: 2
         x: 3300
@@ -279,7 +263,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_red_12
+      name: icon hero_loop_red_12
       rect:
         serializedVersion: 2
         x: 3600
@@ -292,7 +276,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_red_13
+      name: icon hero_loop_red_13
       rect:
         serializedVersion: 2
         x: 0
@@ -305,7 +289,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_red_14
+      name: icon hero_loop_red_14
       rect:
         serializedVersion: 2
         x: 300
@@ -318,7 +302,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_red_15
+      name: icon hero_loop_red_15
       rect:
         serializedVersion: 2
         x: 600
@@ -331,7 +315,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_red_16
+      name: icon hero_loop_red_16
       rect:
         serializedVersion: 2
         x: 900
@@ -344,7 +328,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_red_17
+      name: icon hero_loop_red_17
       rect:
         serializedVersion: 2
         x: 1200
@@ -357,7 +341,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_red_18
+      name: icon hero_loop_red_18
       rect:
         serializedVersion: 2
         x: 1500
@@ -370,7 +354,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_red_19
+      name: icon hero_loop_red_19
       rect:
         serializedVersion: 2
         x: 1800
@@ -383,7 +367,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_red_20
+      name: icon hero_loop_red_20
       rect:
         serializedVersion: 2
         x: 2100
@@ -396,7 +380,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_red_21
+      name: icon hero_loop_red_21
       rect:
         serializedVersion: 2
         x: 2400
@@ -409,7 +393,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_red_22
+      name: icon hero_loop_red_22
       rect:
         serializedVersion: 2
         x: 2700
@@ -422,7 +406,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_red_23
+      name: icon hero_loop_red_23
       rect:
         serializedVersion: 2
         x: 3000
@@ -435,7 +419,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_red_24
+      name: icon hero_loop_red_24
       rect:
         serializedVersion: 2
         x: 3300
@@ -448,7 +432,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_red_25
+      name: icon hero_loop_red_25
       rect:
         serializedVersion: 2
         x: 3600
@@ -461,7 +445,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_red_26
+      name: icon hero_loop_red_26
       rect:
         serializedVersion: 2
         x: 0
@@ -474,7 +458,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_red_27
+      name: icon hero_loop_red_27
       rect:
         serializedVersion: 2
         x: 300
@@ -487,7 +471,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_red_28
+      name: icon hero_loop_red_28
       rect:
         serializedVersion: 2
         x: 600
@@ -500,7 +484,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_red_29
+      name: icon hero_loop_red_29
       rect:
         serializedVersion: 2
         x: 900
@@ -513,7 +497,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_red_30
+      name: icon hero_loop_red_30
       rect:
         serializedVersion: 2
         x: 1200
@@ -526,7 +510,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_red_31
+      name: icon hero_loop_red_31
       rect:
         serializedVersion: 2
         x: 1500
@@ -539,7 +523,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_red_32
+      name: icon hero_loop_red_32
       rect:
         serializedVersion: 2
         x: 1800
@@ -552,7 +536,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_red_33
+      name: icon hero_loop_red_33
       rect:
         serializedVersion: 2
         x: 2100
@@ -565,7 +549,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_red_34
+      name: icon hero_loop_red_34
       rect:
         serializedVersion: 2
         x: 2400
@@ -578,7 +562,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_red_35
+      name: icon hero_loop_red_35
       rect:
         serializedVersion: 2
         x: 2700
@@ -591,7 +575,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_loop_correctframes_red_36
+      name: icon hero_loop_red_36
       rect:
         serializedVersion: 2
         x: 3000

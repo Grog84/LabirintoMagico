@@ -1,27 +1,27 @@
 fileFormatVersion: 2
-guid: 5d752c02ec4bf9c4f8ab70bd9106c84d
-timeCreated: 1501773162
+guid: 68ab970dd791984438b7bc7bd8eb5168
+timeCreated: 1501837427
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
-    21300000: icon hero_start_correctframes_red_0
-    21300002: icon hero_start_correctframes_red_1
-    21300004: icon hero_start_correctframes_red_2
-    21300006: icon hero_start_correctframes_red_3
-    21300008: icon hero_start_correctframes_red_4
-    21300010: icon hero_start_correctframes_red_5
-    21300012: icon hero_start_correctframes_red_6
-    21300014: icon hero_start_correctframes_red_7
-    21300016: icon hero_start_correctframes_red_8
-    21300018: icon hero_start_correctframes_red_9
-    21300020: icon hero_start_correctframes_red_10
-    21300022: icon hero_start_correctframes_red_11
-    21300024: icon hero_start_correctframes_red_12
-    21300026: icon hero_start_correctframes_red_13
-    21300028: icon hero_start_correctframes_red_14
-    21300030: icon hero_start_correctframes_red_15
-    21300032: icon hero_start_correctframes_red_16
-    21300034: icon hero_start_correctframes_red_17
+    21300000: icon hero_start_yellow_0
+    21300002: icon hero_start_yellow_1
+    21300004: icon hero_start_yellow_2
+    21300006: icon hero_start_yellow_3
+    21300008: icon hero_start_yellow_4
+    21300010: icon hero_start_yellow_5
+    21300012: icon hero_start_yellow_6
+    21300014: icon hero_start_yellow_7
+    21300016: icon hero_start_yellow_8
+    21300018: icon hero_start_yellow_9
+    21300020: icon hero_start_yellow_10
+    21300022: icon hero_start_yellow_11
+    21300024: icon hero_start_yellow_12
+    21300026: icon hero_start_yellow_13
+    21300028: icon hero_start_yellow_14
+    21300030: icon hero_start_yellow_15
+    21300032: icon hero_start_yellow_16
+    21300034: icon hero_start_yellow_17
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -88,7 +88,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: icon hero_start_correctframes_red_0
+      name: icon hero_start_yellow_0
       rect:
         serializedVersion: 2
         x: 0
@@ -101,7 +101,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_start_correctframes_red_1
+      name: icon hero_start_yellow_1
       rect:
         serializedVersion: 2
         x: 300
@@ -114,7 +114,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_start_correctframes_red_2
+      name: icon hero_start_yellow_2
       rect:
         serializedVersion: 2
         x: 600
@@ -127,7 +127,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_start_correctframes_red_3
+      name: icon hero_start_yellow_3
       rect:
         serializedVersion: 2
         x: 900
@@ -140,7 +140,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_start_correctframes_red_4
+      name: icon hero_start_yellow_4
       rect:
         serializedVersion: 2
         x: 1200
@@ -153,7 +153,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_start_correctframes_red_5
+      name: icon hero_start_yellow_5
       rect:
         serializedVersion: 2
         x: 1500
@@ -166,7 +166,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_start_correctframes_red_6
+      name: icon hero_start_yellow_6
       rect:
         serializedVersion: 2
         x: 0
@@ -179,7 +179,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_start_correctframes_red_7
+      name: icon hero_start_yellow_7
       rect:
         serializedVersion: 2
         x: 300
@@ -192,7 +192,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_start_correctframes_red_8
+      name: icon hero_start_yellow_8
       rect:
         serializedVersion: 2
         x: 600
@@ -205,7 +205,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_start_correctframes_red_9
+      name: icon hero_start_yellow_9
       rect:
         serializedVersion: 2
         x: 900
@@ -218,7 +218,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_start_correctframes_red_10
+      name: icon hero_start_yellow_10
       rect:
         serializedVersion: 2
         x: 1200
@@ -231,7 +231,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_start_correctframes_red_11
+      name: icon hero_start_yellow_11
       rect:
         serializedVersion: 2
         x: 1500
@@ -244,7 +244,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_start_correctframes_red_12
+      name: icon hero_start_yellow_12
       rect:
         serializedVersion: 2
         x: 0
@@ -257,7 +257,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_start_correctframes_red_13
+      name: icon hero_start_yellow_13
       rect:
         serializedVersion: 2
         x: 300
@@ -270,7 +270,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_start_correctframes_red_14
+      name: icon hero_start_yellow_14
       rect:
         serializedVersion: 2
         x: 600
@@ -283,7 +283,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_start_correctframes_red_15
+      name: icon hero_start_yellow_15
       rect:
         serializedVersion: 2
         x: 900
@@ -296,7 +296,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_start_correctframes_red_16
+      name: icon hero_start_yellow_16
       rect:
         serializedVersion: 2
         x: 1200
@@ -309,7 +309,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: icon hero_start_correctframes_red_17
+      name: icon hero_start_yellow_17
       rect:
         serializedVersion: 2
         x: 1500
