@@ -148,7 +148,7 @@ public class Tile : MonoBehaviour {
 
     public IEnumerator BlackHole()
     {
-        Debug.Log("Started Tile Black Hole");
+
         SetBlackHolePlaying(true);
         GameObject myBlackHole = Instantiate(blackHole, transform);
         yield return null;
@@ -160,7 +160,7 @@ public class Tile : MonoBehaviour {
         yield return StartCoroutine(WaitForBlackholeAnim(myBlackHole, "blackHole_2"));
         Destroy(myBlackHole);
         yield return null;
-        Debug.Log("Finished Tile Black Hole");
+
     }
 
     // Player Child

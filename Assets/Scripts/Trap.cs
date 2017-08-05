@@ -38,13 +38,17 @@ public class Trap : MonoBehaviour {
         SetInvisible();  // could become a coroutine
     }
 
-    public void Trigger(Player thisPlayer)
+    public IEnumerator Trigger()
     {
+        Tile tile = transform.parent.gameObject.GetComponent<Tile>();
         isActive = false;
-        thisPlayer.ResetToStartingPosition();
+        yield return tile.BlackHole();
+
         SetPlayerDropping(0);
         SetSprite();
         SetVisible();
+
+        yield return null;
     }
 
     public void SetPlayerDropping(int player)
