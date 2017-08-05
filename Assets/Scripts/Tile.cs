@@ -20,6 +20,7 @@ public class Tile : MonoBehaviour {
     public Trap myTrapComponent;
     public bool isTrapped, hasDiamond;
     public int childPlayerNbr;
+    private Animator myAnimator;
     private Player childPlayerComponent;
     private Player[] allPlayersComponent;
     private TurnManager turnManager;
@@ -46,46 +47,57 @@ public class Tile : MonoBehaviour {
         {
             case (int)tileTypes.Curve_BR:
                 myTexture = (Texture2D)Resources.Load("Tiles/curva");
+                myAnimator.runtimeAnimatorController = (RuntimeAnimatorController)Resources.Load("TilesAnimators/curva");
                 this.type = type;
                 break;
             case (int)tileTypes.Curve_LB:
                 myTexture = (Texture2D)Resources.Load("Tiles/curva2");
+                myAnimator.runtimeAnimatorController = (RuntimeAnimatorController)Resources.Load("TilesAnimators/curva2");
                 this.type = type;
                 break;
             case (int)tileTypes.Curve_RT:
                 myTexture = (Texture2D)Resources.Load("Tiles/curva3");
+                myAnimator.runtimeAnimatorController = (RuntimeAnimatorController)Resources.Load("TilesAnimators/curva3");
                 this.type = type;
                 break;
             case (int)tileTypes.Curve_TL:
                 myTexture = (Texture2D)Resources.Load("Tiles/curva4");
+                myAnimator.runtimeAnimatorController = (RuntimeAnimatorController)Resources.Load("TilesAnimators/curva4");
                 this.type = type;
                 break;
             case (int)tileTypes.Straight_V:
                 myTexture = (Texture2D)Resources.Load("Tiles/Straight");
+                myAnimator.runtimeAnimatorController = (RuntimeAnimatorController)Resources.Load("TilesAnimators/Straight");
                 this.type = type;
                 break;
             case (int)tileTypes.Straight_H:
                 myTexture = (Texture2D)Resources.Load("Tiles/Straight2");
+                myAnimator.runtimeAnimatorController = (RuntimeAnimatorController)Resources.Load("TilesAnimators/Straight2");
                 this.type = type;
                 break;
             case (int)tileTypes.T_B:
                 myTexture = (Texture2D)Resources.Load("Tiles/t");
+                myAnimator.runtimeAnimatorController = (RuntimeAnimatorController)Resources.Load("TilesAnimators/t");
                 this.type = type;
                 break;
             case (int)tileTypes.T_L:
                 myTexture = (Texture2D)Resources.Load("Tiles/t2");
+                myAnimator.runtimeAnimatorController = (RuntimeAnimatorController)Resources.Load("TilesAnimators/t2");
                 this.type = type;
                 break;
             case (int)tileTypes.T_T:
                 myTexture = (Texture2D)Resources.Load("Tiles/t3");
+                myAnimator.runtimeAnimatorController = (RuntimeAnimatorController)Resources.Load("TilesAnimators/t3");
                 this.type = type;
                 break;
             case (int)tileTypes.T_R:
                 myTexture = (Texture2D)Resources.Load("Tiles/t4");
+                myAnimator.runtimeAnimatorController = (RuntimeAnimatorController)Resources.Load("TilesAnimators/t4");
                 this.type = type;
                 break;
             case (int)tileTypes.Cross:
                 myTexture = (Texture2D)Resources.Load("Tiles/cross");
+                myAnimator.runtimeAnimatorController = (RuntimeAnimatorController)Resources.Load("TilesAnimators/cross");
                 this.type = type;
                 break;
             case (int)tileTypes.Curve_BR_alt:
@@ -122,6 +134,8 @@ public class Tile : MonoBehaviour {
                 break;
             case (int)tileTypes.Goal:
                 myTexture = (Texture2D)Resources.Load("Tiles/goal");
+                myAnimator.runtimeAnimatorController = (RuntimeAnimatorController)Resources.Load("TilesAnimators/goal");
+
                 this.type = (int)tileTypes.Cross;
                 break;
             default:
@@ -177,6 +191,11 @@ public class Tile : MonoBehaviour {
         Destroy(myBlackHole);
         yield return null;
 
+    }
+
+    public void SetSelected(bool status)
+    {
+        myAnimator.SetBool("isSelected", status);
     }
 
     // Player Child
@@ -463,6 +482,7 @@ public class Tile : MonoBehaviour {
     void Awake () {
         myRenderer = GetComponent<SpriteRenderer>();
         myCollider = GetComponent<BoxCollider2D>();
+        myAnimator = GetComponent<Animator>();
         possibleConnections = new bool[4];
         effectiveConnections = new bool[4];
         childPlayerNbr = -1;

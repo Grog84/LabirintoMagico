@@ -196,7 +196,8 @@ public class Player : MonoBehaviour
 
         for (int i = 0; i < toBright.Count; i++)
         {
-            toBright[i].GetComponent<SpriteRenderer>().color = Color.green;
+            toBright[i].SetSelected(true);
+            //toBright[i].GetComponent<SpriteRenderer>().color = Color.green;
             //Debug.Log("passaaa");
         }
     }
@@ -205,7 +206,8 @@ public class Player : MonoBehaviour
     {
         for (int i = 0; i < toBright.Count; i++)
         {
-            toBright[i].GetComponent<SpriteRenderer>().color = Color.white;
+            toBright[i].SetSelected(false);
+            //toBright[i].GetComponent<SpriteRenderer>().color = Color.white;
         }
         toBright.Clear();
     }

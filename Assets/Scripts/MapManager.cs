@@ -318,19 +318,19 @@ public class MapManager : MonoBehaviour {
                 myCoordinate = new Coordinate(i, j);
                 if (myCoordinate.isEqual(centralX - 1, centralY - 1))
                 {
-                    InstantiateTile((int)tileTypes.Curve_RT_alt, myCoordinate, true);
+                    InstantiateTile((int)tileTypes.Curve_RT, myCoordinate, true);
                 }
                 else if (myCoordinate.isEqual(centralX - 1, centralY))
                 {
-                    InstantiateTile((int)tileTypes.T_R_alt, myCoordinate, true);
+                    InstantiateTile((int)tileTypes.T_R, myCoordinate, true);
                 }
                 else if (myCoordinate.isEqual(centralX - 1, centralY+1))
                 {
-                    InstantiateTile((int)tileTypes.Curve_BR_alt, myCoordinate, true);
+                    InstantiateTile((int)tileTypes.Curve_BR, myCoordinate, true);
                 }
                 else if (myCoordinate.isEqual(centralX, centralY - 1))
                 {
-                    InstantiateTile((int)tileTypes.T_T_alt, myCoordinate, true);
+                    InstantiateTile((int)tileTypes.T_T, myCoordinate, true);
                 }
                 else if (myCoordinate.isEqual(centralX, centralY))
                 {
@@ -339,19 +339,19 @@ public class MapManager : MonoBehaviour {
                 }
                 else if (myCoordinate.isEqual(centralX, centralY+1))
                 {
-                    InstantiateTile((int)tileTypes.T_B_alt, myCoordinate, true);   
+                    InstantiateTile((int)tileTypes.T_B, myCoordinate, true);   
                 }
                 else if (myCoordinate.isEqual(centralX+1, centralY - 1))
                 {
-                    InstantiateTile((int)tileTypes.Curve_TL_alt, myCoordinate, true);
+                    InstantiateTile((int)tileTypes.Curve_TL, myCoordinate, true);
                 }
                 else if (myCoordinate.isEqual(centralX + 1, centralY))
                 {
-                    InstantiateTile((int)tileTypes.T_L_alt, myCoordinate, true);
+                    InstantiateTile((int)tileTypes.T_L, myCoordinate, true);
                 }
                 else if (myCoordinate.isEqual(centralX + 1, centralY+1))
                 {
-                    InstantiateTile((int)tileTypes.Curve_LB_alt, myCoordinate, true);
+                    InstantiateTile((int)tileTypes.Curve_LB, myCoordinate, true);
                 }
             }
         }    
