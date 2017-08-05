@@ -9,7 +9,7 @@ public class TutorialMenu : MonoBehaviour {
     public GameObject camera, videoPlayer, particle, particleInst, text;
     public FadeManager fade;
     public VideoClip[] tutorials;
-    private int selezione = 0;
+    public int selezione = 0;
     float timer;
     private bool fadeOut, fadeIn;
     public int sortingOrder = 0;
@@ -21,10 +21,12 @@ public class TutorialMenu : MonoBehaviour {
 	void Start ()
     {
         StartCoroutine(fade.FadeIn());
-	}
+    }
 	
 	void Update ()
     {
+        text.GetComponent<SpriteRenderer>().sprite = texts[selezione];
+
         if (transform.position.y > (destination - 0.1f) && transform.position.y < (destination + 0.1f) && move)
         {
             Vector3 newPos = transform.position;
@@ -45,7 +47,6 @@ public class TutorialMenu : MonoBehaviour {
                 move = true;
                 destination = transform.position.y - 1.235f;
                 selezione--;
-                text.GetComponent<SpriteRenderer>().sprite = texts[selezione];
                 transform.DOMoveY(transform.position.y - 1.235f, 1f);
                 for (int i = 0; i < 3; i++)
                 {
@@ -74,7 +75,6 @@ public class TutorialMenu : MonoBehaviour {
                 move = true;
                 destination = transform.position.y + 1.235f;
                 selezione++;
-                text.GetComponent<SpriteRenderer>().sprite = texts[selezione];
                 transform.DOMoveY(transform.position.y + 1.235f, 1f);
                 for (int i = 0; i < 3; i++)
                 {
@@ -114,6 +114,7 @@ public class TutorialMenu : MonoBehaviour {
             videoPlayer.GetComponent<VideoPlayer>().clip = tutorials[selezione];
             videoPlayer.GetComponent<Renderer>().material.color += new Color(0, 0, 0, 1);
         }
+        
     }
 
     
