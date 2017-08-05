@@ -8,13 +8,14 @@ using UnityEngine.SceneManagement;
 public class TurnManager : MonoBehaviour
 {
 
-    public GameObject xButton, aButton, bButton, diamondButton, rotationCursor;
+    public GameObject xButton, aButton, bButton, diamondButton, rotationCursor, pauseMenu;
     public GameObject[] portraits;
     public GameObject[] playerWinsText;
     public Camera myCamera;
     public MapManager mapManager;
     public bool isSliding = false, isRotating = false;
-    public bool isAcceptingInputs=true;
+    public bool isAcceptingInputs = true;
+    public bool isInPause = false;
 
     private int playerPlaying, playerPlayingIdx, turnNbr, selectedButton, selectionDepth;
     private int[] playerOrder;
@@ -999,6 +1000,20 @@ public class TurnManager : MonoBehaviour
         return playersIdxInCoords.ToArray();
     }
 
+    public void Pause()
+    {
+        isAcceptingInputs = false;
+        isInPause = true;
+        pauseMenu.SetActive(true);
+    }
+
+    public void Resume ()
+    {
+        isAcceptingInputs = true;
+        isInPause = false;
+        pauseMenu.SetActive(false);
+    }
+
     // Unity Specific methods
 
     void Awake()
@@ -1043,8 +1058,18 @@ public class TurnManager : MonoBehaviour
         //{
         //    canBeActivated = false;
         //}
-        if (isAcceptingInputs)
+
+        if (Input.GetKeyDown(KeyCode.Return) && !isInPause)
         {
+            Pause();
+        }
+        else if (Input.GetKeyDown(KeyCode.Return) && isInPause)
+        {
+            Resume();
+        }
+
+            if (isAcceptingInputs)
+            {
             if (Input.GetKeyDown(KeyCode.R)) SceneManager.LoadScene("_Scenes/scenaprova");
 
             if (selectionDepth == (int)panelSelection.basePanel)
