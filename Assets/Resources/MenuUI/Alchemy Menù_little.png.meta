@@ -1,0 +1,650 @@
+fileFormatVersion: 2
+guid: 09ae090d0e205bc45b224b68699e6fc8
+timeCreated: 1501945749
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: "Alchemy Men\xF9_little_0"
+    21300002: "Alchemy Men\xF9_little_1"
+    21300004: "Alchemy Men\xF9_little_2"
+    21300006: "Alchemy Men\xF9_little_3"
+    21300008: "Alchemy Men\xF9_little_4"
+    21300010: "Alchemy Men\xF9_little_5"
+    21300012: "Alchemy Men\xF9_little_6"
+    21300014: "Alchemy Men\xF9_little_7"
+    21300016: "Alchemy Men\xF9_little_8"
+    21300018: "Alchemy Men\xF9_little_9"
+    21300020: "Alchemy Men\xF9_little_10"
+    21300022: "Alchemy Men\xF9_little_11"
+    21300024: "Alchemy Men\xF9_little_12"
+    21300026: "Alchemy Men\xF9_little_13"
+    21300028: "Alchemy Men\xF9_little_14"
+    21300030: "Alchemy Men\xF9_little_15"
+    21300032: "Alchemy Men\xF9_little_16"
+    21300034: "Alchemy Men\xF9_little_17"
+    21300036: "Alchemy Men\xF9_little_18"
+    21300038: "Alchemy Men\xF9_little_19"
+    21300040: "Alchemy Men\xF9_little_20"
+    21300042: "Alchemy Men\xF9_little_21"
+    21300044: "Alchemy Men\xF9_little_22"
+    21300046: "Alchemy Men\xF9_little_23"
+    21300048: "Alchemy Men\xF9_little_24"
+    21300050: "Alchemy Men\xF9_little_25"
+    21300052: "Alchemy Men\xF9_little_26"
+    21300054: "Alchemy Men\xF9_little_27"
+    21300056: "Alchemy Men\xF9_little_28"
+    21300058: "Alchemy Men\xF9_little_29"
+    21300060: "Alchemy Men\xF9_little_30"
+    21300062: "Alchemy Men\xF9_little_31"
+    21300064: "Alchemy Men\xF9_little_32"
+    21300066: "Alchemy Men\xF9_little_33"
+    21300068: "Alchemy Men\xF9_little_34"
+    21300070: "Alchemy Men\xF9_little_35"
+    21300072: "Alchemy Men\xF9_little_36"
+    21300074: "Alchemy Men\xF9_little_37"
+    21300076: "Alchemy Men\xF9_little_38"
+    21300078: "Alchemy Men\xF9_little_39"
+    21300080: "Alchemy Men\xF9_little_40"
+  serializedVersion: 4
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: -1
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - buildTarget: DefaultTexturePlatform
+    maxTextureSize: 8192
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: Standalone
+    maxTextureSize: 8192
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: "Alchemy Men\xF9_little_0"
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 7192
+        width: 1000
+        height: 1000
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "Alchemy Men\xF9_little_1"
+      rect:
+        serializedVersion: 2
+        x: 1000
+        y: 7192
+        width: 1000
+        height: 1000
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "Alchemy Men\xF9_little_2"
+      rect:
+        serializedVersion: 2
+        x: 2000
+        y: 7192
+        width: 1000
+        height: 1000
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "Alchemy Men\xF9_little_3"
+      rect:
+        serializedVersion: 2
+        x: 3000
+        y: 7192
+        width: 1000
+        height: 1000
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "Alchemy Men\xF9_little_4"
+      rect:
+        serializedVersion: 2
+        x: 4000
+        y: 7192
+        width: 1000
+        height: 1000
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "Alchemy Men\xF9_little_5"
+      rect:
+        serializedVersion: 2
+        x: 5000
+        y: 7192
+        width: 1000
+        height: 1000
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "Alchemy Men\xF9_little_6"
+      rect:
+        serializedVersion: 2
+        x: 6000
+        y: 7192
+        width: 1000
+        height: 1000
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "Alchemy Men\xF9_little_7"
+      rect:
+        serializedVersion: 2
+        x: 7000
+        y: 7192
+        width: 1000
+        height: 1000
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "Alchemy Men\xF9_little_8"
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 6192
+        width: 1000
+        height: 1000
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "Alchemy Men\xF9_little_9"
+      rect:
+        serializedVersion: 2
+        x: 1000
+        y: 6192
+        width: 1000
+        height: 1000
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "Alchemy Men\xF9_little_10"
+      rect:
+        serializedVersion: 2
+        x: 2000
+        y: 6192
+        width: 1000
+        height: 1000
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "Alchemy Men\xF9_little_11"
+      rect:
+        serializedVersion: 2
+        x: 3000
+        y: 6192
+        width: 1000
+        height: 1000
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "Alchemy Men\xF9_little_12"
+      rect:
+        serializedVersion: 2
+        x: 4000
+        y: 6192
+        width: 1000
+        height: 1000
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "Alchemy Men\xF9_little_13"
+      rect:
+        serializedVersion: 2
+        x: 5000
+        y: 6192
+        width: 1000
+        height: 1000
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "Alchemy Men\xF9_little_14"
+      rect:
+        serializedVersion: 2
+        x: 6000
+        y: 6192
+        width: 1000
+        height: 1000
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "Alchemy Men\xF9_little_15"
+      rect:
+        serializedVersion: 2
+        x: 7000
+        y: 6192
+        width: 1000
+        height: 1000
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "Alchemy Men\xF9_little_16"
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 5192
+        width: 1000
+        height: 1000
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "Alchemy Men\xF9_little_17"
+      rect:
+        serializedVersion: 2
+        x: 1000
+        y: 5192
+        width: 1000
+        height: 1000
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "Alchemy Men\xF9_little_18"
+      rect:
+        serializedVersion: 2
+        x: 2000
+        y: 5192
+        width: 1000
+        height: 1000
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "Alchemy Men\xF9_little_19"
+      rect:
+        serializedVersion: 2
+        x: 3000
+        y: 5192
+        width: 1000
+        height: 1000
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "Alchemy Men\xF9_little_20"
+      rect:
+        serializedVersion: 2
+        x: 4000
+        y: 5192
+        width: 1000
+        height: 1000
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "Alchemy Men\xF9_little_21"
+      rect:
+        serializedVersion: 2
+        x: 5000
+        y: 5192
+        width: 1000
+        height: 1000
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "Alchemy Men\xF9_little_22"
+      rect:
+        serializedVersion: 2
+        x: 6000
+        y: 5192
+        width: 1000
+        height: 1000
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "Alchemy Men\xF9_little_23"
+      rect:
+        serializedVersion: 2
+        x: 7000
+        y: 5192
+        width: 1000
+        height: 1000
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "Alchemy Men\xF9_little_24"
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 4192
+        width: 1000
+        height: 1000
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "Alchemy Men\xF9_little_25"
+      rect:
+        serializedVersion: 2
+        x: 1000
+        y: 4192
+        width: 1000
+        height: 1000
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "Alchemy Men\xF9_little_26"
+      rect:
+        serializedVersion: 2
+        x: 2000
+        y: 4192
+        width: 1000
+        height: 1000
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "Alchemy Men\xF9_little_27"
+      rect:
+        serializedVersion: 2
+        x: 3000
+        y: 4192
+        width: 1000
+        height: 1000
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "Alchemy Men\xF9_little_28"
+      rect:
+        serializedVersion: 2
+        x: 4000
+        y: 4192
+        width: 1000
+        height: 1000
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "Alchemy Men\xF9_little_29"
+      rect:
+        serializedVersion: 2
+        x: 5000
+        y: 4192
+        width: 1000
+        height: 1000
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "Alchemy Men\xF9_little_30"
+      rect:
+        serializedVersion: 2
+        x: 6000
+        y: 4192
+        width: 1000
+        height: 1000
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "Alchemy Men\xF9_little_31"
+      rect:
+        serializedVersion: 2
+        x: 7000
+        y: 4192
+        width: 1000
+        height: 1000
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "Alchemy Men\xF9_little_32"
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 3192
+        width: 1000
+        height: 1000
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "Alchemy Men\xF9_little_33"
+      rect:
+        serializedVersion: 2
+        x: 1000
+        y: 3192
+        width: 1000
+        height: 1000
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "Alchemy Men\xF9_little_34"
+      rect:
+        serializedVersion: 2
+        x: 2000
+        y: 3192
+        width: 1000
+        height: 1000
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "Alchemy Men\xF9_little_35"
+      rect:
+        serializedVersion: 2
+        x: 3000
+        y: 3192
+        width: 1000
+        height: 1000
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "Alchemy Men\xF9_little_36"
+      rect:
+        serializedVersion: 2
+        x: 4000
+        y: 3192
+        width: 1000
+        height: 1000
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "Alchemy Men\xF9_little_37"
+      rect:
+        serializedVersion: 2
+        x: 5000
+        y: 3192
+        width: 1000
+        height: 1000
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "Alchemy Men\xF9_little_38"
+      rect:
+        serializedVersion: 2
+        x: 6000
+        y: 3192
+        width: 1000
+        height: 1000
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "Alchemy Men\xF9_little_39"
+      rect:
+        serializedVersion: 2
+        x: 7000
+        y: 3192
+        width: 1000
+        height: 1000
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: "Alchemy Men\xF9_little_40"
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 2192
+        width: 1000
+        height: 1000
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

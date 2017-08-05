@@ -27,17 +27,17 @@ public class MenuManager : MonoBehaviour
                 }
             case 2:
                 {
-                    StartCoroutine(fading.FadeOut("_Scenes/Controls"));
+                    StartCoroutine(fading.FadeOut("_Scenes/Tutorial"));
                     break;
                 }
             case 3:
                 {
-                    StartCoroutine(fading.FadeOut("_Scenes/Tutorial"));
+                    StartCoroutine(fading.FadeOut("_Scenes/Options"));
                     break;
                 }
             case 4:
                 {
-                    StartCoroutine(fading.FadeOut("_Scenes/Options"));
+                    StartCoroutine(fading.FadeOut("_Scenes/Controls"));
                     break;
 
                 }
