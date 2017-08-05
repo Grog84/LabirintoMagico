@@ -141,6 +141,15 @@ public class MapManager : MonoBehaviour {
             }
     }
 
+    public void SetInsertArrowVisible(bool status, int idx)
+    {
+        if (status)
+            allInsertArrowsRenderer[idx].color = Color.white;
+        else
+            allInsertArrowsRenderer[idx].color = Color.clear;
+
+    }
+
     int[] GenerateInitialTiles()
     {
         // Array storing all the information about the number of tiles per type

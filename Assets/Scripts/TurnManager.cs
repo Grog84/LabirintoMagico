@@ -661,9 +661,10 @@ public class TurnManager : MonoBehaviour
     IEnumerator ScrollTileInsertionSelection()
     {
         StartCoroutine(ZoomToCenter());
-        mapManager.SetInsertArrowsVisible(true);
+        //mapManager.SetInsertArrowsVisible(true);
         int currentSelection = 39; // Starts in the Top Left Side
         allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", true);
+        mapManager.SetInsertArrowVisible(true, currentSelection);
 
         yield return null;
 
@@ -677,25 +678,31 @@ public class TurnManager : MonoBehaviour
                 if (currentSelection >= 26 && currentSelection <= 39)
                 {
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", false);
+                    mapManager.SetInsertArrowVisible(false, currentSelection);
                     yield return null;
                     currentSelection--;
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", true);
+                    mapManager.SetInsertArrowVisible(true, currentSelection);
                     yield return null;
                 }
                 else if (currentSelection >= 0 && currentSelection <= 12)
                 {
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", false);
+                    mapManager.SetInsertArrowVisible(false, currentSelection);
                     yield return null;
                     currentSelection++;
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", true);
+                    mapManager.SetInsertArrowVisible(true, currentSelection);
                     yield return null;
                 }
                 else if (currentSelection == 51)
                 {
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", false);
+                    mapManager.SetInsertArrowVisible(false, currentSelection);
                     yield return null;
                     currentSelection = 0;
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", true);
+                    mapManager.SetInsertArrowVisible(true, currentSelection);
                     yield return null;
                 }
                 if (!firstClick)
@@ -711,25 +718,31 @@ public class TurnManager : MonoBehaviour
                 if (currentSelection >= 1 && currentSelection <= 13)
                 {
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", false);
+                    mapManager.SetInsertArrowVisible(false, currentSelection);
                     yield return null;
                     currentSelection--;
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", true);
+                    mapManager.SetInsertArrowVisible(true, currentSelection);
                     yield return null;
                 }
                 else if (currentSelection >= 25 && currentSelection <= 38)
                 {
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", false);
+                    mapManager.SetInsertArrowVisible(false, currentSelection);
                     yield return null;
                     currentSelection++;
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", true);
+                    mapManager.SetInsertArrowVisible(true, currentSelection);
                     yield return null;
                 }
                 else if (currentSelection == 0)
                 {
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", false);
+                    mapManager.SetInsertArrowVisible(false, currentSelection);
                     yield return null;
                     currentSelection = 51;
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", true);
+                    mapManager.SetInsertArrowVisible(true, currentSelection);
                     yield return null;
                 }
                 if (!firstClick)
@@ -745,25 +758,31 @@ public class TurnManager : MonoBehaviour
                 if (currentSelection >= 12 && currentSelection <= 25)
                 {
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", false);
+                    mapManager.SetInsertArrowVisible(false, currentSelection);
                     yield return null;
                     currentSelection++;
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", true);
+                    mapManager.SetInsertArrowVisible(true, currentSelection);
                     yield return null;
                 }
                 else if (currentSelection >= 39 && currentSelection <= 51)
                 {
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", false);
+                    mapManager.SetInsertArrowVisible(false, currentSelection);
                     yield return null;
                     currentSelection--;
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", true);
+                    mapManager.SetInsertArrowVisible(true, currentSelection);
                     yield return null;
                 }
                 else if (currentSelection == 0)
                 {
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", false);
+                    mapManager.SetInsertArrowVisible(false, currentSelection);
                     yield return null;
                     currentSelection = 51;
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", true);
+                    mapManager.SetInsertArrowVisible(true, currentSelection);
                     yield return null;
                 }
                 if (!firstClick)
@@ -779,25 +798,31 @@ public class TurnManager : MonoBehaviour
                 if (currentSelection >= 13 && currentSelection <= 26)
                 {
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", false);
+                    mapManager.SetInsertArrowVisible(false, currentSelection);
                     yield return null;
                     currentSelection--;
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", true);
+                    mapManager.SetInsertArrowVisible(true, currentSelection);
                     yield return null;
                 }
                 else if (currentSelection >= 38 && currentSelection <= 50)
                 {
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", false);
+                    mapManager.SetInsertArrowVisible(false, currentSelection);
                     yield return null;
                     currentSelection++;
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", true);
+                    mapManager.SetInsertArrowVisible(true, currentSelection);
                     yield return null;
                 }
                 else if (currentSelection == 51)
                 {
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", false);
+                    mapManager.SetInsertArrowVisible(false, currentSelection);
                     yield return null;
                     currentSelection = 0;
                     allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", true);
+                    mapManager.SetInsertArrowVisible(true, currentSelection);
                     yield return null;
                 }
                 if (!firstClick)
@@ -823,6 +848,7 @@ public class TurnManager : MonoBehaviour
             inAction = false;
             mapManager.SetInsertArrowsVisible(false);
             allInsertArrows[currentSelection].GetComponent<Animator>().SetBool("isActive", false);
+            myCameraMovement.MoveToPosition(activePlayer.GetComponentInParent<Transform>().position);
             StartCoroutine(ActivatePanel((int)panelSelection.terraformPanel));
         }
         else
