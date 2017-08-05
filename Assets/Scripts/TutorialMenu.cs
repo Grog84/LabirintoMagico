@@ -6,7 +6,7 @@ using UnityEngine.Video;
 using UnityEngine.SceneManagement;
 
 public class TutorialMenu : MonoBehaviour {
-    public GameObject camera, videoPlayer, particle, particleInst;
+    public GameObject camera, videoPlayer, particle, particleInst, text;
     public FadeManager fade;
     public VideoClip[] tutorials;
     private int selezione = 0;
@@ -16,6 +16,7 @@ public class TutorialMenu : MonoBehaviour {
     public float partLeft, partRight;
     public bool move;
     private float destination;
+    public Sprite[] texts;
 
 	void Start ()
     {
@@ -44,6 +45,7 @@ public class TutorialMenu : MonoBehaviour {
                 move = true;
                 destination = transform.position.y - 1.235f;
                 selezione--;
+                text.GetComponent<SpriteRenderer>().sprite = texts[selezione];
                 transform.DOMoveY(transform.position.y - 1.235f, 1f);
                 for (int i = 0; i < 3; i++)
                 {
@@ -72,6 +74,7 @@ public class TutorialMenu : MonoBehaviour {
                 move = true;
                 destination = transform.position.y + 1.235f;
                 selezione++;
+                text.GetComponent<SpriteRenderer>().sprite = texts[selezione];
                 transform.DOMoveY(transform.position.y + 1.235f, 1f);
                 for (int i = 0; i < 3; i++)
                 {
