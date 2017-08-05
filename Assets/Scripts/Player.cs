@@ -237,8 +237,10 @@ public class Player : MonoBehaviour
     {
         GameObject targetTile;
 
-        transform.parent = null;
-        this.coordinate = coord;
+        if (transform.parent != null)
+            transform.parent = null;
+
+        coordinate = coord;
         targetTile = mapManagerComponent.PickTileObject(coord);
         transform.position = new Vector3(targetTile.transform.position.x, targetTile.transform.position.y, -5);
         UpdatePlayerPosition(targetTile.GetComponent<Tile>());
@@ -249,6 +251,7 @@ public class Player : MonoBehaviour
 
     public void TeleportOffScreen()
     {
+        transform.parent = null;
         transform.position = new Vector3(-1000, 0, -5);
     }
 

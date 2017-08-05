@@ -390,6 +390,7 @@ public class TurnManager : MonoBehaviour
                                                                       mapManager.myDiamondInstance.transform.position.y,
                                                                       -10);
         player.ResetTurnsBeforeStasis();
+        diamondOnTable = true;
     }
 
     private void ConnectToTile(GameObject tile)
@@ -607,13 +608,21 @@ public class TurnManager : MonoBehaviour
         bool trapStatus = lastTile.GetIsTrapped();
         if (lastTile.GetPlayerChildNbr() != -1)
         {
+            Debug.Log(lineCoordinates[lineCoordinates.Length - 1].GetPositionFromCoords(mapManager.columns, mapManager.rows).ToString());
+            myCameraMovement.MoveToHighlight(lineCoordinates[lineCoordinates.Length - 1].GetPositionFromCoords(mapManager.columns, mapManager.rows));
+            yield return null;
             int playerIdx = GeneralMethods.FindElementIdx(playerOrder, lastTile.GetPlayerChildNbr());
             fallingPlayer = playerComponent[playerIdx];
             if (fallingPlayer.hasDiamond)
                 DropDiamond(fallingPlayer);
-            fallingPlayer.transform.parent = null;
-            diamondOnTable = true;
-            fallingPlayer.TeleportOffScreen();
+            yield return StartCoroutine(lastTile.BlackHole(true));
+            StartCoroutine(ZoomToCenter());
+            yield return new WaitForSeconds(1f);
+
+            //fallingPlayer.transform.parent = null;
+            //diamondOnTable = true;
+            //fallingPlayer.TeleportOffScreen();
+
             repositionPlayer = true;
         }
 
@@ -634,14 +643,15 @@ public class TurnManager : MonoBehaviour
 
         tileType = activeCard.GetTileType();
 
+        Tile myNewTile = null;
         if (activeCard.GetTrappedStatus())
-            mapManager.InstantiateTileLive(tileType, lineCoordinates[0], true);  // places a trap on top of the tile
+            myNewTile = mapManager.InstantiateTileLive(tileType, lineCoordinates[0], true);  // places a trap on top of the tile
         else
-            mapManager.InstantiateTileLive(tileType, lineCoordinates[0]);  // default is false
+            myNewTile = mapManager.InstantiateTileLive(tileType, lineCoordinates[0]);  // default is false
 
         if (repositionPlayer)
         {
-            fallingPlayer.TeleportAtCoordinates(lineCoordinates[0]);
+            yield return StartCoroutine(myNewTile.BlackHoleRespawn(fallingPlayer));
         }
 
         activeCard.AssignType(newCardType, trapStatus);
@@ -654,8 +664,8 @@ public class TurnManager : MonoBehaviour
 
         arrow.GetComponent<Animator>().SetBool("isActive", false);
         mapManager.SetInsertArrowsVisible(false);
-        StartCoroutine(EndTerraform());
         myCameraMovement.MoveToPosition(activePlayer.GetComponentInParent<Transform>().position);
+        StartCoroutine(EndTerraform());
         yield return null;
     }
 
@@ -854,6 +864,7 @@ public class TurnManager : MonoBehaviour
         }
         else
         {
+            mapManager.SetInsertArrowVisible(true, currentSelection);
             int mySlideDirection = 0;
             if (currentSelection >= 0 && currentSelection <= 12)
                 mySlideDirection = (int)slideDirection.botToTop;

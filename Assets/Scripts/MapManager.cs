@@ -610,7 +610,7 @@ public class MapManager : MonoBehaviour {
 
     }
 
-    public void InstantiateTileLive(int tileType, Coordinate coordinate, bool isTrapped = false, bool canBeMoved = true)
+    public Tile InstantiateTileLive(int tileType, Coordinate coordinate, bool isTrapped = false, bool canBeMoved = true)
     {
         GameObject tileInstance = Instantiate(tile, coordinate.getVect3() + transform.position, Quaternion.identity);
         tileInstance.transform.SetParent(transform);
@@ -633,6 +633,7 @@ public class MapManager : MonoBehaviour {
         myMap[coordinate.getX(), coordinate.getY()] = tileInstance;
         myMapTiles[coordinate.getX(), coordinate.getY()] = tileInstance.GetComponent<Tile>();
 
+        return myTileComponent;
     }
 
     void InstantiateDiamond(Coordinate coordinate)

@@ -60,9 +60,11 @@ public class CameraMovement : MonoBehaviour {
     }
 
     public void MoveToHighlight(Vector3 position) 
-    {     
-        float cameraX = Mathf.Clamp(position.x, xLimits[0], xLimits[1]);
-        float cameraY = Mathf.Clamp(position.y, yLimits[0], yLimits[1]);
+    {
+        float[] limits = GetLimitsAtZoom(zoomInSizeLimit);
+
+        float cameraX = Mathf.Clamp(position.x, limits[0], limits[1]);
+        float cameraY = Mathf.Clamp(position.y, limits[2], limits[3]);
         var cameraPosition = new Vector3(cameraX, cameraY, transform.position.z);
 
         transform.DOMove(cameraPosition, 0.1f);
@@ -183,8 +185,8 @@ public class CameraMovement : MonoBehaviour {
 
         limits[0] = -xLim;
         limits[1] = xLim;
-        limits[0] = -yLim;
-        limits[1] = yLim;
+        limits[2] = -yLim;
+        limits[3] = yLim;
 
         return limits;
     }

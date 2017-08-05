@@ -146,7 +146,7 @@ public class Tile : MonoBehaviour {
         yield return null;
     }
 
-    public IEnumerator BlackHole()
+    public IEnumerator BlackHole(bool isTileOut = false)
     {
 
         SetBlackHolePlaying(true);
@@ -156,7 +156,23 @@ public class Tile : MonoBehaviour {
 
         myBlackHole.GetComponent<blackHole>().AssignTile(this);
         yield return StartCoroutine(WaitForBlackholeAnim(myBlackHole, "blackHole_1"));
-        ClearTile();
+        ClearTile(isTileOut);
+        yield return StartCoroutine(WaitForBlackholeAnim(myBlackHole, "blackHole_2"));
+        Destroy(myBlackHole);
+        yield return null;
+
+    }
+
+    public IEnumerator BlackHoleRespawn(Player player)
+    {
+
+        GameObject myBlackHole = Instantiate(blackHole, transform);
+        yield return null;
+        myBlackHole.transform.localPosition = new Vector3(0f, 0f, -3f);
+
+        myBlackHole.GetComponent<blackHole>().AssignTile(this);
+        yield return StartCoroutine(WaitForBlackholeAnim(myBlackHole, "blackHole_1"));
+        SpawnPlayer(player);
         yield return StartCoroutine(WaitForBlackholeAnim(myBlackHole, "blackHole_2"));
         Destroy(myBlackHole);
         yield return null;
@@ -191,27 +207,38 @@ public class Tile : MonoBehaviour {
         return childPlayerComponent;
     }
 
-    public void ClearTile()
+    public void ClearTile(bool isTileOut=false)
     {
-        if (childPlayerNbr != -1)
+        if (!isTileOut)
         {
-            turnManager.GetComponent<TurnManager>().DropDiamond(childPlayerComponent);
-            childPlayerComponent.ResetToStartingPosition();
+            if (childPlayerNbr != -1)
+            {
+                turnManager.GetComponent<TurnManager>().DropDiamond(childPlayerComponent);
+                childPlayerComponent.ResetToStartingPosition();
+            }
+            else
+            {
+                foreach (var player in turnManager.GetAllPayers())
+                {
+                    if (player.coordinate.isEqual(myCoord))  // if true it mean that a player has the stasis active
+                    {
+                        turnManager.GetComponent<TurnManager>().DropDiamond(player);
+                        player.ResetToStartingPosition();
+                    }
+                }
+
+            }
         }
         else
         {
-            foreach (var player in turnManager.GetAllPayers())
-            {
-                if (player.coordinate.isEqual(myCoord))  // if true it mean that a player has the stasis active
-                {
-                    turnManager.GetComponent<TurnManager>().DropDiamond(player);
-                    player.ResetToStartingPosition();
-                }
-            }
-
+            childPlayerComponent.TeleportOffScreen();
         }
     }
 
+    public void SpawnPlayer(Player player)
+    {
+        player.TeleportAtCoordinates(myCoord);
+    }
 
     // Tiles connectivity
 
