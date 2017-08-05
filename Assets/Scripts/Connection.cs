@@ -18,12 +18,12 @@ public class Connection : MonoBehaviour {
         searching += Time.deltaTime;
         if (searching < 5f)
         {
-        transform.DOLocalRotate(new Vector3(0, 0, 90), 1, RotateMode.LocalAxisAdd);
+        //transform.DOLocalRotate(new Vector3(0, 0, 90), 1, RotateMode.LocalAxisAdd);
         }
 
         if (searching >= 5f)
         {
-            transform.DOKill();
+            //transform.DOKill();
             text.GetComponent<Text>().text = "Connection Failed. Press A to Start.";
 
         }

@@ -32,7 +32,7 @@ public class MenuManager : MonoBehaviour
                 }
             case 3:
                 {
-                    StartCoroutine(fading.FadeOut("_Scenes/Options"));
+                    Application.Quit();
                     break;
                 }
             case 4:
