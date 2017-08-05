@@ -38,9 +38,9 @@ public class TutorialMenu : MonoBehaviour {
         //else move = true;
 
             if ((Input.GetKeyDown(KeyCode.W) || Input.GetAxis("VerticalJoy") == 1 || Input.GetAxis("VerticalAnalog") >= 0.9f) && !move)
-        {
-            if (transform.position.y > -4)
             {
+                if (transform.position.y > -4)
+                {
                 move = true;
                 destination = transform.position.y - 1.235f;
                 selezione--;
@@ -60,10 +60,10 @@ public class TutorialMenu : MonoBehaviour {
                 
                 camera.transform.DOShakePosition(0.2f, 0.6f);
                 fadeOut = true;
-            }
+                }
 
             Debug.Log(selezione);
-        }
+            }
 
         if ((Input.GetKeyDown(KeyCode.S) || Input.GetAxis("VerticalJoy") == -1 || Input.GetAxis("VerticalAnalog") <= -0.9f) && !move)
         {
