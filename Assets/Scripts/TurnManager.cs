@@ -1085,11 +1085,11 @@ public class TurnManager : MonoBehaviour
         //    canBeActivated = false;
         //}
 
-        if (Input.GetKeyDown(KeyCode.Return) && !isInPause)
+        if ((Input.GetKeyDown(KeyCode.Return) || Input.GetButtonDown("StartButton")) && !isInPause)
         {
             Pause();
         }
-        else if (Input.GetKeyDown(KeyCode.Return) && isInPause)
+        else if ((Input.GetKeyDown(KeyCode.Return) || Input.GetButtonDown("StartButton")) && isInPause)
         {
             Resume();
         }

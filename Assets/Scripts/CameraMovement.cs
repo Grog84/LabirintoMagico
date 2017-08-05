@@ -135,6 +135,7 @@ public class CameraMovement : MonoBehaviour {
 
     private void ZoomCamera()
     {
+
         if (Input.GetKey(KeyCode.U))
         {
             float newSize = thisCamera.orthographicSize + zoomingSpeed * Time.deltaTime;
