@@ -252,25 +252,34 @@ public class Player : MonoBehaviour
         transform.position = new Vector3(-1000, 0, -5);
     }
 
-    public void CheckForTraps(Tile tile)
+    public IEnumerator CheckForTraps(Tile tile)
     {
         if (tile.GetIsTrapped())
         {
             Trap trap = tile.GetTrap();
             if (trap.GetIsActive() && trap.GetPlayerDropping() != playerNbr)
             {
+                CameraMovement myCamera = turnManagerComponent.GetCameraComponent();
+                myCamera.MoveToHighlight(tile.GetComponent<Transform>().position);
+                myCamera.StopFollowingPlayer();
+
                 if (hasDiamond)
                 {
                     turnManager.GetComponent<TurnManager>().DropDiamond(this);
                 }
-                tile.myTrapComponent.Trigger(this);
+                yield return StartCoroutine(tile.myTrapComponent.Trigger());
                 turnManager.GetComponent<TurnManager>().SetTrapHasTriggered(true);
-                tile.SetPlayerChild();
+                //tile.SetPlayerChild();
+
+                yield return new WaitForSeconds(1f);
+                myCamera.StartFollowingPlayer(this);
+                yield return new WaitForSeconds(1f);
             }
             else if (!trap.GetIsActive() && trap.GetPlayerDropping() == 0)
             {
                 trap.SetPlayerDropping(playerNbr);
                 turnManager.GetComponent<TurnManager>().AddToActivateTrapList(trap);
+                yield return null;
             }
         }
     }
@@ -517,7 +526,7 @@ public class Player : MonoBehaviour
             }
 
             UpdatePlayerPosition(destinationTileComponent);
-            CheckForTraps(destinationTileComponent);
+            yield return StartCoroutine(CheckForTraps(destinationTileComponent));
 
             yield return null;
 
@@ -572,7 +581,7 @@ public class Player : MonoBehaviour
             }
 
             UpdatePlayerPosition(destinationTileComponent);
-            CheckForTraps(destinationTileComponent);
+            yield return StartCoroutine(CheckForTraps(destinationTileComponent));
 
             yield return null;
 
@@ -627,7 +636,7 @@ public class Player : MonoBehaviour
             }
 
             UpdatePlayerPosition(destinationTileComponent);
-            CheckForTraps(destinationTileComponent);
+            yield return StartCoroutine(CheckForTraps(destinationTileComponent));
 
             yield return null;
 
@@ -684,7 +693,7 @@ public class Player : MonoBehaviour
             }
 
             UpdatePlayerPosition(destinationTileComponent);
-            CheckForTraps(destinationTileComponent);
+            yield return StartCoroutine(CheckForTraps(destinationTileComponent));
 
             yield return null;
 
@@ -757,22 +766,6 @@ public class Player : MonoBehaviour
         }
     }
 
-    // deprecated
-    private void OnTriggerEnter2D(Collider2D collision)  // This does not work since no physics is involved...
-    {
-        if (collision.gameObject.tag == "Tile")
-        {
-            Tile myTile = collision.gameObject.GetComponent<Tile>();
-            UpdatePlayerPosition(myTile);
-
-            if (myTile.GetIsTrapped())
-            {
-                myTile.myTrapComponent.Trigger(this);
-                turnManager.GetComponent<TurnManager>().SetTrapHasTriggered(true);
-            }
-
-        }
-    }
 }
 
 
