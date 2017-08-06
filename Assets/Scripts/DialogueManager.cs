@@ -8,15 +8,14 @@ public class DialogueManager : ScriptableObject
     public AudioClip[] audioList;
     private int toPlay;
 
-    AudioClip PlayClip ()
+    public AudioClip PlayClip ()
     {
         toPlay = Random.Range(0, audioList.Length);
         return audioList[toPlay];
     }
 
-    AudioClip PlayClip (int index)
+    public AudioClip PlayClip (int index)
     {
-        toPlay = index;
-        return audioList[toPlay];
+        return audioList[index];
     }
 }

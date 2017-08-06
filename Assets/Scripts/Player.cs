@@ -27,6 +27,7 @@ public class Player : MonoBehaviour
     private bool checkingCombat = false, attack1active=false, attack2active = false;
     private bool isStasisActive = false, canActivateStasis = false;
     private int turnsBeforeStasisCounter = 3, turnsBeforeStasisIsActive = 3;
+    //public GameObject dialogueManager;
 
     // Accessing Variable
 

@@ -16,6 +16,7 @@ public class TurnManager : MonoBehaviour
     public bool isSliding = false, isRotating = false;
     public bool isAcceptingInputs = true;
     public bool isInPause = false;
+    private bool[] isFirstTurn;
 
     private int playerPlaying, playerPlayingIdx, turnNbr, selectedButton, selectionDepth;
     private int[] playerOrder;
@@ -37,6 +38,7 @@ public class TurnManager : MonoBehaviour
     public GameObject passButton;
     private Vector3 oldCameraPosition;
     private float oldCameraSize;
+    public GameObject dialogueManager;
 
     enum myButtons
     {
@@ -92,7 +94,7 @@ public class TurnManager : MonoBehaviour
 
     public void PassTurn()
     {
-        //HERE     
+           
         ActivatePlayer(0);
 
         playerPlayingIdx++;
@@ -107,6 +109,7 @@ public class TurnManager : MonoBehaviour
         //while (movingCamera) { }
 
         isAcceptingInputs = false;
+
 
         mapManager.updateTilesConnection(playerPlaying);
         activePlayer.CheckDiamondStatusTimer();
@@ -123,7 +126,11 @@ public class TurnManager : MonoBehaviour
         selectedButton = 0;
         isAcceptingInputs = true;
 
-        // StartCoroutine(MoveCamera(players[playerPlayingIdx]));  
+        if (isFirstTurn[playerPlayingIdx])
+        {
+            dialogueManager.GetComponent<Speaker>().PlayIntros(playerPlayingIdx);
+            isFirstTurn[playerPlayingIdx] = false;
+        }
 
     }
 
@@ -1060,6 +1067,7 @@ public class TurnManager : MonoBehaviour
 
     void Awake()
     {
+        isFirstTurn = new bool[4] { true, true, true, true };
         selectionDepth = 0; // corresponds to the first panel. 1 is the terraform panel. 2 is the card selection
         int numberOfButtons = 4;
         playerPlayingIdx = -1;

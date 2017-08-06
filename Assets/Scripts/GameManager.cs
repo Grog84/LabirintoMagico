@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour {
     public TurnManager turnManagerComponent;
 
     private GameObject mapManager;
+    public GameObject dialogueManager;
     private MapManager mapManagerComponent;
     private float[][] strartingPositions;
 

@@ -17,13 +17,21 @@ public class Speaker : MonoBehaviour {
     public DialogueManager trapActivated;
     public DialogueManager victory;
 
+    private AudioSource audioComponent;
+
     // Use this for initialization
-    void Start () {
-		
+    void Awake () {
+        audioComponent = this.GetComponent<AudioSource>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		
 	}
+
+    public void PlayIntros(int player) 
+    {
+        audioComponent.clip = intros.PlayClip(player);
+        audioComponent.Play();
+    }
 }
