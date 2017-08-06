@@ -76,5 +76,30 @@ public class Speaker : MonoBehaviour {
         audioComponent.clip = trapActivated.PlayClip(player);
         audioComponent.Play();
     }
+
+    public void PlayPvP(int player, int otherPlayer)
+    {
+        switch (player)
+        {
+            case 0:
+                if (otherPlayer == 3) audioComponent.clip = pvp.PlayClip(0);
+                else audioComponent.clip = pvp.PlayClip(1);
+                break;
+            case 1:
+                if (otherPlayer == 2) audioComponent.clip = pvp.PlayClip(2);
+                else audioComponent.clip = pvp.PlayClip(3);
+                break;
+            case 2:
+                if (otherPlayer == 1) audioComponent.clip = pvp.PlayClip(4);
+                else audioComponent.clip = pvp.PlayClip(5);
+                break;
+            case 3:
+                if (otherPlayer == 0) audioComponent.clip = pvp.PlayClip(6);
+                else audioComponent.clip = pvp.PlayClip(7);
+                break;
+        }
+        audioComponent.Play();
+    }
 }
+
 
