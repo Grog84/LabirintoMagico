@@ -31,6 +31,9 @@ public class Speaker : MonoBehaviour {
 
     public void PlayIntros(int player) 
     {
+        if (player == 1)
+            audioComponent.volume = 0.15f;
+        else audioComponent.volume = 0.3f;
         audioComponent.clip = intros.PlayClip(player);
         audioComponent.Play();
     }
