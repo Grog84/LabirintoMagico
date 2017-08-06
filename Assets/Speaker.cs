@@ -4,8 +4,21 @@ using UnityEngine;
 
 public class Speaker : MonoBehaviour {
 
-	// Use this for initialization
-	void Start () {
+    public DialogueManager begin;
+    public DialogueManager crystalGrab;
+    public DialogueManager elfTrap;
+    public DialogueManager intros;
+    public DialogueManager monkTrap;
+    public DialogueManager necroTrap;
+    public DialogueManager pvp;
+    public DialogueManager pyroTrap;
+    public DialogueManager someoneFall;
+    public DialogueManager stasys;
+    public DialogueManager trapActivated;
+    public DialogueManager victory;
+
+    // Use this for initialization
+    void Start () {
 		
 	}
 	
