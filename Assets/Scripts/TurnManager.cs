@@ -214,7 +214,7 @@ public class TurnManager : MonoBehaviour
         
     public void EndGame(Player player)
     {
-        //HERE
+        dialogueManager.GetComponent<Speaker>().PlayVictory(player.playerNbr);
         playerWinsText[player.playerNbr - 1].GetComponent<RectTransform>().position = new Vector2(0, 0);
         StartCoroutine(BackToMenu());
     }
@@ -377,7 +377,7 @@ public class TurnManager : MonoBehaviour
 
     public void CollectDiamond(Player player)
     {
-        //HERE
+        dialogueManager.GetComponent<Speaker>().PlayCrystalGrab(player.playerNbr);
         diamondOnTable = false;
         player.SetHasDiamond(true);
         player.SetCanActivateStasis(true);
@@ -424,7 +424,7 @@ public class TurnManager : MonoBehaviour
         mapManager.myDiamondInstance.transform.GetComponentInParent<Player>().ActivateStasis();
         canUseCrystal = false;
         //buttonsAnimator[3].SetBool("isActive", true);
-        //HERE
+        dialogueManager.GetComponent<Speaker>().PlayStasys(0);
         yield return null;
         PassTurn();
     }
@@ -628,7 +628,7 @@ public class TurnManager : MonoBehaviour
             yield return StartCoroutine(lastTile.BlackHole(true));
             StartCoroutine(ZoomToCenter());
             yield return new WaitForSeconds(1f);
-            //HERE
+            dialogueManager.GetComponent<Speaker>().PlaySomeoneFall();
 
             //fallingPlayer.transform.parent = null;
             //diamondOnTable = true;

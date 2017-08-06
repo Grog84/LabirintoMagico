@@ -283,7 +283,7 @@ public class Player : MonoBehaviour
             }
             else if (!trap.GetIsActive() && trap.GetPlayerDropping() == 0)
             {
-                //HERE
+                turnManagerComponent.dialogueManager.GetComponent<Speaker>().PlayTrapActivated(playerNbr);
                 trap.SetPlayerDropping(playerNbr);
                 turnManager.GetComponent<TurnManager>().AddToActivateTrapList(trap);
                 yield return null;
