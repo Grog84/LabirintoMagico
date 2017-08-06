@@ -14,6 +14,8 @@ public class Card : MonoBehaviour {
     private Image myImage;
     private Sprite mySprite;
     private bool isTrapped;
+    public GameObject trapMarker;
+    private RectTransform trapMarkerTransform;
 
     public void SetIsTrapped(bool isTrapped)
     {
@@ -29,6 +31,10 @@ public class Card : MonoBehaviour {
     {
         tileType = type;
         isTrapped = trapStatus;
+        if (isTrapped)
+            trapMarkerTransform.position = new Vector2(0f, 0f);
+        else
+            trapMarkerTransform.position = new Vector2(0f, -100f);
         Texture2D myTexture = null;
 
         switch (tileType)
@@ -92,6 +98,7 @@ public class Card : MonoBehaviour {
 
         myImage = GetComponent<Image>();
         AssignStartingRandomType();
+        trapMarkerTransform = trapMarker.GetComponent<RectTransform>();
 
     }
 	
