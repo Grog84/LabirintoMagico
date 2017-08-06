@@ -10,6 +10,7 @@ public class Trap : MonoBehaviour {
     private Texture2D myTexture;
     private Coordinate myCoord;
     public bool isActive;
+    private Animator myAnimator;
 
     public void SetCoordiantes(Coordinate coord)
     {
@@ -97,7 +98,8 @@ public class Trap : MonoBehaviour {
 	// Use this for initialization
 	void Awake () {
         myRenderer = GetComponent<SpriteRenderer>();
-	}
+        myAnimator = GetComponent<Animator>();
+    }
 	
 	// Update is called once per frame
 	void Update () {
