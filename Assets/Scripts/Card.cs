@@ -16,7 +16,7 @@ public class Card : MonoBehaviour {
     private bool isTrapped;
     public GameObject trapMarker;
     private RectTransform trapMarkerTransform;
-
+   
     public void SetIsTrapped(bool isTrapped)
     {
         this.isTrapped = isTrapped;
@@ -27,14 +27,12 @@ public class Card : MonoBehaviour {
         return tileType;
     }
 
-    public void AssignType(int type, bool trapStatus=false)
+    public void AssignType(int type, bool trapStatus)
     {
         tileType = type;
-        isTrapped = trapStatus;
-        if (isTrapped)
-            trapMarkerTransform.position = new Vector2(0f, 0f);
-        else
-            trapMarkerTransform.position = new Vector2(0f, -100f);
+        //isTrapped = trapStatus;
+        //if (isTrapped) trapMarkerTransform.position = new Vector2(0f, 0f);
+        //else trapMarkerTransform.position = new Vector2(0f, -100f);
         Texture2D myTexture = null;
 
         switch (tileType)
@@ -89,7 +87,7 @@ public class Card : MonoBehaviour {
     void AssignStartingRandomType()
     {
         int randType = Random.Range(0, 11);
-        AssignType(randType);
+        AssignType(randType, true);
         isTrapped = true;
     }
 
