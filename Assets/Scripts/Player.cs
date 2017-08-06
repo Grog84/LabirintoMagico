@@ -282,6 +282,7 @@ public class Player : MonoBehaviour
             }
             else if (!trap.GetIsActive() && trap.GetPlayerDropping() == 0)
             {
+                //HERE
                 trap.SetPlayerDropping(playerNbr);
                 turnManager.GetComponent<TurnManager>().AddToActivateTrapList(trap);
                 yield return null;
@@ -312,7 +313,7 @@ public class Player : MonoBehaviour
  
     public IEnumerator AttackPlayerOnTile(Tile tile)
     {
-
+        Player otherPlayer = tile.gameObject.transform.GetComponentInChildren<Player>();
         CameraMovement myCamera = turnManagerComponent.GetCameraComponent();
         myCamera.MoveToHighlight(GeneralMethods.GetVect3Midpoint(transform.position, tile.GetComponent<Transform>().position));
 
@@ -320,11 +321,11 @@ public class Player : MonoBehaviour
         yield return null;
 
         yield return StartCoroutine(WaitForAnimation("attack_1"));
+        //HERE
         yield return StartCoroutine(CastBlackHole(tile));
         SetAttack2Status(true);
         yield return StartCoroutine(StopAnimaitionAttack());
 
-        Player otherPlayer = tile.gameObject.transform.GetComponentInChildren<Player>();
         //turnManager.GetComponent<TurnManager>().DropDiamond(otherPlayer);
         //otherPlayer.ResetToStartingPosition();
 

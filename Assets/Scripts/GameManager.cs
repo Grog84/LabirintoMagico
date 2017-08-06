@@ -24,6 +24,7 @@ public class GameManager : MonoBehaviour {
         turnManagerComponent.CameraSetRowsAndColumns();
         turnManagerComponent.ActivatePlayer(0);
         turnManagerComponent.PassTurn();
+        //HERE
     }
 	
 	// Update is called once per frame

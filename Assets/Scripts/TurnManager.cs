@@ -92,7 +92,7 @@ public class TurnManager : MonoBehaviour
 
     public void PassTurn()
     {
-             
+        //HERE     
         ActivatePlayer(0);
 
         playerPlayingIdx++;
@@ -207,6 +207,7 @@ public class TurnManager : MonoBehaviour
         
     public void EndGame(Player player)
     {
+        //HERE
         playerWinsText[player.playerNbr - 1].GetComponent<RectTransform>().position = new Vector2(0, 0);
         StartCoroutine(BackToMenu());
     }
@@ -369,6 +370,7 @@ public class TurnManager : MonoBehaviour
 
     public void CollectDiamond(Player player)
     {
+        //HERE
         diamondOnTable = false;
         player.SetHasDiamond(true);
         player.SetCanActivateStasis(true);
@@ -415,6 +417,7 @@ public class TurnManager : MonoBehaviour
         mapManager.myDiamondInstance.transform.GetComponentInParent<Player>().ActivateStasis();
         canUseCrystal = false;
         //buttonsAnimator[3].SetBool("isActive", true);
+        //HERE
         yield return null;
         PassTurn();
     }
@@ -618,6 +621,7 @@ public class TurnManager : MonoBehaviour
             yield return StartCoroutine(lastTile.BlackHole(true));
             StartCoroutine(ZoomToCenter());
             yield return new WaitForSeconds(1f);
+            //HERE
 
             //fallingPlayer.transform.parent = null;
             //diamondOnTable = true;
@@ -654,6 +658,7 @@ public class TurnManager : MonoBehaviour
             yield return StartCoroutine(myNewTile.BlackHoleRespawn(fallingPlayer));
         }
 
+        //MAYHERE
         activeCard.AssignType(newCardType, trapStatus);
 
         if (attackHasHappened)
