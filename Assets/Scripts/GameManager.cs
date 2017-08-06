@@ -34,7 +34,8 @@ public class GameManager : MonoBehaviour {
     IEnumerator initialPause ()
     {
         dialogueManager.GetComponent<Speaker>().PlayBegin();
-        yield return new WaitForSeconds(5);
+        float wait = (dialogueManager.GetComponent<Speaker>().getClipDuration()) + 0.7f;
+        yield return new WaitForSeconds(wait);
         turnManagerComponent.ActivatePlayer(0);
         turnManagerComponent.PassTurn();
         yield return null;
