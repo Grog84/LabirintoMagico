@@ -17,6 +17,7 @@ public class TutorialMenu : MonoBehaviour {
     public bool move;
     private float destination;
     public Sprite[] texts;
+    public AudioClip[] SFX;
 
 	void Start ()
     {
@@ -46,6 +47,8 @@ public class TutorialMenu : MonoBehaviour {
                 {
                 move = true;
                 destination = transform.position.y - 1.235f;
+                GetComponent<AudioSource>().clip = SFX[0];
+                GetComponent<AudioSource>().Play();
                 selezione--;
                 transform.DOMoveY(transform.position.y - 1.235f, 1f);
                 for (int i = 0; i < 3; i++)
@@ -74,6 +77,8 @@ public class TutorialMenu : MonoBehaviour {
             {
                 move = true;
                 destination = transform.position.y + 1.235f;
+                GetComponent<AudioSource>().clip = SFX[0];
+                GetComponent<AudioSource>().Play();
                 selezione++;
                 transform.DOMoveY(transform.position.y + 1.235f, 1f);
                 for (int i = 0; i < 3; i++)
@@ -98,7 +103,8 @@ public class TutorialMenu : MonoBehaviour {
 
         if ((Input.GetKeyDown(KeyCode.B) || Input.GetButtonDown("Fire2joy")) && !fade.fading)
         {
-            //fade.GetComponent<FadeManager>().fadeIn = false;
+            GetComponent<AudioSource>().clip = SFX[1];
+            GetComponent<AudioSource>().Play();
             StartCoroutine(fade.FadeOut("_Scenes/MenuIniziale"));
         }
 
