@@ -41,13 +41,16 @@ public class Trap : MonoBehaviour {
 
     public IEnumerator Trigger()
     {
+        SetVisible();
+        myAnimator.SetBool("hasTriggered", true);
         Tile tile = transform.parent.gameObject.GetComponent<Tile>();
         isActive = false;
         yield return tile.BlackHole();
 
+        myAnimator.SetBool("hasTriggered", false);
+        myAnimator.SetInteger("PlayerActivating", 0);
         SetPlayerDropping(0);
-        SetSprite();
-        SetVisible();
+        //SetSprite();
 
         yield return null;
     }
@@ -55,7 +58,8 @@ public class Trap : MonoBehaviour {
     public void SetPlayerDropping(int player)
     {
         playerDropping = player;
-        SetSprite();
+        myAnimator.SetInteger("PlayerActivating", player);
+        //SetSprite();
     }
 
     public int GetPlayerDropping()
