@@ -22,13 +22,16 @@ public class Speaker : MonoBehaviour {
 
     private AudioSource audioComponent;
 
-    // Use this for initialization
+    public float getClipDuration()
+    {
+        return audioComponent.clip.length;
+    }
+
     void Awake () {
         audioComponent = this.GetComponent<AudioSource>();
         theme = music.GetComponent<AudioSource>();
 	}
 	
-	// Update is called once per frame
 	void Update ()
     {
         if (audioComponent.isPlaying)
@@ -51,7 +54,7 @@ public class Speaker : MonoBehaviour {
 
     IEnumerator Intros (int player)
     {
-        yield return new WaitForSeconds(2);
+        yield return new WaitForSeconds(2.5f);
         if (player == 1)
             audioComponent.volume = 0.15f;
         else audioComponent.volume = 0.3f;
