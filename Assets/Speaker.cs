@@ -38,13 +38,26 @@ public class Speaker : MonoBehaviour {
         else theme.volume = 0.15f;
     }
 
+    public void PlayBegin()
+    {
+        audioComponent.clip = begin.PlayClip();
+        audioComponent.Play();
+    }
+
     public void PlayIntros(int player) 
     {
+        StartCoroutine(Intros(player));
+    }
+
+    IEnumerator Intros (int player)
+    {
+        yield return new WaitForSeconds(2);
         if (player == 1)
             audioComponent.volume = 0.15f;
         else audioComponent.volume = 0.3f;
         audioComponent.clip = intros.PlayClip(player);
         audioComponent.Play();
+        yield return null;
     }
 
     public void PlayVictory(int player)

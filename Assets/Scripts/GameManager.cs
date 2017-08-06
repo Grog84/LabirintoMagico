@@ -23,13 +23,20 @@ public class GameManager : MonoBehaviour {
         turnManagerComponent.setInsertArrows(mapManagerComponent.getAllInstancedArrows());
         turnManagerComponent.ArrangePlayersInTurnOrder();
         turnManagerComponent.CameraSetRowsAndColumns();
-        turnManagerComponent.ActivatePlayer(0);
-        turnManagerComponent.PassTurn();
-        //HERE
+        StartCoroutine(initialPause());
     }
 	
 	// Update is called once per frame
 	void Update () {
 		
 	}
+
+    IEnumerator initialPause ()
+    {
+        dialogueManager.GetComponent<Speaker>().PlayBegin();
+        yield return new WaitForSeconds(5);
+        turnManagerComponent.ActivatePlayer(0);
+        turnManagerComponent.PassTurn();
+        yield return null;
+    }
 }
