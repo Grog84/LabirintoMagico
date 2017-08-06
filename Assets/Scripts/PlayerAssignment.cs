@@ -7,6 +7,7 @@ public class PlayerAssignment : ScriptableObject {
 
     public Texture2D[] playersTextures;
     public RuntimeAnimatorController[] playersAnimators;
+    public RuntimeAnimatorController[] barrierAnimator;
 
     public Sprite GetSprite(int playerNbr)
     {
@@ -23,5 +24,9 @@ public class PlayerAssignment : ScriptableObject {
         return playersAnimators[playerNbr - 1];
     }
 
+    public RuntimeAnimatorController GetBarrierAnimator(int playerNbr)
+    {
+        return barrierAnimator[playerNbr - 1];
+    }
 
 }

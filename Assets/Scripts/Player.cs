@@ -12,7 +12,7 @@ public class Player : MonoBehaviour
     SpriteRenderer myRenderer;
     //Texture2D myTexture;
     Sprite mySprite;
-    Animator myAnimator;
+    Animator myAnimator, myBarrierAnimator;
     //BoxCollider2D myCollider;
     public bool moving = false;
     public Coordinate coordinate;
@@ -27,6 +27,8 @@ public class Player : MonoBehaviour
     private bool checkingCombat = false, attack1active=false, attack2active = false;
     private bool isStasisActive = false, canActivateStasis = false;
     private int turnsBeforeStasisCounter = 3, turnsBeforeStasisIsActive = 3;
+    private GameObject myBarrier;
+
     //public GameObject dialogueManager;
 
     // Accessing Variable
@@ -53,6 +55,22 @@ public class Player : MonoBehaviour
 
     // Animation
 
+    public IEnumerator ActivateBarrier()
+    {
+        myBarrier.transform.localPosition = new Vector3(0f, 0f, -0.01f);
+        myBarrierAnimator.SetBool("isActive", true);
+        yield return null;
+    }
+
+    public IEnumerator DeactivateBarrier()
+    {
+        myBarrierAnimator.SetBool("isActive", false);
+        //while (myBarrierAnimator.GetCurrentAnimatorStateInfo(0).IsName("disappearing")) { yield return null; }
+        yield return new WaitForSeconds(0.5f);
+        myBarrier.transform.localPosition = new Vector3(0f, 0f, 10f);
+        yield return null;
+    }
+
     public void InvertTransformX()
     {
         transform.GetChild(0).transform.localScale = new Vector3(transform.GetChild(0).transform.localScale.x * -1,
@@ -66,6 +84,7 @@ public class Player : MonoBehaviour
         myRenderer.sprite = mySprite;
         myAnimator = transform.GetChild(0).GetComponent<Animator>();
         myAnimator.runtimeAnimatorController = playerSO.GetAnimator(playerNbr);
+        myBarrierAnimator.runtimeAnimatorController = playerSO.GetBarrierAnimator(playerNbr);
 
         //myCollider.size = new Vector2(myTexture.width/100f, myTexture.height/100f);
 
@@ -396,8 +415,10 @@ public class Player : MonoBehaviour
         stasisEffect.transform.localPosition = new Vector3(0, 0, -0.1f);
     }
 
-    private void DestroyStasisEffect()
+    private IEnumerator DestroyStasisEffect()
     {
+        stasisEffect.GetComponent<Animator>().SetBool("isActive", false);
+        yield return new WaitForSeconds(0.5f);
         Destroy(stasisEffect);
     }
 
@@ -447,7 +468,7 @@ public class Player : MonoBehaviour
 
         canActivateStasis = false;
         isStasisActive = false;
-        DestroyStasisEffect();
+        StartCoroutine(DestroyStasisEffect());
     }
 
     public int GetTurnsBeforeStasisCounter()
@@ -745,6 +766,10 @@ public class Player : MonoBehaviour
         mapManagerComponent = mapManager.GetComponent<MapManager>();
         SetStartingPoint();
         stasisEffectPrefab = (GameObject)Resources.Load("Stasis");
+        myBarrier = Instantiate((GameObject)Resources.Load("Barrier"));
+
+        myBarrier.transform.SetParent(transform);
+        myBarrierAnimator = myBarrier.GetComponent<Animator>();
     }
 
     void Update()

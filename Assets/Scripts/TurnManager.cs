@@ -110,7 +110,6 @@ public class TurnManager : MonoBehaviour
 
         isAcceptingInputs = false;
 
-
         mapManager.updateTilesConnection(playerPlaying);
         activePlayer.CheckDiamondStatusTimer();
 
@@ -485,6 +484,7 @@ public class TurnManager : MonoBehaviour
     {
         Player p = playerComponent[playerPlayingIdx];
         CameraStartFollowingPlayer(p);
+        StartCoroutine(p.DeactivateBarrier());
 
         Coordinate movementStartingPosition = p.GetCoordinatesCopy();
         mapManager.updateTilesConnection(playerPlaying);
@@ -545,6 +545,8 @@ public class TurnManager : MonoBehaviour
         cursorIsActive = true;
         ActivatePlayer(0);
         makePlayersChild();
+        if (!p.hasDiamond)
+            StartCoroutine(p.ActivateBarrier());
         StartCoroutine(ActivatePanel((int)panelSelection.basePanel));
         
         CameraStopFollowingPlayer();
