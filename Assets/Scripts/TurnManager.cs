@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 public class TurnManager : MonoBehaviour
 {
 
-    public GameObject xButton, aButton, bButton, diamondButton, rotationCursor, pauseMenu;
+    public GameObject xButton, aButton, bButton, diamondButton, rotationCursor, pauseMenu, hasCrystalEffect;
     public GameObject[] portraits;
     public GameObject[] playerWinsText;
     public Camera myCamera;
@@ -356,6 +356,18 @@ public class TurnManager : MonoBehaviour
 
     // Diamond
 
+    private void AssignDiamondAura(Player player)
+    {
+        hasCrystalEffect.transform.SetParent(player.GetComponentInParent<Transform>());
+        hasCrystalEffect.transform.localPosition = new Vector3(0f, 0f, -0.1f);
+    }
+
+    private void RemoveDiamondAura()
+    {
+        hasCrystalEffect.transform.parent = null;
+        hasCrystalEffect.transform.position = parkingPosition;
+    }
+
     private void UpdateDiamondPosition(Player player)
     {
         mapManager.diamondCoords = player.coordinate;
@@ -384,7 +396,7 @@ public class TurnManager : MonoBehaviour
         canUseCrystal = true;
         mapManager.myDiamondInstance.transform.parent = player.transform;
         Vector3 collectedPosition = new Vector3(0, 0, 100);
-        
+        AssignDiamondAura(player);
         mapManager.myDiamondInstance.transform.localPosition = collectedPosition;
         mapManager.diamondCoords = player.coordinate;
 
@@ -393,6 +405,7 @@ public class TurnManager : MonoBehaviour
 
     public void DropDiamond(Player player)
     {
+        RemoveDiamondAura();
         player.hasDiamond = false;
         mapManager.myDiamondInstance.transform.parent = null;
         mapManager.myDiamondInstance.transform.position = new Vector3(mapManager.myDiamondInstance.transform.position.x,
