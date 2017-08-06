@@ -95,6 +95,7 @@ public class MenuManager : MonoBehaviour
         if ((Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Fire1joy")) && !moving && !fading.fading)
         {
             audio.clip = SFX[1];
+            //audio.volume = 0.5f;
             audio.Play();
             StartCoroutine(Selection());
         }
