@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 public class TurnManager : MonoBehaviour
 {
 
-    public GameObject xButton, aButton, bButton, diamondButton, rotationCursor, pauseMenu, hasCrystalEffect;
+    public GameObject xButton, aButton, bButton, diamondButton, rotationCursor, pauseMenu, hasCrystalEffect, winScreen;
     public GameObject[] portraits;
     public GameObject[] playerWinsText;
     public Camera myCamera;
@@ -17,6 +17,8 @@ public class TurnManager : MonoBehaviour
     public bool isAcceptingInputs = true;
     public bool isInPause = false;
     private bool[] isFirstTurn;
+    private bool isEnd;
+    public FadeManager fade;
 
     private int playerPlaying, playerPlayingIdx, turnNbr, selectedButton, selectionDepth;
     private int[] playerOrder;
@@ -217,8 +219,9 @@ public class TurnManager : MonoBehaviour
     public void EndGame(Player player)
     {
         dialogueManager.GetComponent<Speaker>().PlayVictory(player.playerNbr);
-        playerWinsText[player.playerNbr - 1].GetComponent<RectTransform>().position = new Vector2(0, 0);
-        StartCoroutine(BackToMenu());
+        winScreen.GetComponent<WinScript>().winner(player.playerNbr-1);
+        winScreen.SetActive(true);
+        isEnd = true;
     }
 
     public bool ChecksForPassTurnCondition()
@@ -1182,6 +1185,7 @@ public class TurnManager : MonoBehaviour
 
     void Awake()
     {
+        StartCoroutine(fade.FadeIn(-19));
         isFirstTurn = new bool[4] { true, true, true, true };
         selectionDepth = 0; // corresponds to the first panel. 1 is the terraform panel. 2 is the card selection
         int numberOfButtons = 4;
@@ -1212,6 +1216,7 @@ public class TurnManager : MonoBehaviour
 
     void Update()
     {
+        if (isEnd && Input.GetButtonDown("Fire1joy")) SceneManager.LoadScene("_Scenes/MenuIniziale");
         //// Check if needed
         //if ((Mathf.Abs(Input.GetAxis("HorizontalJoy")) != 1))
         //{
