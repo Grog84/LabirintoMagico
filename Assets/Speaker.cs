@@ -65,13 +65,13 @@ public class Speaker : MonoBehaviour {
 
     public void PlayVictory(int player)
     {
-        audioComponent.clip = victory.PlayClip(player);
+        audioComponent.clip = victory.PlayClip(player-1);
         audioComponent.Play();
     }
 
     public void PlayCrystalGrab(int player)
     {
-        audioComponent.clip = crystalGrab.PlayClip(player);
+        audioComponent.clip = crystalGrab.PlayClip(player-1);
         audioComponent.Play();
     }
 
@@ -89,7 +89,7 @@ public class Speaker : MonoBehaviour {
 
     public void PlayTrapActivated(int player)
     {
-        audioComponent.clip = trapActivated.PlayClip(player);
+        audioComponent.clip = trapActivated.PlayClip(player-1);
         audioComponent.Play();
     }
 
@@ -97,20 +97,20 @@ public class Speaker : MonoBehaviour {
     {
         switch (player)
         {
-            case 0:
-                if (otherPlayer == 3) audioComponent.clip = pvp.PlayClip(0);
+            case 1:
+                if (otherPlayer == 4) audioComponent.clip = pvp.PlayClip(0);
                 else audioComponent.clip = pvp.PlayClip(1);
                 break;
-            case 1:
-                if (otherPlayer == 2) audioComponent.clip = pvp.PlayClip(2);
+            case 2:
+                if (otherPlayer == 3) audioComponent.clip = pvp.PlayClip(2);
                 else audioComponent.clip = pvp.PlayClip(3);
                 break;
-            case 2:
-                if (otherPlayer == 1) audioComponent.clip = pvp.PlayClip(4);
+            case 3:
+                if (otherPlayer == 2) audioComponent.clip = pvp.PlayClip(4);
                 else audioComponent.clip = pvp.PlayClip(5);
                 break;
-            case 3:
-                if (otherPlayer == 0) audioComponent.clip = pvp.PlayClip(6);
+            case 4:
+                if (otherPlayer == 1) audioComponent.clip = pvp.PlayClip(6);
                 else audioComponent.clip = pvp.PlayClip(7);
                 break;
         }

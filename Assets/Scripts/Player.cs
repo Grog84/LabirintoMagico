@@ -378,6 +378,7 @@ public class Player : MonoBehaviour
         StartAnimationAttack();
         yield return null;
 
+        turnManagerComponent.dialogueManager.GetComponent<Speaker>().PlayPvP(this.playerNbr, otherPlayer.playerNbr);
         yield return StartCoroutine(WaitForAnimation("attack_1"));
         yield return StartCoroutine(CastBlackHole(tile));
         SetAttack2Status(true);
