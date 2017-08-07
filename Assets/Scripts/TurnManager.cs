@@ -403,20 +403,22 @@ public class TurnManager : MonoBehaviour
 
     }
 
-    public void CollectDiamond(Player player)
+    public void CollectDiamond(Player player, bool isPlayerTurn=true)
     {
         dialogueManager.GetComponent<Speaker>().PlayCrystalGrab(player.playerNbr);
         diamondOnTable = false;
         player.SetHasDiamond(true);
         player.SetCanActivateStasis(true);
-        canUseCrystal = true;
         mapManager.myDiamondInstance.transform.parent = player.transform;
         Vector3 collectedPosition = new Vector3(0, 0, 100);
         AssignDiamondAura(player);
         mapManager.myDiamondInstance.transform.localPosition = collectedPosition;
         mapManager.diamondCoords = player.coordinate;
-
-        StartCoroutine(SetDiamondAnimation(0));
+        if (isPlayerTurn)
+        {
+            canUseCrystal = true;
+            StartCoroutine(SetDiamondAnimation(0));
+        }
     }
 
     public void DropDiamond(Player player)
@@ -430,6 +432,9 @@ public class TurnManager : MonoBehaviour
         mapManager.myDiamondInstance.transform.position = new Vector3(mapManager.myDiamondInstance.transform.position.x,
                                                                       mapManager.myDiamondInstance.transform.position.y,
                                                                       -10);
+        Tile myTile = mapManager.PickTileComponent(player.coordinate);
+        //myTile.hasDiamond = true;
+
         player.ResetTurnsBeforeStasis();
         diamondOnTable = true;
     }
@@ -438,6 +443,7 @@ public class TurnManager : MonoBehaviour
     {
         mapManager.myDiamondInstance.transform.SetParent(tile.transform);
         mapManager.diamondCoords = tile.GetComponent<Tile>().getCoordinates();
+        tile.GetComponent<Tile>().hasDiamond = true;
     }
 
     public void ResetDiamondToStartingPosition()
@@ -496,6 +502,11 @@ public class TurnManager : MonoBehaviour
         yield return null;
         buttonsAnimator[3].SetInteger("ActiveStatus", -1);
         yield return null;
+    }
+
+    public void DisconnectDiamond()
+    {
+        mapManager.myDiamondInstance.transform.parent = null;
     }
 
     // Player Movement
@@ -614,7 +625,7 @@ public class TurnManager : MonoBehaviour
 
         Player fallingPlayer = null;
         Player frontPlayer = null, rearPlayer = null;
-        bool repositionPlayer = false;
+        bool repositionPlayer = false, reconnectDiamond = false;
 
         Coordinate[] lineCoordinates = arrow.GetComponent<InsertArrow>().getPointedCoords();
         lineCoordinates = mapManager.KeepMovableTiles(lineCoordinates);
@@ -672,6 +683,11 @@ public class TurnManager : MonoBehaviour
 
             repositionPlayer = true;
         }
+        else if (lastTile.GetPlayerChildNbr() == -1 && lastTile.hasDiamond)
+        {
+            reconnectDiamond = true;
+            DisconnectDiamond();
+        }
 
         yield return StartCoroutine(mapManager.SlideLine(lineCoordinates, slideDirection));
         isSliding = false;
@@ -683,7 +699,7 @@ public class TurnManager : MonoBehaviour
         //    yield return null;
         //}
 
-        if (fallingPlayer != null)
+        if (fallingPlayer != null || reconnectDiamond)
         {
             ConnectToTile(mapManager.PickTileObject(mapManager.diamondCoords));
         }
@@ -707,7 +723,7 @@ public class TurnManager : MonoBehaviour
 
         if (attackHasHappened)
         {
-            CollectDiamond(rearPlayer);
+            CollectDiamond(rearPlayer, false);
             attackHasHappened = false;
         }
 
@@ -935,9 +951,65 @@ public class TurnManager : MonoBehaviour
     IEnumerator ActivateRotation(int direction)
     {
         isAcceptingInputs = false;
+        Player frontPlayer = null, rearPlayer = null;
+
         Coordinate[] selectedCoords = rotationCursor.GetComponent<CursorMoving>().getSelectedCoords();
         rotationCursor.GetComponent<CursorMoving>().SetAtPosition(parkingPosition);
+
+        // Possible PvP
+        attackHasHappened = false;
+        resolvingCombat = false;
+        int[] playerIdxInCoords = GetPlayersInCoordinatesIDX(selectedCoords); // checks if players are found in the group of slided tiles
+
+        if (playerIdxInCoords.Length > 1) // more than one player is on the slided tiles
+        {
+            Array.Sort(playerIdxInCoords);
+            for (int i = 1; i < playerIdxInCoords.Length; i++)
+            {
+                if (direction == 1)
+                {
+                    if (playerIdxInCoords[i] - playerIdxInCoords[i - 1] == 1) // players are positioned one tile away from each other in the slide direction
+                    {
+                        // checks whether or not the player in the front has the stasis active
+                        frontPlayer = GetPlayerAtCoordinates(selectedCoords[playerIdxInCoords[i]]);
+                        //frontPlayer = mapManager.PickTileComponent(lineCoordinates[playerIdxInCoords[i]]).GetPlayerChild(); // non funziona dato che è in stasi
+                        if (frontPlayer.GetStasisStatus())
+                        {
+                            rearPlayer = mapManager.PickTileComponent(selectedCoords[playerIdxInCoords[i - 1]]).GetPlayerChild();
+                            attackHasHappened = true;
+                            resolvingCombat = true;
+                            StartCoroutine(rearPlayer.AttackPlayerOnTileOnSlide(frontPlayer));
+                        }
+                    }
+                }
+                else
+                {
+                    if (playerIdxInCoords[i] - playerIdxInCoords[i - 1] == -1) // players are positioned one tile away from each other in the slide direction
+                    {
+                        // checks whether or not the player in the front has the stasis active
+                        frontPlayer = GetPlayerAtCoordinates(selectedCoords[playerIdxInCoords[i]]);
+                        //frontPlayer = mapManager.PickTileComponent(lineCoordinates[playerIdxInCoords[i]]).GetPlayerChild(); // non funziona dato che è in stasi
+                        if (frontPlayer.GetStasisStatus())
+                        {
+                            rearPlayer = mapManager.PickTileComponent(selectedCoords[playerIdxInCoords[i - 1]]).GetPlayerChild();
+                            attackHasHappened = true;
+                            resolvingCombat = true;
+                            StartCoroutine(rearPlayer.AttackPlayerOnTileOnSlide(frontPlayer));
+                        }
+                    }
+                }
+            }
+        }
+
+        while (resolvingCombat) { yield return null; }
+
         yield return StartCoroutine(mapManager.RotateTiles(selectedCoords, direction));
+
+        if (attackHasHappened)
+        {
+            CollectDiamond(rearPlayer, false);
+            attackHasHappened = false;
+        }
 
         UpdatePlayersPosition();
         cursorIsActive = true;

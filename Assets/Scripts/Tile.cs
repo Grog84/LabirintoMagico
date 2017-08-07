@@ -234,6 +234,7 @@ public class Tile : MonoBehaviour {
             {
                 turnManager.GetComponent<TurnManager>().DropDiamond(childPlayerComponent);
                 childPlayerComponent.ResetToStartingPosition();
+                
             }
             else
             {
@@ -244,6 +245,7 @@ public class Tile : MonoBehaviour {
                         turnManager.GetComponent<TurnManager>().DropDiamond(player);
                         player.ResetToStartingPosition();
                         SetPlayerChild();
+                        player.DeactivateStasis();
                     }
                 }
 

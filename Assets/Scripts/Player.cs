@@ -406,6 +406,9 @@ public class Player : MonoBehaviour
 
     public IEnumerator AttackPlayerOnTileOnSlide(Player otherPlayer)
     {
+        CameraMovement myCamera = turnManagerComponent.GetCameraComponent();
+        myCamera.MoveToHighlight(GeneralMethods.GetVect3Midpoint(transform.position, otherPlayer.GetComponent<Transform>().position));
+
         Tile tile = mapManagerComponent.PickTileComponent(otherPlayer.coordinate);
         StartAnimationAttack();
         yield return null;
