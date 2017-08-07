@@ -1,12 +1,13 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 [CreateAssetMenu(fileName = "SceneFade", menuName = "Personal Tools/Fade Between Scenes", order = 2)]
 public class FadeManager : ScriptableObject
 {
     public GameObject mask;
-    private GameObject maskInstance;
+    public GameObject maskInstance;
     public bool fading;
 
     [Header("FadeIn Speed")]
