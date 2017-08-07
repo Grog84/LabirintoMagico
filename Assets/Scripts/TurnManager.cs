@@ -463,7 +463,7 @@ public class TurnManager : MonoBehaviour
         {
             case 0:
                 buttonsAnimator[3].SetInteger("ActiveStatus", 3);
-                while (!buttonsAnimator[3].GetCurrentAnimatorStateInfo(0).IsName("active")) { yield return null; }
+                while (!buttonsAnimator[3].GetCurrentAnimatorStateInfo(0).IsName("activated")) { yield return null; }
                 break;
             case 1:
                 buttonsAnimator[3].SetInteger("ActiveStatus", 2);
