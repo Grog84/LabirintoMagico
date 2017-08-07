@@ -24,6 +24,14 @@ public class FadeManager : ScriptableObject
 
     private float fadeInEffective, fadeOutEffective;
 
+    public void createFadeMaskAZ(int zOrder)
+    {
+        //mask = Resources.Load("Assets/Prefabs/FadeMask");
+        fadeInEffective = ((float)inSpeed / 1000) * 5;
+        fadeOutEffective = ((float)outSpeed / 1000) * 5;
+        maskInstance = Instantiate(mask, new Vector3(0, 0, zOrder), Quaternion.identity);
+        maskInstance.GetComponent<Renderer>().material.color = new Color(0, 0, 0, 0);
+    }
 
     public void createFadeMask ()
     {

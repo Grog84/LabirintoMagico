@@ -28,7 +28,7 @@ public class TutorialMenu : MonoBehaviour {
     {
         text.GetComponent<SpriteRenderer>().sprite = texts[selezione];
 
-        if (transform.position.y > (destination - 0.1f) && transform.position.y < (destination + 0.1f) && move)
+        if (transform.position.y > (destination - 0.15f) && transform.position.y < (destination + 0.15f) && move)
         {
             Vector3 newPos = transform.position;
             newPos.y = destination;
@@ -46,11 +46,11 @@ public class TutorialMenu : MonoBehaviour {
                 if (transform.position.y > -4)
                 {
                 move = true;
-                destination = transform.position.y - 1.235f;
+                destination = transform.position.y - 1.33f;
                 GetComponent<AudioSource>().clip = SFX[0];
                 GetComponent<AudioSource>().Play();
                 selezione--;
-                transform.DOMoveY(transform.position.y - 1.235f, 1f);
+                transform.DOMoveY(transform.position.y - 1.33f, 1f);
                 for (int i = 0; i < 3; i++)
                 {
                     particleInst = Instantiate(particle, Vector3.zero, transform.rotation);
@@ -76,11 +76,11 @@ public class TutorialMenu : MonoBehaviour {
             if (transform.position.y < 4)
             {
                 move = true;
-                destination = transform.position.y + 1.235f;
+                destination = transform.position.y + 1.33f;
                 GetComponent<AudioSource>().clip = SFX[0];
                 GetComponent<AudioSource>().Play();
                 selezione++;
-                transform.DOMoveY(transform.position.y + 1.235f, 1f);
+                transform.DOMoveY(transform.position.y + 1.33f, 1f);
                 for (int i = 0; i < 3; i++)
                 {
                     particleInst = Instantiate(particle, Vector3.zero, transform.rotation);
