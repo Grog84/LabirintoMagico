@@ -71,7 +71,7 @@ public class CursorMoving : MonoBehaviour {
             yield return null;
         }
             
-        coordinate.setCoordinate(coordinate.getX(), coordinate.getY() + 1);
+        coordinate.setCoordinate(newX, newY);
         moving = false;
     }
 
@@ -96,7 +96,7 @@ public class CursorMoving : MonoBehaviour {
             yield return null;
         }
 
-        coordinate.setCoordinate(coordinate.getX() + 1, coordinate.getY());
+        coordinate.setCoordinate(newX, newY);
         moving = false;
     }
 
@@ -121,7 +121,7 @@ public class CursorMoving : MonoBehaviour {
             yield return null;
         }
 
-        coordinate.setCoordinate(coordinate.getX(), coordinate.getY() - 1);
+        coordinate.setCoordinate(newX, newY);
         moving = false;
     }
 
@@ -146,7 +146,7 @@ public class CursorMoving : MonoBehaviour {
             yield return null;
         }
 
-        coordinate.setCoordinate(coordinate.getX() - 1, coordinate.getY());
+        coordinate.setCoordinate(newX, newY);
         moving = false;
     }
 
