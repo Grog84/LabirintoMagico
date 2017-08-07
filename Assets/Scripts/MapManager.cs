@@ -1122,4 +1122,9 @@ public class Coordinate
         x = GeneralMethods.FindValInBins(x_bin, position.x);
         y = GeneralMethods.FindValInBins(y_bin, position.y);
     }
+
+    override public string ToString()
+    {
+        return x.ToString() + " " + y.ToString();
+    }
 }

@@ -398,6 +398,12 @@ public class TurnManager : MonoBehaviour
         mapManager.diamondCoords = tile.GetCoordinatesCopy();
     }
 
+    private void UpdateDiamondPosition()
+    {
+        Tile tile = mapManager.myDiamondInstance.GetComponentInParent<Tile>();
+        mapManager.diamondCoords = tile.GetCoordinatesCopy();
+    }
+
     private bool ChecksForDiamond(Player player)
     {
         if (player.coordinate.isEqual(mapManager.GetDiamondCoords()) && diamondOnTable)
@@ -431,13 +437,17 @@ public class TurnManager : MonoBehaviour
         player.SetHasDiamond(false);
         player.SetCanActivateStasis(false);
         canUseCrystal = false;
+        StartCoroutine(SetDiamondAnimation(3));
 
         mapManager.myDiamondInstance.transform.parent = null;
         mapManager.myDiamondInstance.transform.position = new Vector3(mapManager.myDiamondInstance.transform.position.x,
                                                                       mapManager.myDiamondInstance.transform.position.y,
                                                                       -10);
         Tile myTile = mapManager.PickTileComponent(player.coordinate);
-        //myTile.hasDiamond = true;
+        myTile.hasDiamond = true;
+
+        UpdateDiamondPosition(myTile);
+        ConnectToTile(myTile.GetComponent<Transform>().gameObject);
 
         player.ResetTurnsBeforeStasis();
         diamondOnTable = true;
@@ -518,6 +528,7 @@ public class TurnManager : MonoBehaviour
     IEnumerator ActivateMovementPhase()
     {
         Player p = playerComponent[playerPlayingIdx];
+
         CameraStartFollowingPlayer(p);
         StartCoroutine(p.DeactivateBarrier());
 
@@ -601,6 +612,7 @@ public class TurnManager : MonoBehaviour
         mapManager.updateTilesConnection(playerPlaying);
 
         UpdatePlayersPosition();
+        UpdateDiamondPosition();
         canTerraform = false;
         buttonsAnimator[1].SetBool("canTerraform", false);
         StartCoroutine(ActivatePanel((int)panelSelection.basePanel));
@@ -675,7 +687,11 @@ public class TurnManager : MonoBehaviour
             int playerIdx = GeneralMethods.FindElementIdx(playerOrder, lastTile.GetPlayerChildNbr());
             fallingPlayer = playerComponent[playerIdx];
             if (fallingPlayer.hasDiamond)
+            {
                 DropDiamond(fallingPlayer);
+                reconnectDiamond = true;
+                DisconnectDiamond();
+            }
             yield return StartCoroutine(lastTile.BlackHole(true));
             StartCoroutine(ZoomToCenter());
             yield return new WaitForSeconds(1f);
@@ -687,14 +703,17 @@ public class TurnManager : MonoBehaviour
 
             repositionPlayer = true;
         }
-        else if (lastTile.GetPlayerChildNbr() == -1 && lastTile.hasDiamond)
+        if (lastTile.GetPlayerChildNbr() == -1 && lastTile.hasDiamond)
         {
             reconnectDiamond = true;
             DisconnectDiamond();
         }
+        Debug.Log(mapManager.diamondCoords.ToString());
 
         yield return StartCoroutine(mapManager.SlideLine(lineCoordinates, slideDirection));
         isSliding = false;
+
+        Debug.Log(mapManager.diamondCoords.ToString());
 
         int tileType = 0;
 
@@ -735,6 +754,7 @@ public class TurnManager : MonoBehaviour
         mapManager.SetInsertArrowsVisible(false);
         myCameraMovement.MoveToPosition(activePlayer.GetComponentInParent<Transform>().position);
         StartCoroutine(EndTerraform());
+        Debug.Log(mapManager.diamondCoords.ToString());
         yield return null;
     }
 

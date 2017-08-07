@@ -232,7 +232,8 @@ public class Tile : MonoBehaviour {
         {
             if (childPlayerNbr != -1)
             {
-                turnManager.GetComponent<TurnManager>().DropDiamond(childPlayerComponent);
+                if (childPlayerComponent.hasDiamond)
+                    turnManager.GetComponent<TurnManager>().DropDiamond(childPlayerComponent);
                 childPlayerComponent.ResetToStartingPosition();
                 
             }
@@ -242,7 +243,8 @@ public class Tile : MonoBehaviour {
                 {
                     if (player.coordinate.isEqual(myCoord))  // if true it mean that a player has the stasis active
                     {
-                        turnManager.GetComponent<TurnManager>().DropDiamond(player);
+                        if (player.hasDiamond)
+                            turnManager.GetComponent<TurnManager>().DropDiamond(player);
                         player.ResetToStartingPosition();
                         SetPlayerChild();
                         player.DeactivateStasis();
