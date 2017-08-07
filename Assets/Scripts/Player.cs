@@ -327,11 +327,34 @@ public class Player : MonoBehaviour
             checkingCombat = true;
             StartCoroutine(AttackPlayerOnTile(tile));
         }
+        else
+        {
+            foreach (var thisPlayer in turnManagerComponent.GetAllPayers())
+            {
+                if (thisPlayer.FindInCoords(tile.getCoordinates()))
+                {
+                    turnManagerComponent.SetOldCameraPosition(GeneralMethods.GetVect3Midpoint(transform.position, tile.GetComponent<Transform>().position));
+                    turnManagerComponent.SetOldCameraSize();
+
+                    checkingCombat = true;
+                    StartCoroutine(AttackPlayerOnTile(tile, true));
+                }
+            }
+        }
     }
- 
-    public IEnumerator AttackPlayerOnTile(Tile tile)
+
+
+    public IEnumerator AttackPlayerOnTile(Tile tile, bool isStasisActive=false)
     {
-        Player otherPlayer = tile.gameObject.transform.GetComponentInChildren<Player>();
+        Player otherPlayer = null;
+        if (isStasisActive)
+        {
+            otherPlayer = turnManagerComponent.GetPlayerAtCoordinates(tile.getCoordinates());
+            otherPlayer.DeactivateStasis();
+        }
+        else
+            otherPlayer = tile.gameObject.transform.GetComponentInChildren<Player>();
+
         CameraMovement myCamera = turnManagerComponent.GetCameraComponent();
         myCamera.MoveToHighlight(GeneralMethods.GetVect3Midpoint(transform.position, tile.GetComponent<Transform>().position));
 
@@ -750,6 +773,17 @@ public class Player : MonoBehaviour
         }
         return idx;
     }
+
+    public bool FindInCoords(Coordinate coords)
+    {
+        bool isAtCoord = false;
+        if (coordinate.isEqual(coords))
+        {
+            isAtCoord = true;
+        }
+        return isAtCoord;
+    }
+
 
     // Unity Specific methods
 
