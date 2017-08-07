@@ -294,6 +294,9 @@ public class Player : MonoBehaviour
             {
                 CameraMovement myCamera = turnManagerComponent.GetCameraComponent();
                 myCamera.MoveToHighlight(tile.GetComponent<Transform>().position);
+
+                turnManagerComponent.dialogueManager.GetComponent<Speaker>().PlayTrapTrigger(tile.myTrapComponent.GetPlayerDropping());
+
                 myCamera.StopFollowingPlayer();
 
                 if (hasDiamond)

@@ -109,9 +109,29 @@ public class Speaker : MonoBehaviour {
                 if (otherPlayer == 2) audioComponent.clip = pvp.PlayClip(4);
                 else audioComponent.clip = pvp.PlayClip(5);
                 break;
-            case 4:
+            default:
                 if (otherPlayer == 1) audioComponent.clip = pvp.PlayClip(6);
                 else audioComponent.clip = pvp.PlayClip(7);
+                break;
+        }
+        audioComponent.Play();
+    }
+
+    public void PlayTrapTrigger(int player)
+    {
+        switch (player)
+        {
+            case 1:
+                audioComponent.clip = pyroTrap.PlayClip();
+                break;
+            case 2:
+                audioComponent.clip = necroTrap.PlayClip();
+                break;
+            case 3:
+                audioComponent.clip = elfTrap.PlayClip();
+                break;
+            case 4:
+                audioComponent.clip = monkTrap.PlayClip();
                 break;
         }
         audioComponent.Play();

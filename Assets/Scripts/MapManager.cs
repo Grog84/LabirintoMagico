@@ -766,6 +766,8 @@ public class MapManager : MonoBehaviour {
         DestroyTile(PickTileObject(myCoords[myCoords.Length - 1])); // destroys the last movable tile, could become a coroutine
 
         var myMovement = new Vector2(0, 0);
+
+        GetComponent<AudioSource>().Play();
         camera.DOShakePosition(0.9f, 1);
 
         for (int i = myCoords.Length - 2; i >= 0; i--)
@@ -810,6 +812,7 @@ public class MapManager : MonoBehaviour {
         GameObject tmpTileObj;
         var tmpTileObjMatrix = new GameObject[selectedCoords.Length];
 
+        GetComponent<AudioSource>().Play();
         camera.DOShakePosition(0.9f, 1);
 
         float animationTime = 0.5f;
