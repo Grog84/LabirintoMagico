@@ -699,6 +699,7 @@ public class TurnManager : MonoBehaviour
         }
 
         //MAYHERE
+        yield return null;
         activeCard.AssignType(newCardType, trapStatus);
 
         if (attackHasHappened)
