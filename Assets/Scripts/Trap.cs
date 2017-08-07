@@ -43,13 +43,15 @@ public class Trap : MonoBehaviour {
     {
         SetVisible();
         myAnimator.SetBool("hasTriggered", true);
+        yield return new WaitForSeconds(1f);
+        myAnimator.SetBool("hasTriggered", false);
+        SetPlayerDropping(0);
+        yield return null;
         Tile tile = transform.parent.gameObject.GetComponent<Tile>();
         isActive = false;
         yield return tile.BlackHole();
 
-        myAnimator.SetBool("hasTriggered", false);
         //myAnimator.SetInteger("PlayerActivating", 0);
-        SetPlayerDropping(0);
         //SetSprite();
 
         yield return null;
