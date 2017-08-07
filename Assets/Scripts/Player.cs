@@ -169,6 +169,16 @@ public class Player : MonoBehaviour
 
     // Walking Path
 
+    public bool CheckForOtherPlayerCorner(Coordinate coord)
+    {
+        bool isOtherPlayerCorner = false;
+        Coordinate[] allCornerCoord = turnManagerComponent.GetAllCornerCoordinates();
+        int idx = GeneralMethods.FindElementIdx(allCornerCoord, coord);
+        if (idx != -1 && idx != playerNbr-1)
+            isOtherPlayerCorner = true;
+        return isOtherPlayerCorner;
+    }
+
     public void BrightPossibleTiles()
     {
         Tile nextToAdd;
@@ -180,7 +190,7 @@ public class Player : MonoBehaviour
             if (toBright[i].effectiveConnections[0])
             {
                 nextToAdd = mapManagerComponent.myMap[toBright[i].myCoord.getX(), toBright[i].myCoord.getY() + 1].GetComponent<Tile>();
-                if (!toBright.Contains(nextToAdd))
+                if (!toBright.Contains(nextToAdd) && !CheckForOtherPlayerCorner(nextToAdd.myCoord))
                 {
                     toBright.Add(nextToAdd);
                 }
@@ -189,7 +199,7 @@ public class Player : MonoBehaviour
             if (toBright[i].effectiveConnections[1])
             {
                 nextToAdd = mapManagerComponent.myMap[toBright[i].myCoord.getX() + 1, toBright[i].myCoord.getY()].GetComponent<Tile>();
-                if (!toBright.Contains(nextToAdd))
+                if (!toBright.Contains(nextToAdd) && !CheckForOtherPlayerCorner(nextToAdd.myCoord))
                 {
                     toBright.Add(nextToAdd);
                 }
@@ -198,7 +208,7 @@ public class Player : MonoBehaviour
             if (toBright[i].effectiveConnections[2])
             {
                 nextToAdd = mapManagerComponent.myMap[toBright[i].myCoord.getX(), toBright[i].myCoord.getY() - 1].GetComponent<Tile>();
-                if (!toBright.Contains(nextToAdd))
+                if (!toBright.Contains(nextToAdd) && !CheckForOtherPlayerCorner(nextToAdd.myCoord))
                 {
                     toBright.Add(nextToAdd);
                 }
@@ -207,7 +217,7 @@ public class Player : MonoBehaviour
             if (toBright[i].effectiveConnections[3])
             {
                 nextToAdd = mapManagerComponent.myMap[toBright[i].myCoord.getX() - 1, toBright[i].myCoord.getY()].GetComponent<Tile>();
-                if (!toBright.Contains(nextToAdd))
+                if (!toBright.Contains(nextToAdd) && !CheckForOtherPlayerCorner(nextToAdd.myCoord))
                 {
                     toBright.Add(nextToAdd);
                 }
@@ -342,7 +352,6 @@ public class Player : MonoBehaviour
             }
         }
     }
-
 
     public IEnumerator AttackPlayerOnTile(Tile tile, bool isStasisActive=false)
     {
@@ -552,32 +561,35 @@ public class Player : MonoBehaviour
             destination.z--;
 
             Tile destinationTileComponent = destinationTile.GetComponent<Tile>();
-            CheckForOtherPlayer(destinationTileComponent);
 
-            if (!checkingCombat)
+            if (!CheckForOtherPlayerCorner(destinationTileComponent.myCoord))
             {
-                StartWalking();
-                yield return null;
-                StopWalking();
-                while (elapsedTime < walkingTime)
+                CheckForOtherPlayer(destinationTileComponent);
+
+                if (!checkingCombat)
                 {
-                    transform.position = Vector3.Lerp(transform.position, destination, elapsedTime / walkingTime);
-
-                    elapsedTime += Time.deltaTime;
+                    StartWalking();
                     yield return null;
+                    StopWalking();
+                    while (elapsedTime < walkingTime)
+                    {
+                        transform.position = Vector3.Lerp(transform.position, destination, elapsedTime / walkingTime);
+
+                        elapsedTime += Time.deltaTime;
+                        yield return null;
+                    }
                 }
-            }
-            else
-            {
-                while (checkingCombat)
+                else
                 {
-                    yield return null;
+                    while (checkingCombat)
+                    {
+                        yield return null;
+                    }
                 }
+
+                UpdatePlayerPosition(destinationTileComponent);
+                yield return StartCoroutine(CheckForTraps(destinationTileComponent));
             }
-
-            UpdatePlayerPosition(destinationTileComponent);
-            yield return StartCoroutine(CheckForTraps(destinationTileComponent));
-
             yield return null;
 
             //myPlayer.transform.position = tiledMap[playerGridY, playerGridX].RightTile.transform.position;
@@ -607,32 +619,34 @@ public class Player : MonoBehaviour
             destination.z--;
 
             Tile destinationTileComponent = destinationTile.GetComponent<Tile>();
-            CheckForOtherPlayer(destinationTileComponent);
-
-            if (!checkingCombat)
+            if (!CheckForOtherPlayerCorner(destinationTileComponent.myCoord))
             {
-                StartWalking();
-                yield return null;
-                StopWalking();
-                while (elapsedTime < walkingTime)
+                CheckForOtherPlayer(destinationTileComponent);
+
+                if (!checkingCombat)
                 {
-                    transform.position = Vector3.Lerp(transform.position, destination, elapsedTime / walkingTime);
-
-                    elapsedTime += Time.deltaTime;
+                    StartWalking();
                     yield return null;
+                    StopWalking();
+                    while (elapsedTime < walkingTime)
+                    {
+                        transform.position = Vector3.Lerp(transform.position, destination, elapsedTime / walkingTime);
+
+                        elapsedTime += Time.deltaTime;
+                        yield return null;
+                    }
                 }
-            }
-            else
-            {
-                while (checkingCombat)
+                else
                 {
-                    yield return null;
+                    while (checkingCombat)
+                    {
+                        yield return null;
+                    }
                 }
+
+                UpdatePlayerPosition(destinationTileComponent);
+                yield return StartCoroutine(CheckForTraps(destinationTileComponent));
             }
-
-            UpdatePlayerPosition(destinationTileComponent);
-            yield return StartCoroutine(CheckForTraps(destinationTileComponent));
-
             yield return null;
 
             //myPlayer.transform.position = tiledMap[playerGridY, playerGridX].RightTile.transform.position;
@@ -662,32 +676,34 @@ public class Player : MonoBehaviour
             destination.z--;
 
             Tile destinationTileComponent = destinationTile.GetComponent<Tile>();
-            CheckForOtherPlayer(destinationTileComponent);
-
-            if (!checkingCombat)
+            if (!CheckForOtherPlayerCorner(destinationTileComponent.myCoord))
             {
-                StartWalking();
-                yield return null;
-                StopWalking();
-                while (elapsedTime < walkingTime)
+                CheckForOtherPlayer(destinationTileComponent);
+
+                if (!checkingCombat)
                 {
-                    transform.position = Vector3.Lerp(transform.position, destination, elapsedTime / walkingTime);
-
-                    elapsedTime += Time.deltaTime;
+                    StartWalking();
                     yield return null;
+                    StopWalking();
+                    while (elapsedTime < walkingTime)
+                    {
+                        transform.position = Vector3.Lerp(transform.position, destination, elapsedTime / walkingTime);
+
+                        elapsedTime += Time.deltaTime;
+                        yield return null;
+                    }
                 }
-            }
-            else
-            {
-                while (checkingCombat)
+                else
                 {
-                    yield return null;
+                    while (checkingCombat)
+                    {
+                        yield return null;
+                    }
                 }
+
+                UpdatePlayerPosition(destinationTileComponent);
+                yield return StartCoroutine(CheckForTraps(destinationTileComponent));
             }
-
-            UpdatePlayerPosition(destinationTileComponent);
-            yield return StartCoroutine(CheckForTraps(destinationTileComponent));
-
             yield return null;
 
             //myPlayer.transform.position = tiledMap[playerGridY, playerGridX].RightTile.transform.position;
@@ -719,32 +735,34 @@ public class Player : MonoBehaviour
             destination.z--;
 
             Tile destinationTileComponent = destinationTile.GetComponent<Tile>();
-            CheckForOtherPlayer(destinationTileComponent);
-
-            if (!checkingCombat)
+            if (!CheckForOtherPlayerCorner(destinationTileComponent.myCoord))
             {
-                StartWalking();
-                yield return null;
-                StopWalking();
-                while (elapsedTime < walkingTime)
+                CheckForOtherPlayer(destinationTileComponent);
+
+                if (!checkingCombat)
                 {
-                    transform.position = Vector3.Lerp(transform.position, destination, elapsedTime / walkingTime);
-
-                    elapsedTime += Time.deltaTime;
+                    StartWalking();
                     yield return null;
+                    StopWalking();
+                    while (elapsedTime < walkingTime)
+                    {
+                        transform.position = Vector3.Lerp(transform.position, destination, elapsedTime / walkingTime);
+
+                        elapsedTime += Time.deltaTime;
+                        yield return null;
+                    }
                 }
-            }
-            else
-            {
-                while (checkingCombat)
+                else
                 {
-                    yield return null;
+                    while (checkingCombat)
+                    {
+                        yield return null;
+                    }
                 }
+
+                UpdatePlayerPosition(destinationTileComponent);
+                yield return StartCoroutine(CheckForTraps(destinationTileComponent));
             }
-
-            UpdatePlayerPosition(destinationTileComponent);
-            yield return StartCoroutine(CheckForTraps(destinationTileComponent));
-
             yield return null;
 
             //myPlayer.transform.position = tiledMap[playerGridY, playerGridX].RightTile.transform.position;

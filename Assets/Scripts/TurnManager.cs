@@ -40,6 +40,7 @@ public class TurnManager : MonoBehaviour
     private float oldCameraSize;
     public GameObject dialogueManager;
     public bool insertedTrapFromSlide;
+    private Coordinate[] allCornerCoords;
 
     enum myButtons
     {
@@ -1095,6 +1096,11 @@ public class TurnManager : MonoBehaviour
         pauseMenu.SetActive(false);
     }
 
+    public Coordinate[] GetAllCornerCoordinates()
+    {
+        return allCornerCoords;
+    }
+
     // Unity Specific methods
 
     void Awake()
@@ -1117,7 +1123,11 @@ public class TurnManager : MonoBehaviour
 
         // Assigns the position of ll the ui elements o the corresponding arrays
         AssignButtonsAnimators();
-
+        allCornerCoords = new Coordinate[4];
+        allCornerCoords[0] = new Coordinate(0, mapManager.rows-1);
+        allCornerCoords[1] = new Coordinate(mapManager.columns-1, mapManager.rows-1);
+        allCornerCoords[2] = new Coordinate(0, 0);
+        allCornerCoords[3] = new Coordinate(mapManager.columns-1, 0);
         //makePlayersChild();
 
     }
