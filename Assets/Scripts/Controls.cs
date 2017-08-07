@@ -5,6 +5,7 @@ using UnityEngine;
 public class Controls : MonoBehaviour {
 
     public FadeManager fade;
+    public AudioClip[] SFX;
 
     private void Start()
     {
@@ -14,6 +15,8 @@ public class Controls : MonoBehaviour {
     void Update () {
 		if ((Input.GetKeyDown(KeyCode.B) || Input.GetButtonDown("Fire2joy")) && !fade.fading)
         {
+            GetComponent<AudioSource>().clip = SFX[0];
+            GetComponent<AudioSource>().Play();
             StartCoroutine(fade.FadeOut("_Scenes/MenuIniziale"));
         }
     }
