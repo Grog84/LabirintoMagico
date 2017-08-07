@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 public class TurnManager : MonoBehaviour
 {
 
-    public GameObject xButton, aButton, bButton, diamondButton, rotationCursor, pauseMenu, hasCrystalEffect;
+    public GameObject xButton, aButton, bButton, diamondButton, rotationCursor, pauseMenu, hasCrystalEffect, winScreen;
     public GameObject[] portraits;
     public GameObject[] playerWinsText;
     public Camera myCamera;
@@ -217,6 +217,8 @@ public class TurnManager : MonoBehaviour
     public void EndGame(Player player)
     {
         dialogueManager.GetComponent<Speaker>().PlayVictory(player.playerNbr);
+        winScreen.GetComponent<WinScript>().winner(player.playerNbr-1);
+        winScreen.SetActive(true);
         playerWinsText[player.playerNbr - 1].GetComponent<RectTransform>().position = new Vector2(0, 0);
         StartCoroutine(BackToMenu());
     }
