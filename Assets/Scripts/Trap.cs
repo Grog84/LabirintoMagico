@@ -53,7 +53,7 @@ public class Trap : MonoBehaviour {
 
         //myAnimator.SetInteger("PlayerActivating", 0);
         //SetSprite();
-
+        tile.SetPlayerChild();
         yield return null;
     }
 
