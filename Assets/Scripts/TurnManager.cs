@@ -555,6 +555,7 @@ public class TurnManager : MonoBehaviour
             p.TeleportAtCoordinates(movementStartingPosition);
             myCameraMovement.MoveToPosition(p.transform.position);
             inAction = false;
+            ResetActivatedTraps();
         }
 
         p.SwitchOffTiles();
