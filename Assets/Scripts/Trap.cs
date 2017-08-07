@@ -48,7 +48,7 @@ public class Trap : MonoBehaviour {
         yield return tile.BlackHole();
 
         myAnimator.SetBool("hasTriggered", false);
-        myAnimator.SetInteger("PlayerActivating", 0);
+        //myAnimator.SetInteger("PlayerActivating", 0);
         SetPlayerDropping(0);
         //SetSprite();
 

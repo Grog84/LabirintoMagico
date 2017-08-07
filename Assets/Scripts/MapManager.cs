@@ -638,6 +638,7 @@ public class MapManager : MonoBehaviour {
 
         if (isTrapped)
         {
+            turnManager.insertedTrapFromSlide = true;
             myTileComponent.SetTrap(turnManager.GetActivePlayer());
             turnManager.AddToActivateTrapList(myTileComponent.GetTrap());
         }

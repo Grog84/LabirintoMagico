@@ -217,8 +217,6 @@ public class Player : MonoBehaviour
         for (int i = 0; i < toBright.Count; i++)
         {
             toBright[i].SetSelected(true);
-            //toBright[i].GetComponent<SpriteRenderer>().color = Color.green;
-            //Debug.Log("passaaa");
         }
     }
 

@@ -39,6 +39,7 @@ public class TurnManager : MonoBehaviour
     private Vector3 oldCameraPosition;
     private float oldCameraSize;
     public GameObject dialogueManager;
+    public bool insertedTrapFromSlide;
 
     enum myButtons
     {
@@ -96,6 +97,7 @@ public class TurnManager : MonoBehaviour
     {
            
         ActivatePlayer(0);
+        insertedTrapFromSlide = false;
 
         playerPlayingIdx++;
         playerPlayingIdx %= 4;
@@ -349,6 +351,20 @@ public class TurnManager : MonoBehaviour
                 thisTrap.Activate();
                 trapsToActivate.Remove(thisTrap);
                 //trapsToActivate.RemoveAt(i);
+            }
+        }
+    }
+
+    public void ResetActivatedTraps()
+    {
+        for (int i = trapsToActivate.Count - 1; i >= 0; i--)
+        {
+            if (insertedTrapFromSlide && i == 0)
+                continue;
+            else
+            {
+                Trap thisTrap = trapsToActivate[i];
+                thisTrap.SetPlayerDropping(0);
             }
         }
     }
