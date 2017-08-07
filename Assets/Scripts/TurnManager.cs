@@ -1185,7 +1185,9 @@ public class TurnManager : MonoBehaviour
 
     void Awake()
     {
-        StartCoroutine(fade.FadeIn(-19));
+        StartCoroutine(fade.FadeIn());
+        fade.maskInstance.transform.SetParent(winScreen.transform);
+        fade.maskInstance.transform.localPosition = new Vector3(0, 0, -10);
         isFirstTurn = new bool[4] { true, true, true, true };
         selectionDepth = 0; // corresponds to the first panel. 1 is the terraform panel. 2 is the card selection
         int numberOfButtons = 4;
@@ -1216,7 +1218,7 @@ public class TurnManager : MonoBehaviour
 
     void Update()
     {
-        if (isEnd && Input.GetButtonDown("Fire1joy")) SceneManager.LoadScene("_Scenes/MenuIniziale");
+        if (isEnd && Input.GetButtonDown("Fire1joy")) StartCoroutine(fade.FadeOut("_Scenes/MenuIniziale"));
         //// Check if needed
         //if ((Mathf.Abs(Input.GetAxis("HorizontalJoy")) != 1))
         //{
