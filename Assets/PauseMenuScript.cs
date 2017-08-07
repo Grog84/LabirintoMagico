@@ -21,7 +21,7 @@ public class PauseMenuScript : MonoBehaviour {
         {
             case 1:
                 {
-                    turnManager.GetComponent<TurnManager>().Resume();
+                    StartCoroutine(turnManager.GetComponent<TurnManager>().Resume());
                     break;
                 }
             case 2:
@@ -51,7 +51,7 @@ public class PauseMenuScript : MonoBehaviour {
     {
         if (turnManager.GetComponent<TurnManager>().isInPause == true && !controlsActivated)
         {
-            if (cursor.transform.localPosition.y > (destination - 0.2f) && cursor.transform.localPosition.y < (destination + 0.2f) && move)
+            if (cursor.transform.localPosition.y > (destination - 0.3f) && cursor.transform.localPosition.y < (destination + 0.3f) && move)
             {
                 Vector3 newPos = cursor.transform.localPosition;
                 newPos.y = destination;
@@ -62,30 +62,12 @@ public class PauseMenuScript : MonoBehaviour {
 
             if ((Input.GetKeyDown(KeyCode.W) || Input.GetAxis("VerticalJoy") == 1 || Input.GetAxis("VerticalAnalog") >= 0.9f) && !move)
             {
-                if (cursor.transform.localPosition.y < 3)
-                {
-                    move = true;
-                    destination = cursor.transform.localPosition.y + cursorMovement;
-                    selezione--;
-                    cursor.transform.DOLocalMoveY(cursor.transform.localPosition.y + cursorMovement, 0.5f);
-
-                    //camera.transform.DOShakePosition(0.2f, 0.6f);
-                    //fadeOut = true;
-                }
+                StartCoroutine(moveUp());
             }
 
             if ((Input.GetKeyDown(KeyCode.S) || Input.GetAxis("VerticalJoy") == -1 || Input.GetAxis("VerticalAnalog") <= -0.9f) && !move)
             {
-                if (cursor.transform.localPosition.y > -3)
-                {
-                    move = true;
-                    destination = cursor.transform.localPosition.y - cursorMovement;
-                    selezione++;
-                    cursor.transform.DOLocalMoveY(cursor.transform.localPosition.y - cursorMovement, 0.5f);
-
-                    //camera.transform.DOShakePosition(0.2f, 0.6f);
-                    //fadeOut = true;
-                }
+                StartCoroutine(moveDown());
             }
 
             if ((Input.GetKeyDown(KeyCode.Space) || Input.GetButtonDown("Fire1joy")) && !move)
@@ -100,5 +82,36 @@ public class PauseMenuScript : MonoBehaviour {
             controls.SetActive(false);
             controlsActivated = false;
         }
+
+    }
+
+    IEnumerator moveUp ()
+    {
+        if (cursor.transform.localPosition.y < 3)
+        {
+            move = true;
+            destination = cursor.transform.localPosition.y + cursorMovement;
+            selezione--;
+            cursor.transform.DOLocalMoveY(cursor.transform.localPosition.y + cursorMovement, 0.5f);
+
+                //camera.transform.DOShakePosition(0.2f, 0.6f);
+                //fadeOut = true;
+        }
+            yield return null;
+    }
+
+    IEnumerator moveDown()
+    {
+        if (cursor.transform.localPosition.y > -3)
+        {
+            move = true;
+            destination = cursor.transform.localPosition.y - cursorMovement;
+            selezione++;
+            cursor.transform.DOLocalMoveY(cursor.transform.localPosition.y - cursorMovement, 0.5f);
+
+            //camera.transform.DOShakePosition(0.2f, 0.6f);
+            //fadeOut = true;
+        }
+        yield return null;
     }
 }

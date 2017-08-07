@@ -517,7 +517,7 @@ public class TurnManager : MonoBehaviour
             yield return null;
             if (isAcceptingInputs)
             {
-                if (Input.GetKeyDown(KeyCode.X) || Input.GetButtonDown("Fire1joy") || Input.GetKeyDown(KeyCode.C) || Input.GetButtonDown("Fire2joy") || trapHasTriggered || attackHasHappened)
+                if (Input.GetKeyDown(KeyCode.X) || Input.GetButtonDown("Fire1joy") || Input.GetKeyDown(KeyCode.C) || Input.GetButtonDown("Fire2joy") || Input.GetButtonDown("StartButton") || trapHasTriggered || attackHasHappened)
                     waitInput = false;
             }
         }
@@ -726,9 +726,9 @@ public class TurnManager : MonoBehaviour
         bool firstClick = false;
         float firstClickWaitingTime = 0.5f;
 
-        while (!Input.GetKeyDown(KeyCode.C) && !Input.GetKeyDown(KeyCode.X) && !Input.GetButtonDown("Fire1joy") && !Input.GetButtonDown("Fire2joy"))
+        while (!Input.GetKeyDown(KeyCode.C) && !Input.GetKeyDown(KeyCode.X) && !Input.GetButtonDown("Fire1joy") && !Input.GetButtonDown("Fire2joy") && !Input.GetButtonDown("StartButton"))
         {
-            if ((Input.GetKey(KeyCode.D) || Input.GetAxis("HorizontalJoy") == 1 || Input.GetAxis("HorizontalAnalog") >= 0.9f))
+            if ((Input.GetKey(KeyCode.D) || Input.GetAxis("HorizontalJoy") == 1 || Input.GetAxis("HorizontalAnalog") >= 0.9f) && !isInPause)
             {
                 if (currentSelection >= 26 && currentSelection <= 39)
                 {
@@ -767,7 +767,7 @@ public class TurnManager : MonoBehaviour
                 }
             }
 
-            else if ((Input.GetKey(KeyCode.A) || Input.GetAxis("HorizontalJoy") == -1 || Input.GetAxis("HorizontalAnalog") <= -0.9f))
+            else if ((Input.GetKey(KeyCode.A) || Input.GetAxis("HorizontalJoy") == -1 || Input.GetAxis("HorizontalAnalog") <= -0.9f) && !isInPause)
             {
                 //canBeActivated = false;
                 if (currentSelection >= 1 && currentSelection <= 13)
@@ -807,7 +807,7 @@ public class TurnManager : MonoBehaviour
                 }
             }
 
-            else if ((Input.GetKey(KeyCode.W) || Input.GetAxis("VerticalJoy") == 1 || Input.GetAxis("VerticalAnalog") >= 0.9f))
+            else if ((Input.GetKey(KeyCode.W) || Input.GetAxis("VerticalJoy") == 1 || Input.GetAxis("VerticalAnalog") >= 0.9f) && !isInPause)
             {
                 //canBeActivated = false;
                 if (currentSelection >= 12 && currentSelection <= 25)
@@ -847,7 +847,7 @@ public class TurnManager : MonoBehaviour
                 }
             }
 
-            else if ((Input.GetKey(KeyCode.S) || Input.GetAxis("VerticalJoy") == -1 || Input.GetAxis("VerticalAnalog") <= -0.9f))
+            else if ((Input.GetKey(KeyCode.S) || Input.GetAxis("VerticalJoy") == -1 || Input.GetAxis("VerticalAnalog") <= -0.9f) && !isInPause)
             {
                 //canBeActivated = false;
                 if (currentSelection >= 13 && currentSelection <= 26)
@@ -898,7 +898,7 @@ public class TurnManager : MonoBehaviour
             yield return null;
         }
 
-        if (Input.GetKeyDown(KeyCode.C) || Input.GetButtonDown("Fire2joy"))
+        if (Input.GetKeyDown(KeyCode.C) || Input.GetButtonDown("Fire2joy") || Input.GetButtonDown("StartButton"))
         {
             inAction = false;
             mapManager.SetInsertArrowsVisible(false);
@@ -906,7 +906,7 @@ public class TurnManager : MonoBehaviour
             myCameraMovement.MoveToPosition(activePlayer.GetComponentInParent<Transform>().position);
             StartCoroutine(ActivatePanel((int)panelSelection.terraformPanel));
         }
-        else
+        else if (Input.GetKeyDown(KeyCode.X) || Input.GetButtonDown("Fire1joy") && !isInPause)
         {
             mapManager.SetInsertArrowVisible(true, currentSelection);
             int mySlideDirection = 0;
@@ -947,32 +947,33 @@ public class TurnManager : MonoBehaviour
 
         yield return null;
 
-        while (!Input.GetKeyDown(KeyCode.Z) && !Input.GetKeyDown(KeyCode.X) && !Input.GetKeyDown(KeyCode.C) && !Input.GetButtonDown("Fire1joy") && !Input.GetButtonDown("Fire2joy") && !Input.GetButtonDown("Fire3joy"))
+        while (!Input.GetKeyDown(KeyCode.Z) && !Input.GetKeyDown(KeyCode.X) && !Input.GetKeyDown(KeyCode.C) && !Input.GetButtonDown("Fire1joy") && !Input.GetButtonDown("Fire2joy") && !Input.GetButtonDown("Fire3joy") && !Input.GetButtonDown("StartButton"))
         {
             yield return null;
         }
 
-        if (Input.GetKeyDown(KeyCode.C) || Input.GetButtonDown("Fire2joy"))
-        {
-            inAction = false;
-            rotationCursor.GetComponent<CursorMoving>().CursorDeactivate();
-            rotationCursor.GetComponent<CursorMoving>().SetAtPosition(parkingPosition);
-            StartCoroutine(ActivatePanel((int)panelSelection.terraformPanel));
-        }
-        else if (Input.GetKeyDown(KeyCode.Z) || Input.GetButtonDown("Fire3joy"))
-        {
-            canTerraform = false;
-            rotationCursor.GetComponent<CursorMoving>().CursorDeactivate();
-            yield return StartCoroutine(ActivateRotation(1));
-        }
-        else if (Input.GetKeyDown(KeyCode.X) || Input.GetButtonDown("Fire1joy"))
-        {
-            canTerraform = false;
-            rotationCursor.GetComponent<CursorMoving>().CursorDeactivate();
-            yield return StartCoroutine(ActivateRotation(-1));
-        }
+        if (Input.GetKeyDown(KeyCode.C) || Input.GetButtonDown("Fire2joy")  || Input.GetButtonDown("StartButton"))
+            {
+                inAction = false;
+                rotationCursor.GetComponent<CursorMoving>().CursorDeactivate();
+                rotationCursor.GetComponent<CursorMoving>().SetAtPosition(parkingPosition);
+                StartCoroutine(ActivatePanel((int)panelSelection.terraformPanel));
+            }
+            else if ((Input.GetKeyDown(KeyCode.Z) || Input.GetButtonDown("Fire3joy")))
+            {
+                canTerraform = false;
+                rotationCursor.GetComponent<CursorMoving>().CursorDeactivate();
+                yield return StartCoroutine(ActivateRotation(1));
+            }
+            else if ((Input.GetKeyDown(KeyCode.X) || Input.GetButtonDown("Fire1joy")))
+            {
+                canTerraform = false;
+                rotationCursor.GetComponent<CursorMoving>().CursorDeactivate();
+                yield return StartCoroutine(ActivateRotation(-1));
+            }
 
-        yield return null;
+            yield return null;
+                
     }
 
     IEnumerator reactivateCursor()
@@ -1081,16 +1082,16 @@ public class TurnManager : MonoBehaviour
         return playersIdxInCoords.ToArray();
     }
 
-    public void Pause()
+    public IEnumerator Pause()
     {
-        isAcceptingInputs = false;
+        yield return null;
         isInPause = true;
         pauseMenu.SetActive(true);
     }
 
-    public void Resume ()
+    public IEnumerator Resume ()
     {
-        isAcceptingInputs = true;
+        yield return null;
         isInPause = false;
         pauseMenu.SetActive(false);
     }
@@ -1143,14 +1144,14 @@ public class TurnManager : MonoBehaviour
 
         if ((Input.GetKeyDown(KeyCode.Return) || Input.GetButtonDown("StartButton")) && !isInPause)
         {
-            Pause();
+            StartCoroutine(Pause());
         }
         else if ((Input.GetKeyDown(KeyCode.Return) || Input.GetButtonDown("StartButton")) && isInPause)
         {
-            Resume();
+            StartCoroutine(Resume());
         }
 
-            if (isAcceptingInputs)
+            if (isAcceptingInputs && !isInPause)
             {
             if (Input.GetKeyDown(KeyCode.R)) SceneManager.LoadScene("_Scenes/scenaprova");
 

@@ -161,7 +161,7 @@ public class CursorMoving : MonoBehaviour {
 	
 	void Update ()
     {
-        if (isActive && !moving)
+        if (isActive && !moving && !turnManagerComponent.isInPause)
         {
             if ((Input.GetKeyDown(KeyCode.D) || Input.GetAxis("HorizontalJoy") == 1 || Input.GetAxis("HorizontalAnalog") >= 0.9f) && coordinate.getX() < mapManagerComponent.columns-2)
             {
