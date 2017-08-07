@@ -659,8 +659,8 @@ public class MapManager : MonoBehaviour {
 
         diamondCoords = new Coordinate(coordinate.getX(), coordinate.getY());
 
-        Texture2D myTexture = (Texture2D)Resources.Load("TileProva/diamond");
-        Sprite mySprite = Sprite.Create(myTexture, new Rect(0, 0, myTexture.width, myTexture.height), new Vector2(0.5f, 0.66f));
+        Texture2D myTexture = (Texture2D)Resources.Load("Tiles/crystal 1");
+        Sprite mySprite = Sprite.Create(myTexture, new Rect(0, 0, myTexture.width, myTexture.height), new Vector2(0.5f, 0.5f));
         myDiamondInstance.GetComponent<SpriteRenderer>().sprite = mySprite;
 
     }
@@ -809,6 +809,8 @@ public class MapManager : MonoBehaviour {
         var tmpTileMatrix = new Tile[selectedCoords.Length];
         GameObject tmpTileObj;
         var tmpTileObjMatrix = new GameObject[selectedCoords.Length];
+
+        camera.DOShakePosition(0.9f, 1);
 
         float animationTime = 0.5f;
         var myMovement = new Vector2(0, 0);
