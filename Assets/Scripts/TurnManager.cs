@@ -422,7 +422,10 @@ public class TurnManager : MonoBehaviour
     public void DropDiamond(Player player)
     {
         RemoveDiamondAura();
-        player.hasDiamond = false;
+        player.SetHasDiamond(false);
+        player.SetCanActivateStasis(false);
+        canUseCrystal = false;
+
         mapManager.myDiamondInstance.transform.parent = null;
         mapManager.myDiamondInstance.transform.position = new Vector3(mapManager.myDiamondInstance.transform.position.x,
                                                                       mapManager.myDiamondInstance.transform.position.y,
