@@ -240,7 +240,6 @@ public class TurnManager : MonoBehaviour
 
     // Panel Selection
 
-    //TODO ADD INACTIVE STATUS
     IEnumerator ActivatePanel(int panelType)
     {
         isAcceptingInputs = false;
@@ -365,6 +364,7 @@ public class TurnManager : MonoBehaviour
             {
                 Trap thisTrap = trapsToActivate[i];
                 thisTrap.SetPlayerDropping(0);
+                trapsToActivate.Remove(thisTrap);
             }
         }
     }
@@ -1041,7 +1041,7 @@ public class TurnManager : MonoBehaviour
 
     // General Methods
 
-    private Player GetPlayerAtCoordinates(Coordinate coord)
+    public Player GetPlayerAtCoordinates(Coordinate coord)
     {
         Player myPlayer = null;
         foreach (Player player in playerComponent)
