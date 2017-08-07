@@ -15,6 +15,18 @@ static class GeneralMethods
         return idx;
     }
 
+    static public int FindElementIdx(Coordinate[] intArray, Coordinate value)
+    {
+        int idx = -1;
+        for (int i = 0; i < intArray.Length; i++)
+        {
+            if (intArray[i].isEqual(value))
+                return i;
+        }
+        return idx;
+    }
+
+
     static public Coordinate[] ReverseArray(Coordinate[] coordArray)
     {
         var reverseArray = new Coordinate[coordArray.Length];
