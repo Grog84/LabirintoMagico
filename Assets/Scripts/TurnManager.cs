@@ -8,7 +8,7 @@ using UnityEngine.SceneManagement;
 public class TurnManager : MonoBehaviour
 {
 
-    public GameObject xButton, aButton, bButton, diamondButton, rotationCursor, pauseMenu, hasCrystalEffect, winScreen;
+    public GameObject xButton, aButton, bButton, diamondButton, rotationCursor, pauseMenu, hasCrystalEffect, winScreen, UI;
     public GameObject[] portraits;
     public GameObject[] playerWinsText;
     public Camera myCamera;
@@ -220,6 +220,7 @@ public class TurnManager : MonoBehaviour
     {
         dialogueManager.GetComponent<Speaker>().PlayVictory(player.playerNbr);
         winScreen.GetComponent<WinScript>().winner(player.playerNbr-1);
+        //UI.SetActive(false);
         winScreen.SetActive(true);
         isEnd = true;
     }
@@ -1185,9 +1186,6 @@ public class TurnManager : MonoBehaviour
 
     void Awake()
     {
-        StartCoroutine(fade.FadeIn());
-        fade.maskInstance.transform.SetParent(winScreen.transform);
-        fade.maskInstance.transform.localPosition = new Vector3(0, 0, -10);
         isFirstTurn = new bool[4] { true, true, true, true };
         selectionDepth = 0; // corresponds to the first panel. 1 is the terraform panel. 2 is the card selection
         int numberOfButtons = 4;
@@ -1215,10 +1213,15 @@ public class TurnManager : MonoBehaviour
 
     }
 
+    private void Start()
+    {
+        StartCoroutine(fade.FadeInUI());
+    }
+
 
     void Update()
     {
-        if (isEnd && Input.GetButtonDown("Fire1joy")) StartCoroutine(fade.FadeOut("_Scenes/MenuIniziale"));
+        if (isEnd && Input.GetButtonDown("Fire1joy")) StartCoroutine(fade.FadeOutUI("_Scenes/CubeScene"));
         //// Check if needed
         //if ((Mathf.Abs(Input.GetAxis("HorizontalJoy")) != 1))
         //{

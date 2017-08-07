@@ -7,6 +7,8 @@ using UnityEngine.UI;
 public class FadeManager : ScriptableObject
 {
     public GameObject mask;
+    public GameObject myCanvas;
+    public Image maskUI, maskUIInstance;
     public GameObject maskInstance;
     public bool fading;
 
@@ -31,6 +33,15 @@ public class FadeManager : ScriptableObject
         maskInstance = Instantiate(mask, new Vector3 (0, 0, -2), Quaternion.identity);
     }
 
+    public void createFadeMaskUI()
+    {
+        //mask = Resources.Load("Assets/Prefabs/FadeMask");
+        fadeInEffective = ((float)inSpeed / 1000) * 5;
+        fadeOutEffective = ((float)outSpeed / 1000) * 5;
+        myCanvas = GameObject.FindGameObjectWithTag("Canvas");
+        maskUIInstance = Instantiate(maskUI, myCanvas.transform);
+    }
+
     public void createFadeMask(int zOrder)
     {
         //mask = Resources.Load("Assets/Prefabs/FadeMask");
@@ -45,6 +56,19 @@ public class FadeManager : ScriptableObject
         while (maskInstance.GetComponent<Renderer>().material.color.a < 1)
         {
             maskInstance.GetComponent<Renderer>().material.color += new Color(0, 0, 0, fadeOutEffective);
+            yield return null;
+        }
+        fading = false;
+        SceneManager.LoadScene(destination);
+        yield return null;
+    }
+
+    public IEnumerator FadeOutUI(string destination)
+    {
+        fading = true;
+        while (maskUIInstance.GetComponent<Image>().color.a < 1)
+        {
+            maskUIInstance.GetComponent<Image>().color += new Color(0, 0, 0, fadeOutEffective);
             yield return null;
         }
         fading = false;
@@ -71,6 +95,18 @@ public class FadeManager : ScriptableObject
         while (maskInstance.GetComponent<Renderer>().material.color.a > 0)
         {
             maskInstance.GetComponent<Renderer>().material.color -= new Color(0, 0, 0, fadeInEffective);
+            yield return null;
+        }
+        fading = false;
+    }
+
+    public IEnumerator FadeInUI()
+    {
+        fading = true;
+        createFadeMaskUI();
+        while (maskUIInstance.GetComponent<Image>().color.a > 0)
+        {
+            maskUIInstance.GetComponent<Image>().color -= new Color(0, 0, 0, fadeInEffective);
             yield return null;
         }
         fading = false;
