@@ -30,6 +30,14 @@ public class FadeManager : ScriptableObject
         maskInstance = Instantiate(mask, new Vector3 (0, 0, -2), Quaternion.identity);
     }
 
+    public void createFadeMask(int zOrder)
+    {
+        //mask = Resources.Load("Assets/Prefabs/FadeMask");
+        fadeInEffective = ((float)inSpeed / 1000) * 5;
+        fadeOutEffective = ((float)outSpeed / 1000) * 5;
+        maskInstance = Instantiate(mask, new Vector3(0, 0, zOrder), Quaternion.identity);
+    }
+
     public IEnumerator FadeOut (string destination)
     {
         fading = true;
@@ -55,5 +63,17 @@ public class FadeManager : ScriptableObject
         fading = false;
     }
 
-    
+    public IEnumerator FadeIn(int zOrder)
+    {
+        fading = true;
+        createFadeMask(zOrder);
+        while (maskInstance.GetComponent<Renderer>().material.color.a > 0)
+        {
+            maskInstance.GetComponent<Renderer>().material.color -= new Color(0, 0, 0, fadeInEffective);
+            yield return null;
+        }
+        fading = false;
+    }
+
+
 }

@@ -32,7 +32,8 @@ public class PauseMenuScript : MonoBehaviour {
                 }
             case 3:
                 {
-                    SceneManager.LoadScene("_Scenes/MenuIniziale");
+                    StartCoroutine(turnManager.GetComponent<TurnManager>().fade.FadeOut("_Scenes/MenuIniziale"));
+                    //SceneManager.LoadScene("_Scenes/MenuIniziale");
                     break;
                 }
             default: break;
