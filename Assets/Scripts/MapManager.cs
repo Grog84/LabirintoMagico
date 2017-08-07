@@ -29,6 +29,7 @@ public class MapManager : MonoBehaviour {
     public Count crossCount = new Count(4, 8);
     public GameObject tile, player, insertArrow, diamond;
     public TurnManager turnManager;
+    public Camera camera;
     
 
     // pubic to make it accessible from the turnmanager
@@ -765,6 +766,7 @@ public class MapManager : MonoBehaviour {
         DestroyTile(PickTileObject(myCoords[myCoords.Length - 1])); // destroys the last movable tile, could become a coroutine
 
         var myMovement = new Vector2(0, 0);
+        camera.DOShakePosition(0.9f, 1);
 
         for (int i = myCoords.Length - 2; i >= 0; i--)
         {
