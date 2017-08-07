@@ -532,6 +532,7 @@ public class MapManager : MonoBehaviour {
     {
         Coordinate coordinate = null;
         Tile myTileComponent = null;
+        Animator myAnimator = null;
         GameObject tileInstance = null;
 
         if (playerNbr == 1)
@@ -541,9 +542,11 @@ public class MapManager : MonoBehaviour {
             tileInstance.transform.SetParent(transform);
 
             myTileComponent = tileInstance.GetComponent<Tile>();
-
             myTileComponent.myTexture = (Texture2D)Resources.Load("Tiles/tile_spawn_1P");
             myTileComponent.SetPossibleConnections(0);
+
+            myAnimator = tileInstance.GetComponent<Animator>();
+            myAnimator.runtimeAnimatorController = (RuntimeAnimatorController)Resources.Load("TilesAnimators/tile_spawn_1P");
 
         }
         else if (playerNbr == 2)
@@ -556,6 +559,9 @@ public class MapManager : MonoBehaviour {
 
             myTileComponent.myTexture = (Texture2D)Resources.Load("Tiles/tile_spawn_2P");
             myTileComponent.SetPossibleConnections(1);
+
+            myAnimator = tileInstance.GetComponent<Animator>();
+            myAnimator.runtimeAnimatorController = (RuntimeAnimatorController)Resources.Load("TilesAnimators/tile_spawn_2P");
         }
         else if (playerNbr == 3)
         {
@@ -567,6 +573,9 @@ public class MapManager : MonoBehaviour {
 
             myTileComponent.myTexture = (Texture2D)Resources.Load("Tiles/tile_spawn_3P");
             myTileComponent.SetPossibleConnections(2);
+
+            myAnimator = tileInstance.GetComponent<Animator>();
+            myAnimator.runtimeAnimatorController = (RuntimeAnimatorController)Resources.Load("TilesAnimators/tile_spawn_3P");
         }
         else
         {
@@ -578,6 +587,9 @@ public class MapManager : MonoBehaviour {
 
             myTileComponent.myTexture = (Texture2D)Resources.Load("Tiles/tile_spawn_4P");
             myTileComponent.SetPossibleConnections(3);
+
+            myAnimator = tileInstance.GetComponent<Animator>();
+            myAnimator.runtimeAnimatorController = (RuntimeAnimatorController)Resources.Load("TilesAnimators/tile_spawn_4P");
         }
 
         myTileComponent.mySprite = Sprite.Create(myTileComponent.myTexture,

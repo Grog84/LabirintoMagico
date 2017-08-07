@@ -30,9 +30,11 @@ public class Card : MonoBehaviour {
     public void AssignType(int type, bool trapStatus)
     {
         tileType = type;
-        //isTrapped = trapStatus;
-        //if (isTrapped) trapMarkerTransform.position = new Vector2(0f, 0f);
-        //else trapMarkerTransform.position = new Vector2(0f, -100f);
+        isTrapped = trapStatus;
+        if (isTrapped)
+            trapMarkerTransform.localPosition = new Vector2(0f, 5f);
+        else
+            trapMarkerTransform.localPosition = new Vector2(0f, -2000f);
         Texture2D myTexture = null;
 
         switch (tileType)
@@ -95,8 +97,8 @@ public class Card : MonoBehaviour {
     void Start () {
 
         myImage = GetComponent<Image>();
-        AssignStartingRandomType();
         trapMarkerTransform = trapMarker.GetComponent<RectTransform>();
+        AssignStartingRandomType();
 
     }
 	
