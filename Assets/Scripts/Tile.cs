@@ -243,6 +243,7 @@ public class Tile : MonoBehaviour {
                     {
                         turnManager.GetComponent<TurnManager>().DropDiamond(player);
                         player.ResetToStartingPosition();
+                        SetPlayerChild();
                     }
                 }
 
