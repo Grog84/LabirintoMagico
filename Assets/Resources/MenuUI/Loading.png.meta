@@ -1,0 +1,600 @@
+fileFormatVersion: 2
+guid: af001ecd2d795c74383df44e5a1f4512
+timeCreated: 1502130543
+licenseType: Free
+TextureImporter:
+  fileIDToRecycleName:
+    21300000: Loading_0
+    21300002: Loading_1
+    21300004: Loading_2
+    21300006: Loading_3
+    21300008: Loading_4
+    21300010: Loading_5
+    21300012: Loading_6
+    21300014: Loading_7
+    21300016: Loading_8
+    21300018: Loading_9
+    21300020: Loading_10
+    21300022: Loading_11
+    21300024: Loading_12
+    21300026: Loading_13
+    21300028: Loading_14
+    21300030: Loading_15
+    21300032: Loading_16
+    21300034: Loading_17
+    21300036: Loading_18
+    21300038: Loading_19
+    21300040: Loading_20
+    21300042: Loading_21
+    21300044: Loading_22
+    21300046: Loading_23
+    21300048: Loading_24
+    21300050: Loading_25
+    21300052: Loading_26
+    21300054: Loading_27
+    21300056: Loading_28
+    21300058: Loading_29
+    21300060: Loading_30
+    21300062: Loading_31
+    21300064: Loading_32
+    21300066: Loading_33
+    21300068: Loading_34
+    21300070: Loading_35
+    21300072: Loading_36
+    21300074: Loading_37
+    21300076: Loading_38
+    21300078: Loading_39
+    21300080: Loading_40
+    21300082: Loading_41
+    21300084: Loading_42
+    21300086: Loading_43
+    21300088: Loading_44
+    21300090: Loading_45
+    21300092: Loading_46
+    21300094: Loading_47
+    21300096: Loading_48
+    21300098: Loading_49
+    21300100: Loading_50
+    21300102: Loading_51
+    21300104: Loading_52
+    21300106: Loading_53
+    21300108: Loading_54
+    21300110: Loading_55
+    21300112: Loading_56
+    21300114: Loading_57
+    21300116: Loading_58
+    21300118: Loading_59
+    21300120: Loading_60
+    21300122: Loading_61
+    21300124: Loading_62
+    21300126: Loading_63
+    21300128: Loading_64
+    21300130: Loading_65
+    21300132: Loading_66
+    21300134: Loading_67
+    21300136: Loading_68
+    21300138: Loading_69
+    21300140: Loading_70
+    21300142: Loading_71
+    21300144: Loading_72
+    21300146: Loading_73
+    21300148: Loading_74
+    21300150: Loading_75
+    21300152: Loading_76
+    21300154: Loading_77
+    21300156: Loading_78
+    21300158: Loading_79
+    21300160: Loading_80
+    21300162: Loading_81
+    21300164: Loading_82
+    21300166: Loading_83
+    21300168: Loading_84
+    21300170: Loading_85
+    21300172: Loading_86
+    21300174: Loading_87
+    21300176: Loading_88
+    21300178: Loading_89
+    21300180: Loading_90
+    21300182: Loading_91
+    21300184: Loading_92
+    21300186: Loading_93
+    21300188: Loading_94
+  serializedVersion: 4
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    filterMode: -1
+    aniso: -1
+    mipBias: -1
+    wrapMode: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spritePixelsToUnits: 100
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  - buildTarget: Standalone
+    maxTextureSize: 2048
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Loading_0
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1798
+        width: 750
+        height: 250
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Loading_1
+      rect:
+        serializedVersion: 2
+        x: 750
+        y: 1798
+        width: 750
+        height: 250
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Loading_2
+      rect:
+        serializedVersion: 2
+        x: 1500
+        y: 1798
+        width: 750
+        height: 250
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Loading_3
+      rect:
+        serializedVersion: 2
+        x: 2250
+        y: 1798
+        width: 750
+        height: 250
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Loading_4
+      rect:
+        serializedVersion: 2
+        x: 3000
+        y: 1798
+        width: 750
+        height: 250
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Loading_5
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1548
+        width: 750
+        height: 250
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Loading_6
+      rect:
+        serializedVersion: 2
+        x: 750
+        y: 1548
+        width: 750
+        height: 250
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Loading_7
+      rect:
+        serializedVersion: 2
+        x: 1500
+        y: 1548
+        width: 750
+        height: 250
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Loading_8
+      rect:
+        serializedVersion: 2
+        x: 2250
+        y: 1548
+        width: 750
+        height: 250
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Loading_9
+      rect:
+        serializedVersion: 2
+        x: 3000
+        y: 1548
+        width: 750
+        height: 250
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Loading_10
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1298
+        width: 750
+        height: 250
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Loading_11
+      rect:
+        serializedVersion: 2
+        x: 750
+        y: 1298
+        width: 750
+        height: 250
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Loading_12
+      rect:
+        serializedVersion: 2
+        x: 1500
+        y: 1298
+        width: 750
+        height: 250
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Loading_13
+      rect:
+        serializedVersion: 2
+        x: 2250
+        y: 1298
+        width: 750
+        height: 250
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Loading_14
+      rect:
+        serializedVersion: 2
+        x: 3000
+        y: 1298
+        width: 750
+        height: 250
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Loading_15
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 1048
+        width: 750
+        height: 250
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Loading_16
+      rect:
+        serializedVersion: 2
+        x: 750
+        y: 1048
+        width: 750
+        height: 250
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Loading_17
+      rect:
+        serializedVersion: 2
+        x: 1500
+        y: 1048
+        width: 750
+        height: 250
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Loading_18
+      rect:
+        serializedVersion: 2
+        x: 2250
+        y: 1048
+        width: 750
+        height: 250
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Loading_19
+      rect:
+        serializedVersion: 2
+        x: 3000
+        y: 1048
+        width: 750
+        height: 250
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Loading_20
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 798
+        width: 750
+        height: 250
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Loading_21
+      rect:
+        serializedVersion: 2
+        x: 750
+        y: 798
+        width: 750
+        height: 250
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Loading_22
+      rect:
+        serializedVersion: 2
+        x: 1500
+        y: 798
+        width: 750
+        height: 250
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Loading_23
+      rect:
+        serializedVersion: 2
+        x: 2250
+        y: 798
+        width: 750
+        height: 250
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Loading_24
+      rect:
+        serializedVersion: 2
+        x: 3000
+        y: 798
+        width: 750
+        height: 250
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Loading_25
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 548
+        width: 750
+        height: 250
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Loading_26
+      rect:
+        serializedVersion: 2
+        x: 750
+        y: 548
+        width: 750
+        height: 250
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Loading_27
+      rect:
+        serializedVersion: 2
+        x: 1500
+        y: 548
+        width: 750
+        height: 250
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Loading_28
+      rect:
+        serializedVersion: 2
+        x: 2250
+        y: 548
+        width: 750
+        height: 250
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Loading_29
+      rect:
+        serializedVersion: 2
+        x: 3000
+        y: 548
+        width: 750
+        height: 250
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Loading_30
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 298
+        width: 750
+        height: 250
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Loading_31
+      rect:
+        serializedVersion: 2
+        x: 750
+        y: 298
+        width: 750
+        height: 250
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: Loading_32
+      rect:
+        serializedVersion: 2
+        x: 1500
+        y: 298
+        width: 750
+        height: 250
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    outline: []
+  spritePackingTag: 
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
