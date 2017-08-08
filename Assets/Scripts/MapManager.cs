@@ -1022,6 +1022,15 @@ public class MapManager : MonoBehaviour {
 
     // Others
 
+    public void CorrectDiamondOwnership()
+    {
+        foreach (var tile in myMapTiles)
+        {
+            if (tile.hasDiamond && !tile.myCoord.isEqual(diamondCoords))
+                tile.hasDiamond = false;
+        }
+    }
+
     public Coordinate GetDiamondCoords()
     {
         return diamondCoords;

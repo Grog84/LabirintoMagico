@@ -136,6 +136,8 @@ public class TurnManager : MonoBehaviour
             isFirstTurn[playerPlayingIdx] = false;
         }
 
+        mapManager.CorrectDiamondOwnership();
+
     }
 
     public void ActivatePlayer(int nbr) // if 0 no player is active - The method acts on the flag inside player allowing movement
