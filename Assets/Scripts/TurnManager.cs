@@ -614,7 +614,9 @@ public class TurnManager : MonoBehaviour
         mapManager.updateTilesConnection(playerPlaying);
 
         UpdatePlayersPosition();
-        UpdateDiamondPosition();
+        if (diamondOnTable)
+            UpdateDiamondPosition();
+
         canTerraform = false;
         buttonsAnimator[1].SetBool("canTerraform", false);
         StartCoroutine(ActivatePanel((int)panelSelection.basePanel));
@@ -1038,6 +1040,8 @@ public class TurnManager : MonoBehaviour
         }
 
         UpdatePlayersPosition();
+        if (diamondOnTable)
+            UpdateDiamondPosition();
         cursorIsActive = true;
         yield return StartCoroutine(EndTerraform());
 
